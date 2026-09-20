@@ -87,22 +87,8 @@ export default async function handler(req, res) {
       await db(`partners?id=eq.${p.id}`, { method: "PATCH", prefer: "return=minimal", body: {
         b_email: me, status: "active", accepted_at: new Date().toISOString(), open_courses: open,
       }});
-      // 이름을 쓴다 — 이메일 주소를 그대로 보여주면 메일 클라이언트가 링크로 바꿔 읽기 나쁘다
-      let who = String(b.myName || "").trim();
-      if (!who) {
-        try {
-          const pr = await db(`progress?email=eq.${encodeURIComponent(me)}&select=name`);
-          who = (pr[0] && pr[0].name) || "";
-        } catch (e) {}
-      }
-      if (!who) who = me.split("@")[0];
-      try {
-        await sendMail({ to: p.a_email, subject: `${who}님이 초대를 수락했어요`,
-          html: shell("이제 함께 기록을 볼 수 있어요",
-            `${who}님이 초대를 수락했어요. 아래 클래스는 서로 기록을 보면서 함께 학습할 수 있어요.` +
-            (open.length ? `<ul style="margin:12px 0 0;padding-left:18px">${open.map((c) => `<li>${({self:"마음학",lover:"연애학",family:"가족학",friend:"우정학",coworker:"협업학",pet:"교감학"})[c] || c}</li>`).join("")}</ul>` : ""),
-            { href: url("/"), label: "PLove 열기" }) });
-      } catch (e) { console.warn("[partner] 수락 알림 실패", e.message); }
+      // 수락 알림 메일은 보내지 않는다 — 연결은 앱을 열면 바로 보인다.
+      // (초대한 사람 주소가 실제로 없는 경우도 많아 반송만 쌓인다)
       return res.status(200).json({ ok: true, status: "active", openCourses: open, partnerEmail: p.a_email });
     }
 
