@@ -105,11 +105,18 @@
           done[d2.getFullYear() + "-" + String(d2.getMonth() + 1).padStart(2, "0") + "-" + String(d2.getDate()).padStart(2, "0")] = 1;
         }
         history.replaceState(null, "", location.pathname);
-        L.setState({
+        var seed = {
           doneDays: done, frozenDays: {}, streak: sn,
           bestStreak: Math.max(sn, L.state.bestStreak || 0),
           lastDay: t.getFullYear() + "-" + String(t.getMonth() + 1).padStart(2, "0") + "-" + String(t.getDate()).padStart(2, "0")
-        });
+        };
+        L.setState(seed);
+        // 서버 진행도가 조금 뒤에 내려와 이 값을 덮는다 — 그 뒤에 한 번 더 얹고
+        // 서버에도 올려 다음 접속부터는 다툼이 없게 한다.
+        setTimeout(function () {
+          L.setState(seed);
+          try { window.__ploveServer && window.__ploveServer.pushProgress(); } catch (e) {}
+        }, 4000);
         L.toast && L.toast(sn + "일 연속으로 맞췄어요");
       }
     } catch (e) {}
