@@ -90,7 +90,7 @@
           /* 인증물은 blob: URL 이라 남의 화면에서 안 열린다 — 스토리지가 붙으면 여기서 실제 URL 이 실린다.
              kind 는 지금 미리 실어 둔다(공유 페이지가 사진·영상·음성을 가려 그린다). */
           var proofs = (r.photos || []).filter(function (p2) { return p2 && p2.url && p2.url.indexOf("blob:") !== 0; })
-            .map(function (p2) { return { url: p2.url, memo: p2.memo || "", kind: p2.kind || "", mime: p2.mime || "" }; });
+            .map(function (p2) { return { url: p2.url, memo: p2.memo || "", label: p2.label || "", kind: p2.kind || "", mime: p2.mime || "" }; });
           entries.push({ num: r.num, title: r.title, stage: r.stage, lines: lines, free: r.free || "", photos: proofs });
         });
         var np = L.npc();
@@ -185,6 +185,35 @@
       }
     };
 
+    /* ── 인증물 업로드 ───────────────────────────────────────────
+       사용자가 올린 파일은 blob: URL 이라 새로고침하면 죽고 남의 화면에서도 안 열린다.
+       고른 즉시 뒤에서 올리고, 끝나면 slotFiles 의 url 을 공개 주소로 바꿔 끼운다.
+       미리보기는 그동안 blob: 로 계속 보인다 — 기다리게 하지 않는다. */
+    async function uploadProof(file, i) {
+      var me = myEmail(L);
+      if (!me) return;
+      var r = await post("/api/upload", { email: me, mime: file.type, size: file.size, name: file.name });
+      if (!r.ok) { console.warn("[upload] 서명 실패", r.d); return; }
+      var put = await fetch(r.d.uploadUrl, { method: "PUT", headers: { "content-type": file.type }, body: file });
+      if (!put.ok) { console.warn("[upload] 전송 실패", put.status); return; }
+      var next = (L.state.slotFiles || []).slice();
+      if (next[i]) {
+        next[i] = Object.assign({}, next[i], { url: r.d.publicUrl, kind: file.type.split("/")[0], mime: file.type, remote: true });
+        L.setState({ slotFiles: next });
+      }
+    }
+    var origPick = L.pickPhoto.bind(L);
+    L.pickPhoto = function (e, i) {
+      var f = e && e.target && e.target.files && e.target.files[0];
+      var r = origPick(e, i);
+      // 원본이 거부한 파일(형식·용량·길이)은 slotFiles 에 안 들어간다 — 잠시 뒤 확인하고 올린다
+      if (f) setTimeout(function () {
+        var s = (L.state.slotFiles || [])[i];
+        if (s && s.url && s.url.indexOf("blob:") === 0) uploadProof(f, i).catch(function (err) { console.warn("[upload]", err && err.message); });
+      }, 400);
+      return r;
+    };
+
     /* ── 진행도 동기화 ───────────────────────────────────────────
        파트너가 내 기록을 보려면 서버에 있어야 한다. 덤으로 기기가 바뀌어도 이어진다.
        localStorage 는 그대로 둔다 — 서버가 죽어도 혼자서는 계속 돈다. */
@@ -194,10 +223,13 @@
     function snapshot() {
       var o = {};
       KEEP.forEach(function (k) { if (L.state[k] !== undefined) o[k] = L.state[k]; });
-      // 사진은 blob: URL 이라 남의 화면에서 안 열린다 — 보내지 않는다
+      // blob: URL 은 이 브라우저에서만 살아 있다 — 올라간 것(공개 주소)만 남긴다
       var r = JSON.parse(JSON.stringify(o.records || {}));
       Object.keys(r).forEach(function (ck) {
-        Object.keys(r[ck] || {}).forEach(function (mi) { if (r[ck][mi]) r[ck][mi].photos = []; });
+        Object.keys(r[ck] || {}).forEach(function (mi) {
+          var rec = r[ck][mi];
+          if (rec) rec.photos = (rec.photos || []).filter(function (p2) { return p2 && p2.url && p2.url.indexOf("blob:") !== 0; });
+        });
       });
       o.records = r;
       return o;
