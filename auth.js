@@ -34,6 +34,11 @@
     try { cfg = await (await fetch("/api/config")).json(); } catch (e) {}
     if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) {
       console.info("[auth] 설정 없음 — 프로토타입 로그인 그대로 둔다");
+      // persist 가 화면을 안 정하므로 여기서라도 되돌려 준다(로컬·미설정 환경)
+      try {
+        var L0 = await waitLogic();
+        if (L0 && Object.keys(L0.state.levels || {}).length && L0.state.signedIn) L0.setState({ screen: "home" });
+      } catch (e) {}
       return;
     }
     try { await load(SDK); } catch (e) { console.warn("[auth] SDK 로드 실패"); return; }
@@ -53,7 +58,9 @@
       var sc = L.state.screen;
       if (sc && sc !== "start" && sc !== "signin") return;
       advanced = true;
-      // 진행도는 저장본·서버에서 늦게 올 수 있다 — 잠깐 기다렸다 정한다
+      // 이 기기에 이미 진행이 있으면 기다릴 이유가 없다
+      if (Object.keys(L.state.levels || {}).length) { L.setState({ screen: "home" }); return; }
+      // 없으면 서버에서 늦게 올 수 있으니 잠깐 기다렸다 정한다
       setTimeout(function () {
         var sc2 = L.state.screen;
         if (sc2 !== "start" && sc2 !== "signin") return;

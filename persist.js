@@ -84,13 +84,16 @@
     try { saved = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
 
     if (saved && typeof saved === "object") {
-      // 시작한 코스가 있으면 홈으로 되돌린다. 없으면 평소대로 시작 화면.
+      // 코스 자리는 되돌리되 화면은 여기서 정하지 않는다.
+      // 로그인 확인은 몇 초 걸리는데 그 전에 앱 화면을 띄우면,
+      // 처음 온 사람에게 로그인보다 먼저 남의 진행 화면이 스쳐 지나간다.
+      // 어느 화면으로 갈지는 세션을 확인한 auth.js 가 정한다.
       var started = saved.levels && Object.keys(saved.levels).length;
       if (started) {
-        saved.screen = "home";
         saved.course = saved.course || Object.keys(saved.levels)[0];
         saved.selected = saved.selected || saved.course;
       }
+      delete saved.screen;
       try { L.setState(saved); } catch (e) { console.warn("[persist] 복원 실패", e); }
     }
 
