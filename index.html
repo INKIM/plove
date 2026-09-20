@@ -3834,7 +3834,9 @@ class Component extends DCLogic {
           locked, done,
           isNext: !locked && !done,
           open: this.state.openM === i,
-          rowStyle: { display: "flex", justifyContent: "center", transform: "translateX(" + zig + "px)", padding: this.stageIcon(m.s) ? "11px 0" : "7px 0" },
+          // 행이 부모 가득(모바일 358px)이면 지그재그 ±68 이 그대로 넘쳐 가로 스크롤이 생긴다.
+          // 행 안에는 노드 하나뿐이라 내용 너비로 줄이고 가운데 두면 넘침 없이 같은 모양이 나온다.
+          rowStyle: { display: "flex", justifyContent: "center", width: "max-content", marginLeft: "auto", marginRight: "auto", transform: "translateX(" + zig + "px)", padding: this.stageIcon(m.s) ? "11px 0" : "7px 0" },
           nodeStyle: this.stageIcon(m.s) ? {
             position: "relative", width: "74px", height: "74px",
             display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
