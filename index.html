@@ -2489,8 +2489,11 @@ class Component extends DCLogic {
     const filled = shorts.filter(a => a && a.length > 0);
     const longLen = (answers[14] || "").length;
     const avg = filled.length ? filled.reduce((s, a) => s + a.length, 0) / filled.length : 0;
-    const score = (filled.length / 14) * 50 + Math.min(avg / 12, 1) * 20 + Math.min(longLen / 120, 1) * 30;
-    const level = Math.min(this.TEST_MAX_LV, score >= 68 ? 3 : score >= 40 ? 2 : 1);
+    // 만점 기준 — 평균 20자, 서술형 300자. 기획서 값(12자·120자)은 너무 쉽게 차서
+    // 대충 답해도 LV.3 이 나왔다. 정말 성의 있게 쓴 경우만 3이 되게 올렸다.
+    const score = (filled.length / 14) * 50 + Math.min(avg / 20, 1) * 20 + Math.min(longLen / 300, 1) * 30;
+    // 임계도 함께 올렸다(기획서는 68/40). 14문항을 다 채우고 서술형까지 길게 쓴 사람만 3이다.
+    const level = Math.min(this.TEST_MAX_LV, score >= 85 ? 3 : score >= 50 ? 2 : 1);
     this.testStart = Date.now();
     clearInterval(this.testT);
     this.testT = setInterval(() => {
