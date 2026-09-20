@@ -773,6 +773,22 @@ Google로 계속하기
 </div>
 </div>
 
+<sc-if value="{{ showPartnerSwitch }}" hint-placeholder-val="{{ false }}">
+<div style="position:relative;padding:12px 2px 0">
+<div onClick="{{ toggleView }}" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid #ece4e2;border-radius:12px;background:#fffdfb;cursor:pointer">
+<span style="flex:1;min-width:0;font-weight:700;font-size:13px;color:#2e1211">{{ viewLabel }}</span>
+<span style="flex:none;font-size:10px;color:#7a6360">▾</span>
+</div>
+<sc-if value="{{ viewOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:2px;right:2px;top:58px;z-index:12;padding:5px;background:#fffdfb;border:1px solid #ece4e2;border-radius:12px;box-shadow:0 6px 20px #2e12111a;display:flex;flex-direction:column;gap:2px">
+<sc-for list="{{ viewOpts }}" as="o" hint-placeholder-count="2">
+<div onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.name }}</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
 <sc-if value="{{ showCourseStrip }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;gap:8px;overflow-x:auto;padding:12px 2px 2px;-webkit-overflow-scrolling:touch">
 <sc-for list="{{ navCourses }}" as="c" hint-placeholder-count="6">
@@ -3634,6 +3650,8 @@ class Component extends DCLogic {
       reqDecline: () => this.answerReq(this.state.reqPopup, "decline"),
       // 좁은 화면은 옆 목록이 없다 — 홈 위에 클래스 띠를 둔다
       showCourseStrip: !!this.state.narrow && sc === "home",
+      // 파트너 전환은 옆 목록에만 있었다 — 좁은 화면에서는 상대 기록을 볼 길이 없었다
+      showPartnerSwitch: !!this.state.narrow && sc === "home" && !!this.state.partner,
       navCourses: this.COURSES.map(c => {
         const on = c.key === k;
         const pv = this.viewingPartner();
