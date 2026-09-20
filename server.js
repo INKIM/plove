@@ -343,6 +343,36 @@
       booted = true;
       try { var t = sessionStorage.getItem("plove.invite"); if (t) { sessionStorage.removeItem("plove.invite"); history.replaceState(null,"","?invite="+t); } } catch (e) {}
       var r = await post("/api/progress", { action: "mine", email: me });
+
+      /* 서버에서 계정을 비웠다는 표시 — 이 기기도 따라 지운다.
+         서버만 지우면 기기에 남은 것이 곧바로 도로 올라와 초기화가 안 된다.
+         같은 표시로 두 번 지우지 않게 본 것을 적어 둔다. */
+      var wipeAt = r.ok && r.d.data && r.d.data.wipe;
+      if (wipeAt) {
+        var seen = null;
+        try { seen = localStorage.getItem("plove.wipe"); } catch (e) {}
+        if (seen !== String(wipeAt)) {
+          try {
+            localStorage.setItem("plove.wipe", String(wipeAt));
+            localStorage.removeItem("plove.save.v1");
+            Object.keys(localStorage).filter(function (x) { return x.indexOf("plove.draft.") === 0; })
+              .forEach(function (x) { localStorage.removeItem(x); });
+          } catch (e) {}
+          L.setState({
+            screen: "pick", levels: {}, completedMap: {}, records: {},
+            totalXp: 0, totalGems: 0, streak: 0, lastDay: "", doneDays: {}, frozenDays: {}, bestStreak: 0,
+            plus: false, couplePaid: false, subCancelled: false, subEnds: "", subSince: 0,
+            partner: null, partnerEmail: "", myOpen: [], reqIn: {}, reqOut: {},
+            course: "", selected: "", q3: null, q5: "", step: 1,
+            famMembers: [], petKinds: [], petNames: {},
+            freezes: 0, extraToday: 0, retryCredits: 0
+          });
+          await handleGift();
+          await handleInvite();
+          return;                       // 비운 자리에 옛 진행을 다시 얹지 않는다
+        }
+      }
+
       if (r.ok && r.d.data && Object.keys(r.d.data.levels || {}).length) {
         // ?streak= 로 심어둔 값이 있으면 서버 것 위에 다시 얹는다.
         // 안 그러면 서버가 늦게 내려온 기기에서만 시드가 지워진다.
