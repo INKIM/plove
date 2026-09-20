@@ -37,7 +37,7 @@
       // persist 가 화면을 안 정하므로 여기서라도 되돌려 준다(로컬·미설정 환경)
       try {
         var L0 = await waitLogic();
-        if (L0 && Object.keys(L0.state.levels || {}).length && L0.state.signedIn) L0.setState({ screen: "home" });
+        if (L0 && Object.keys(L0.state.levels || {}).length && L0.state.signedIn) L0.setState({ screen: "home" });  // 미설정 환경 — 코스 정리는 못 한다
       } catch (e) {}
       return;
     }
@@ -51,6 +51,17 @@
     if (!L) { console.warn("[auth] 컴포넌트를 못 찾았다"); return; }
 
     var advanced = false;
+    /* 안으로 들어갈 때 어느 화면·어느 코스인지 한 곳에서 정한다.
+       시작하지 않은 코스를 가리킨 채 학습으로 보내면
+       그 코스의 '처음이에요' 안내가 대신 떠서 흐름이 어긋난다. */
+    function entry() {
+      var lv = L.state.levels || {};
+      var started = Object.keys(lv).filter(function (k) { return lv[k]; });
+      if (!started.length) return { screen: "pick" };
+      var cur = L.state.selected || L.state.course;
+      var k = (cur && lv[cur]) ? cur : started[0];
+      return { screen: "home", course: k, selected: k, pendingCourse: null };
+    }
     // 구글에서 돌아오면 첫 화면이 다시 뜬다 — 계정은 붙었는데 로그인 화면이라 고장처럼 보인다.
     // 진행이 있으면 학습으로, 없으면 과목 선택으로 넘긴다.
     function advance() {
@@ -65,13 +76,12 @@
       if (!justSignedIn) return;
       advanced = true;
       // 이 기기에 이미 진행이 있으면 기다릴 이유가 없다
-      if (Object.keys(L.state.levels || {}).length) { L.setState({ screen: "home" }); return; }
+      if (Object.keys(L.state.levels || {}).length) { L.setState(entry()); return; }
       // 없으면 서버에서 늦게 올 수 있으니 잠깐 기다렸다 정한다
       setTimeout(function () {
         var sc2 = L.state.screen;
         if (sc2 !== "start" && sc2 !== "signin") return;
-        var started = Object.keys(L.state.levels || {}).length > 0;
-        L.setState({ screen: started ? "home" : "pick" });
+        L.setState(entry());
       }, 1200);
     }
 
@@ -113,7 +123,7 @@
         L.sfx && L.sfx("start");
         if (L.state.signedIn) {
           // 이미 로그인돼 있으면 곧장 안으로 — 진행이 있으면 학습, 없으면 과목 선택
-          L.setState({ screen: Object.keys(L.state.levels || {}).length ? "home" : "pick" });
+          L.setState(entry());
           return;
         }
         signIn();
