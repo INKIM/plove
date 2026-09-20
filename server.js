@@ -79,13 +79,14 @@
         var k = L.courseKey();
         var ms = L.courseMissions();
         var recs = (L.state.records || {})[k] || {};
-        var entries = [], chars = 0, xp = 0;
+        var entries = [], chars = 0, xp = 0, chats = 0;
         Object.keys(recs).sort(function (a, b) { return a - b; }).forEach(function (i) {
           var r = recs[i]; if (!r) return;
           var lines = (r.lines || []).filter(function (l) { return l && l.value; });
           lines.forEach(function (l) { chars += (l.value || "").length; });
           chars += (r.free || "").length;
           xp += r.xp || 0;
+          chats += (r.chat || []).filter(function (c) { return c && c.who === "me"; }).length;
           entries.push({ num: r.num, title: r.title, stage: r.stage, lines: lines, free: r.free || "", photos: [] });
         });
         var np = L.npc();
@@ -94,10 +95,13 @@
           hidePhotos: !!L.state.hidePhotos, expiry: L.state.shareExpiry || "30일",
           payload: {
             title: (np.subject || "") + " 회고", subject: np.subject || "", npcName: np.name || "",
-            ownerName: (L.state.name || "").trim(),
+            npcFile: np.f || "", ownerName: (L.state.name || "").trim(),
             letter: (L.state.letter || "").trim(),
             entries: entries,
-            totals: { missions: entries.length, xp: xp, chars: chars },
+            totals: {
+              missions: entries.length, xp: xp, chars: chars,
+              gems: L.state.totalGems || 0, streak: L.state.streak || 0, chats: chats,
+            },
           },
         }).then(function (r) {
           if (!r.ok || !r.d.slug) { L.sfx && L.sfx("error"); L.toast && L.toast("공유 링크를 만들지 못했어요"); return; }

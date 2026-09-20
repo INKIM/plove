@@ -12,47 +12,60 @@
 <meta property="og:image" content="https://plove-xi.vercel.app/assets/og-thumbnail.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/assets/plove-cupid-v3.png">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#fffdfb;color:#3a2624;font-family:'Noto Sans KR',sans-serif;word-break:keep-all;overflow-wrap:break-word}
-.wrap{max-width:640px;margin:0 auto;padding:0 clamp(20px,4vw,44px) 72px}
-.top{background:#b62a22;color:#fffdfb;padding:30px clamp(20px,4vw,44px) 34px;margin-bottom:26px}
-.top .brand{font-weight:800;font-size:19px;letter-spacing:.02em}
-.top .tag{font-size:12px;color:#ffd9d5;margin-top:3px}
-.top h1{font-weight:800;font-size:clamp(20px,2.6vw,26px);margin:18px 0 0;line-height:1.35}
-.top .sub{font-size:13px;color:#ffd9d5;margin-top:7px}
-.stats{display:flex;gap:8px;margin:0 0 26px;flex-wrap:wrap}
-.stat{flex:1;min-width:92px;border:1px solid #ece4e2;border-radius:14px;padding:13px 14px;background:#fff}
-.stat b{display:block;font-weight:800;font-size:19px;color:#2e1211}
-.stat span{font-size:12px;color:#7a6360}
-.card{border:1px solid #ece4e2;border-radius:18px;padding:18px 18px 16px;background:#fff;margin-bottom:12px}
-.meta{font-weight:700;font-size:11px;letter-spacing:.05em;color:#b62a22;margin-bottom:5px}
-.card h2{font-weight:800;font-size:16px;color:#2e1211;margin:0 0 11px;line-height:1.4}
-.line{display:flex;gap:10px;padding:7px 0;border-top:1px solid #f4eeec;font-size:14px;line-height:1.65}
-.line:first-of-type{border-top:0}
-.line i{flex:none;font-style:normal;font-weight:700;font-size:11px;color:#a89290;padding-top:3px;min-width:18px}
-.letter{border:1px solid #d9b8b4;background:#fdf8f7;border-radius:18px;padding:20px;margin:24px 0 0;font-size:14px;line-height:1.85}
-.letter .who{font-weight:800;color:#b62a22;font-size:13px;margin-bottom:9px}
-.note{font-size:12px;color:#7a6360;margin-top:10px;line-height:1.6}
-.cta{display:block;text-align:center;margin:30px 0 0;padding:15px;border-radius:999px;background:#b62a22;color:#fffdfb;font-weight:700;font-size:15px;text-decoration:none}
-.state{max-width:480px;margin:90px auto;padding:0 24px;text-align:center}
-.state h2{font-weight:800;font-size:19px;color:#2e1211;margin:0 0 8px}
-.state p{font-size:14px;color:#7a6360;margin:0 0 24px;line-height:1.7}
+@keyframes plIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.page{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:clamp(48px,7vh,80px) clamp(20px,5vw,64px) 48px}
+.col{width:100%;max-width:560px;display:flex;flex-direction:column;gap:clamp(30px,5vh,44px);animation:plIn .35s ease-out both}
+.hd{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.npc{width:132px;height:132px;background-position:center;background-size:contain;background-repeat:no-repeat}
+.eyebrow{font-weight:700;font-size:12px;letter-spacing:.1em;color:#b62a22}
+.head{font-weight:800;font-size:clamp(22px,3vw,28px);line-height:1.35;color:#2e1211;text-wrap:pretty}
+.lead{font-weight:500;font-size:15px;line-height:1.65;color:#3a2624;max-width:440px;text-wrap:pretty}
+.entries{display:flex;flex-direction:column;gap:clamp(30px,5vh,44px)}
+.entry{display:flex;flex-direction:column;gap:14px;padding-bottom:clamp(26px,4vh,38px);border-bottom:1px solid #f2e8e6}
+.entry:last-child{border-bottom:0;padding-bottom:0}
+.emeta{font-weight:700;font-size:11px;letter-spacing:.08em;color:#b62a22}
+.etitle{font-weight:800;font-size:19px;line-height:1.4;color:#2e1211;text-wrap:pretty}
+.lines{display:flex;flex-direction:column;gap:7px;padding-left:16px;border-left:2px solid #f0d8d4}
+.line{display:flex;gap:10px}
+.lnum{flex:none;font-weight:700;font-size:11px;color:#7a6360;padding-top:3px}
+.lval{font-weight:500;font-size:15px;line-height:1.65;color:#2e1211;text-wrap:pretty}
+.letter{display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:20px;background:#fdf2f0}
+.lname{font-weight:700;font-size:13px;color:#b62a22}
+.lbody{font-weight:500;font-size:15px;line-height:1.85;color:#3a2624;text-wrap:pretty}
+.proud{display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:20px;background:#b62a22}
+.ptop{display:flex;flex-direction:column;gap:3px}
+.plabel{font-weight:700;font-size:12px;letter-spacing:.1em;color:#fffdfb}
+.ptitle{font-weight:800;font-size:19px;color:#fffdfb}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.tile{display:flex;flex-direction:column;gap:3px;padding:14px 12px;border-radius:14px;background:#ffffff1f}
+.tl{font-weight:600;font-size:11px;color:#fffdfb}
+.tv{display:flex;align-items:baseline;gap:3px;font-weight:800;font-size:20px;color:#fffdfb}
+.tu{font-weight:600;font-size:11px}
+.cta{display:flex;align-items:center;justify-content:center;height:54px;border-radius:999px;background:#b62a22;color:#fffdfb;font-weight:700;font-size:15px;text-decoration:none}
+.cta:active{transform:translateY(1px);background:#a3241d}
+.note{font-weight:500;font-size:12px;line-height:1.6;color:#7a6360;text-align:center}
+.state{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:80px 0}
+.state h2{font-weight:800;font-size:19px;color:#2e1211;margin:0}
+.state p{font-weight:500;font-size:14px;color:#7a6360;margin:0 0 14px;line-height:1.7}
+@media(max-width:520px){.grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
-<div id="root"><div class="state"><p>불러오는 중이에요…</p></div></div>
+<div class="page"><div class="col" id="root"><div class="state"><p>불러오는 중이에요…</p></div></div></div>
 <script>
 (function () {
   var esc = function (s) { return String(s == null ? "" : s).replace(/[<>&"]/g, function (c) { return { "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]; }); };
+  var root = document.getElementById("root");
   var slug = (location.pathname.match(/\/s\/([a-z0-9]+)/i) || [])[1]
           || new URLSearchParams(location.search).get("slug") || "";
 
   function state(title, msg) {
-    document.getElementById("root").innerHTML =
-      '<div class="state"><h2>' + esc(title) + '</h2><p>' + esc(msg) + '</p>' +
-      '<a class="cta" href="/">PLove 시작하기</a></div>';
+    root.innerHTML = '<div class="state"><h2>' + esc(title) + '</h2><p>' + esc(msg) + '</p>' +
+      '<a class="cta" style="width:100%;max-width:280px" href="/">나도 PLove 시작하기</a></div>';
   }
   if (!slug) return state("링크가 올바르지 않아요", "주소를 다시 확인해주세요.");
 
@@ -64,38 +77,63 @@ body{margin:0;background:#fffdfb;color:#3a2624;font-family:'Noto Sans KR',sans-s
         if (r.s === 403) return state("비공개 회고예요", "글쓴이가 공개하지 않기로 했어요.");
         return state("회고를 찾지 못했어요", "주소가 바뀌었거나 삭제됐을 수 있어요.");
       }
-      var p = r.d.share.payload || {};
-      var e = p.entries || [];
-      var t = p.totals || {};
-      var html = '<div class="top"><div class="brand">PLove</div><div class="tag">사랑에도 연습이 필요한 거 아세요?</div>' +
-        '<h1>' + esc(p.title || (p.subject || "") + " 회고") + '</h1>' +
-        '<div class="sub">' + esc(p.ownerName || "") + (p.ownerName ? "님이 " : "") + '남긴 기록 ' + e.length + '개</div></div>' +
-        '<div class="wrap">' +
-        '<div class="stats">' +
-          '<div class="stat"><b>' + (t.missions != null ? t.missions : e.length) + '</b><span>완료한 미션</span></div>' +
-          '<div class="stat"><b>' + (t.xp || 0) + '</b><span>쌓은 경험치</span></div>' +
-          '<div class="stat"><b>' + (t.chars || 0) + '</b><span>남긴 글자</span></div>' +
+      var p = r.d.share.payload || {}, e = p.entries || [], t = p.totals || {};
+      var who = p.ownerName ? esc(p.ownerName) + "님이" : "이 사람이";
+      var h = "";
+
+      h += '<div class="hd">' +
+      (p.npcFile ? '<div class="npc" style="background-image:url(\'/assets/' + esc(p.npcFile) + '\')"></div>' : "") +
+        '<span class="eyebrow">' + esc(p.subject || "") + ' · 마지막 시간</span>' +
+        '<span class="head">' + esc(p.npcName || "") + '와 함께한 ' + esc(p.subject || "") + '을 마칩니다</span>' +
+        '<span class="lead">' + who + ' 여기까지 ' + e.length + '개의 미션을 직접 해냈어요. 무엇이 남았는지 함께 볼까요?</span>' +
         '</div>';
 
-      if (!e.length) html += '<div class="card"><h2>아직 기록이 없어요</h2></div>';
+      h += '<div class="entries">';
+      if (!e.length) h += '<span class="lead" style="color:#7a6360">아직 기록이 없어요.</span>';
       e.forEach(function (x) {
-        html += '<div class="card"><div class="meta">' + esc(x.stage || "") + ' · 미션 ' + esc(x.num || "") + '</div>' +
-                '<h2>' + esc(x.title || "") + '</h2>';
-        (x.lines || []).forEach(function (l, i) {
-          if (!l || !l.value) return;
-          html += '<div class="line"><i>' + String(i + 1).padStart(2, "0") + '</i><div>' + esc(l.value) + '</div></div>';
-        });
-        if (x.free) html += '<div class="line"><i></i><div>' + esc(x.free) + '</div></div>';
-        html += '</div>';
+        h += '<div class="entry"><div style="display:flex;flex-direction:column;gap:4px">' +
+             '<span class="emeta">' + esc(x.stage || "") + ' · 미션 ' + esc(x.num || "") + '</span>' +
+             '<span class="etitle">' + esc(x.title || "") + '</span></div>';
+        var ls = (x.lines || []).filter(function (l) { return l && l.value; });
+        if (ls.length) {
+          h += '<div class="lines">';
+          ls.forEach(function (l, i) {
+            h += '<div class="line"><span class="lnum">' + String(i + 1).padStart(2, "0") + '</span>' +
+                 '<span class="lval">' + esc(l.value) + '</span></div>';
+          });
+          h += '</div>';
+        }
+        if (x.free) h += '<div class="lines"><span class="lval">' + esc(x.free) + '</span></div>';
+        h += '</div>';
       });
+      h += '</div>';
 
       if (p.letter) {
-        html += '<div class="letter"><div class="who">' + esc(p.npcName || "") + '의 편지</div>' + esc(p.letter) + '</div>';
+        h += '<div class="letter"><span class="lname">' + esc(p.npcName || "") + '의 편지</span>' +
+             '<span class="lbody">' + esc(p.letter) + '</span></div>';
       }
-      html += '<div class="note">이 회고는 글쓴이가 공유한 것이에요. 사진은 공유되지 않아요.</div>' +
-              '<a class="cta" href="/">나도 연습 시작하기</a></div>';
-      document.getElementById("root").innerHTML = html;
-      if (p.title) document.title = p.title + " · PLove";
+
+      var tiles = [
+        { l: "완료한 미션", v: t.missions != null ? t.missions : e.length, u: "개" },
+        { l: "쌓은 경험치", v: t.xp || 0, u: "XP" },
+        { l: "모은 보석", v: t.gems || 0, u: "개" },
+        { l: "남긴 기록", v: t.chars || 0, u: "자" },
+        { l: "연속 참여", v: t.streak || 0, u: "일" },
+        { l: "나눈 대화", v: t.chats || 0, u: "번" }
+      ];
+      h += '<div class="proud"><div class="ptop"><span class="plabel">여기까지 해낸 것</span>' +
+           '<span class="ptitle">지금까지 이만큼 쌓였어요</span></div><div class="grid">' +
+           tiles.map(function (s) {
+             return '<div class="tile"><span class="tl">' + s.l + '</span>' +
+                    '<span class="tv">' + s.v + '<span class="tu">' + s.u + '</span></span></div>';
+           }).join("") + '</div></div>';
+
+      h += '<div style="display:flex;flex-direction:column;gap:12px">' +
+           '<a class="cta" href="/">나도 PLove 시작하기</a>' +
+           '<span class="note">이 회고는 글쓴이가 공유한 것이에요. 사진은 공유되지 않아요.</span></div>';
+
+      root.innerHTML = h;
+      document.title = (p.subject ? p.subject + " 회고" : "PLove 회고") + " · PLove";
     })
     .catch(function () { state("열지 못했어요", "잠시 뒤 다시 시도해주세요."); });
 })();
