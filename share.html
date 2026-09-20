@@ -142,14 +142,7 @@ body{margin:0;background:#fffdfb;color:#3a2624;font-family:'Noto Sans KR',sans-s
           h += '</div>';
         }
         if (x.free) h += '<div class="lines"><span class="lval">' + esc(x.free) + '</span></div>';
-        /* 회고 화면에는 미션마다 나눈 대화와 NPC 한 마디가 들어간다 */
-        var ch = (x.chat || []).filter(function (c) { return c && c.text; });
-        if (ch.length) {
-          h += '<div class="chatbox">' + ch.map(function (c) {
-            var me = c.who === "me";
-            return '<div class="crow' + (me ? ' me' : '') + '"><span class="bub' + (me ? ' me' : '') + '">' + esc(c.text) + '</span></div>';
-          }).join("") + '</div>';
-        }
+        /* 대화 전문은 싣지 않는다 — 리포트는 기록과 NPC 한 마디로 읽힌다 */
         if (x.comment) {
           h += '<div class="cmt">' +
                (p.npcFile ? '<div class="cmtnpc" style="background-image:url(\'/assets/' + esc(p.npcFile) + '\')"></div>' : '') +

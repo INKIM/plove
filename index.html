@@ -2871,7 +2871,7 @@ class Component extends DCLogic {
         system: "당신은 PLOVE의 코치 '" + np.name + "'입니다. 실천 미션의 수행 깊이를 평가합니다. 한국어 존댓말.",
         messages: [{
           role: "user",
-          content: "미션: " + this.famFill(m.t) + "\n완료 조건: " + m.d + "\n사용자가 남긴 인증과 기록:\n" + this.recordText() + "\n\n회고 대화:\n" + log.map(c => (c.who === "npc" ? np.name : "사용자") + ": " + c.text).join("\n") + "\n\n사전 판정: 인증 " + ph.photoScore + "/40, 기록 " + recordScore + "/30, 대화 " + chatScore + "/30" + (ph.mismatch.length ? "\n인증에서 빈 부분: " + ph.mismatch.map(x => x.label + "(" + x.why + ")").join(", ") : "") + "\n\n이 사람이 미션을 얼마나 진심으로 수행했는지 판단하세요.\n첫 줄에 'SCORE: 숫자'(0~100)만 쓰고, 다음 줄부터 2~3문장으로 따뜻하게 코멘트를 쓰세요. 점수나 숫자는 코멘트에 쓰지 마세요. 부족한 점은 다음 연습 제안으로 바꿔 말하세요."
+          content: "미션: " + this.famFill(m.t) + "\n완료 조건: " + m.d + "\n사용자가 남긴 인증과 기록:\n" + this.recordText() + "\n\n회고 대화:\n" + log.map(c => (c.who === "npc" ? np.name : "사용자") + ": " + c.text).join("\n") + "\n\n사전 판정: 인증 " + ph.photoScore + "/40, 기록 " + recordScore + "/30, 대화 " + chatScore + "/30" + (ph.mismatch.length ? "\n인증에서 빈 부분: " + ph.mismatch.map(x => x.label + "(" + x.why + ")").join(", ") : "") + "\n\n이 사람이 미션을 얼마나 진심으로 수행했는지 판단하세요.\n첫 줄에 'SCORE: 숫자'(0~100)만 쓰고, 다음 줄부터 2~3문장으로 코멘트를 쓰세요.\n코멘트 쓰는 법: 나눈 대화를 그대로 인용하거나 되짚지 마세요. 이 사람이 어떤 미션을 했고 그 순간 어떤 마음이었을지 헤아려, 그 시간을 돌아보며 위로가 되는 말을 건네세요. 점수나 숫자는 쓰지 마세요. 부족한 점은 다음 연습 제안으로 바꿔 말하세요."
         }]
       });
       const txt = (t || "").trim();

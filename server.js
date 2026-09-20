@@ -92,7 +92,7 @@
           var proofs = (r.photos || []).filter(function (p2) { return p2 && p2.url && p2.url.indexOf("blob:") !== 0; })
             .map(function (p2) { return { url: p2.url, memo: p2.memo || "", label: p2.label || "", kind: p2.kind || "", mime: p2.mime || "" }; });
           entries.push({ num: r.num, title: r.title, stage: r.stage, lines: lines, free: r.free || "",
-                         photos: proofs, chat: r.chat || [], comment: r.comment || "" });
+                         photos: proofs, comment: r.comment || "" });
         });
         var np = L.npc();
         post("/api/share", {
