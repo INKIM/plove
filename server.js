@@ -61,6 +61,15 @@
   }
   function myEmail(L) { return (L.state.gEmail || "").trim(); }
 
+  /* 초대 토큰은 화면이 뜨기도 전에 챙긴다.
+     boot() 은 로그인 전이면 먼저 돌아나가서 저장할 기회가 없고,
+     구글 로그인은 origin+pathname 으로 돌아와 ?invite= 를 떨군다.
+     여기서 안 챙기면 로그인 안 한 사람의 초대는 그대로 사라진다. */
+  try {
+    var tk0 = new URLSearchParams(location.search).get("invite");
+    if (tk0) sessionStorage.setItem("plove.invite", tk0);
+  } catch (e) {}
+
   (async function () {
     var L = await waitLogic();
     if (!L) return;
