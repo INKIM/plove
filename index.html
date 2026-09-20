@@ -1485,9 +1485,9 @@ Google로 계속하기
 </div>
 </div>
 
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+<div style="{{ profStatGrid }}">
 <sc-for list="{{ profStats }}" as="s" hint-placeholder-count="3">
-<div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px 10px;border:1px solid #ece4e2;border-radius:16px">
+<div style="{{ s.cardStyle }}">
 <div style="{{ s.icoStyle }}"></div>
 <span style="font-weight:800;font-size:18px;color:#2e1211">{{ s.value }}</span>
 <span style="font-weight:600;font-size:11px;color:#7a6360">{{ s.label }}</span>
@@ -1517,10 +1517,10 @@ Google로 계속하기
 <span style="font-weight:700;font-size:14px;color:#2e1211">보유 아이템</span>
 <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
 <sc-for list="{{ profItems }}" as="it" hint-placeholder-count="3">
-<div style="display:flex;align-items:center;gap:11px;padding:13px 15px;border:1px solid #ece4e2;border-radius:14px">
+<div style="{{ it.cardStyle }}">
 <span style="flex:none;width:34px;height:34px;border-radius:11px;background:#f6ecea;display:flex;align-items:center;justify-content:center"><div style="{{ it.icoStyle }}"></div></span>
-<span style="flex:1;min-width:0;font-weight:600;font-size:13px;color:#2e1211">{{ it.name }}</span>
-<span style="flex:none;font-weight:700;font-size:13px;color:#b62a22">{{ it.label }}</span>
+<span style="{{ it.nameStyle }}">{{ it.name }}</span>
+<span style="{{ it.countStyle }}">{{ it.label }}</span>
 </div>
 </sc-for>
 </div>
@@ -3490,11 +3490,15 @@ class Component extends DCLogic {
       profName: (this.state.name || "").trim() || "이름 없음",
       profSub: (this.state.plus ? ((this.state.couplePaid ? "파트너" : "플러스") + " · 매일 무제한 · ") : "베이직 · 하루 1미션 · ") + this.totalLv() + "개 미션 완료",
       profLv: "LV." + this.totalLv(),
+      profStatGrid: { display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: this.state.narrow ? "8px" : "10px" },
       profStats: [
         { label: "연속", value: (this.state.streak || 0) + "일", ic: "nav-streak" },
         { label: "경험치", value: String(this.state.totalXp || 0), ic: "ui-xp" },
         { label: "보석", value: String(this.state.totalGems || 0), ic: "ui-gem" }
-      ].map(s => ({ ...s, icoStyle: this.ico(s.ic, 24) })),
+      ].map(s => ({ ...s, icoStyle: this.ico(s.ic, this.state.narrow ? 20 : 24),
+        cardStyle: { display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
+                     padding: this.state.narrow ? "12px 6px" : "16px 10px",
+                     border: "1px solid #ece4e2", borderRadius: "16px" } })),
       profCourses: this.COURSES.map(c => {
         const started = !!this.lvOf(c.key), cc = this.compOf(c.key), total = ((window.PLOVE_MISSIONS || {})[c.key] || []).length || 30;
         const npc = this.NPC[c.key] || {};
@@ -3511,7 +3515,16 @@ class Component extends DCLogic {
         { name: "미션 얼리기", ic: "ui-freeze", count: this.state.freezes || 0 },
         { name: "미션 미리하기", ic: "ui-early", count: this.state.extraToday || 0 },
         { name: "미션 다시하기", ic: "ui-retry", count: this.state.retryCredits || 0 }
-      ].map(it => ({ ...it, label: it.count + "개", icoStyle: this.ico(it.ic, 24) })),
+      ].map(it => ({ ...it, label: it.count + "개", icoStyle: this.ico(it.ic, 24),
+        // 좁은 화면에서 가로로 두면 폭이 118px 이라 이름이 한 자씩 끊긴다
+        cardStyle: { display: "flex", flexDirection: this.state.narrow ? "column" : "row",
+                     alignItems: "center", gap: this.state.narrow ? "6px" : "11px",
+                     padding: this.state.narrow ? "12px 6px" : "13px 15px",
+                     border: "1px solid #ece4e2", borderRadius: "14px", textAlign: "center" },
+        nameStyle: this.state.narrow
+          ? { fontWeight: 600, fontSize: "12px", lineHeight: 1.3, color: "#2e1211", wordBreak: "keep-all" }
+          : { flex: 1, minWidth: 0, fontWeight: 600, fontSize: "13px", color: "#2e1211" },
+        countStyle: { flex: "none", fontWeight: 700, fontSize: "13px", color: "#b62a22" } })),
       q1text: "안녕하세요, 저는 " + np.name + "예요!",
       q5text: "처음 듣는 " + (np.subject || cName) + "이네요, 뭐부터 시작할까요?",
       npc44: this.npcBox(np, 44),
