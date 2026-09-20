@@ -333,11 +333,36 @@
       await loadPartner();
     }
 
+    /* ── 퍼널 계측 ────────────────────────────────────────────
+       방문·로그인·미션 완수 셋만 쌓는다. 구독·파트너·선물은 이미
+       progress·gifts 에 있어 다시 쌓지 않는다.
+       화면 코드는 건드리지 않는다 — setState 를 지나는 값으로만 안다. */
+    var ANON = "plove.anon";
+    function anonId() {
+      try {
+        var v = localStorage.getItem(ANON);
+        if (!v) { v = "a" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); localStorage.setItem(ANON, v); }
+        return v;
+      } catch (e) { return "a-nostore"; }
+    }
+    var sent = {};
+    function track(step, props, emailNow) {
+      // 한 번 켠 동안 같은 단계를 거듭 보내지 않는다(사람 수로 세므로 중복은 무의미하다)
+      if (sent[step]) return;
+      sent[step] = 1;
+      post("/api/event", { step: step, anonId: anonId(), email: emailNow || myEmail(L), props: props || null })
+        .catch(function () {});
+    }
+    track("visit");
+
     var origSet = L.setState.bind(L);
     L.setState = function (patch, cb) {
       var r = origSet(patch, cb);
       if (patch && Object.keys(patch).some(function (k) { return KEEP.indexOf(k) >= 0; })) pushProgress();
-      if (patch && patch.gEmail) setTimeout(boot, 300);
+      // gEmail 은 로그아웃 때 빈 값으로도 지나간다 — 값이 있을 때만 로그인으로 센다
+      if (patch && patch.gEmail) { track("signin", null, patch.gEmail); setTimeout(boot, 300); }
+      // 채점이 끝나고 완료 수가 올라간 순간이 '미션 1개 완수'다
+      if (patch && patch.grading === false && patch.completedMap) track("mission_done");
       return r;
     };
     setTimeout(boot, 2500);
