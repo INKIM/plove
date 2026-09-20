@@ -59,6 +59,10 @@
       if (sc && sc !== "start" && sc !== "signin") return;
       // 메일 링크로 온 사람은 로그인 화면에 둔다 — 토큰을 받는 것이 먼저다
       if (window.__ploveFromLink) return;
+      // 방금 구글에서 돌아온 경우에만 안으로 보낸다.
+      // 남아 있던 세션으로 그냥 들어온 사람은 로그인 화면에서 시작한다 —
+      // 안 그러면 주소로 들어올 때마다 남의 진행 화면이 먼저 보인다.
+      if (!justSignedIn) return;
       advanced = true;
       // 이 기기에 이미 진행이 있으면 기다릴 이유가 없다
       if (Object.keys(L.state.levels || {}).length) { L.setState({ screen: "home" }); return; }
@@ -107,7 +111,11 @@
       var v = orig();
       v.googleStart = function () {
         L.sfx && L.sfx("start");
-        if (L.state.signedIn) { L.setState({ screen: "pick" }); return; }
+        if (L.state.signedIn) {
+          // 이미 로그인돼 있으면 곧장 안으로 — 진행이 있으면 학습, 없으면 과목 선택
+          L.setState({ screen: Object.keys(L.state.levels || {}).length ? "home" : "pick" });
+          return;
+        }
         signIn();
       };
       v.googleSignIn = function () {
@@ -128,9 +136,14 @@
       return v;
     };
 
+    var justSignedIn = false;
     var got = await sb.auth.getSession();
-    apply(got && got.data && got.data.session);
-    sb.auth.onAuthStateChange(function (_e, s) { apply(s); });
+    apply(got && got.data && got.data.session);          // 남은 세션 — 화면은 안 옮긴다
+    sb.auth.onAuthStateChange(function (e, s) {
+      // SIGNED_IN 은 구글에서 막 돌아왔을 때만 온다(복원은 INITIAL_SESSION)
+      if (e === "SIGNED_IN") justSignedIn = true;
+      apply(s);
+    });
 
     window.__ploveAuth = { sb: sb, signIn: signIn, signOut: function () { return sb.auth.signOut(); } };
     L.forceUpdate && L.forceUpdate();
