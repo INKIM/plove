@@ -1,5 +1,5 @@
 // 파트너 — 초대·수락·조회·해제를 한 라우트에서 action 으로 가른다.
-import { db, hasDb, readBody, token, sendMail, shell, url, isEmail } from "./_lib.js";
+import { db, hasDb, readBody, token, sendMail, shell, url, isEmail, FOOT_LINK } from "./_lib.js";
 
 const pair = (a, b) => [a.toLowerCase(), b.toLowerCase()].sort();
 
@@ -49,7 +49,7 @@ export default async function handler(req, res) {
           `${b.myName || me}님이 파트너 구독권을 선물했어요`,
           `사랑에도 기술이 있습니다. PLove는 Practice Love의 합성어로, 알고 있지만 표현하지 못했던 마음을 AI와 함께 매일 하나씩 실천하는 서비스입니다. 지금 구독권 선물을 수락하고, 서비스를 시작해보세요!` +
           `${list ? `<div style="margin-top:16px">파트너 구독권을 수락하면, 아래의 클래스는 서로 기록을 보면서 함께 학습할 수 있어요. 물론, 나중에 설정은 언제든지 변경이 가능해요.${list}</div>` : ""}`,
-          { href: url(`/?invite=${tk}`), label: "초대 수락하기" }
+          { href: url(`/?invite=${tk}`), label: "초대 수락하기" }, FOOT_LINK
         ),
       });
       return res.status(200).json({ ok: true, status: "pending" });
@@ -88,9 +88,21 @@ export default async function handler(req, res) {
       await db(`partners?id=eq.${p.id}`, { method: "PATCH", prefer: "return=minimal", body: {
         b_email: me, status: "active", accepted_at: new Date().toISOString(), open_courses: open,
       }});
+      // 이름을 쓴다 — 이메일 주소를 그대로 보여주면 메일 클라이언트가 링크로 바꿔 읽기 나쁘다
+      let who = String(b.myName || "").trim();
+      if (!who) {
+        try {
+          const pr = await db(`progress?email=eq.${encodeURIComponent(me)}&select=name`);
+          who = (pr[0] && pr[0].name) || "";
+        } catch (e) {}
+      }
+      if (!who) who = me.split("@")[0];
       try {
-        await sendMail({ to: p.a_email, subject: `${me}님이 초대를 수락했어요`,
-          html: shell("이제 함께 기록을 볼 수 있어요", `${me}님이 PLove 초대를 수락했어요.`, { href: url("/"), label: "PLove 열기" }) });
+        await sendMail({ to: p.a_email, subject: `${who}님이 초대를 수락했어요`,
+          html: shell("이제 함께 기록을 볼 수 있어요",
+            `${who}님이 초대를 수락했어요. 아래 클래스는 서로 기록을 보면서 함께 학습할 수 있어요.` +
+            (open.length ? `<ul style="margin:12px 0 0;padding-left:18px">${open.map((c) => `<li>${({self:"마음학",lover:"연애학",family:"가족학",friend:"우정학",coworker:"협업학",pet:"교감학"})[c] || c}</li>`).join("")}</ul>` : ""),
+            { href: url("/"), label: "PLove 열기" }) });
       } catch (e) { console.warn("[partner] 수락 알림 실패", e.message); }
       return res.status(200).json({ ok: true, status: "active", openCourses: open, partnerEmail: p.a_email });
     }

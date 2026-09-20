@@ -60,7 +60,9 @@ const BASE = process.env.PUBLIC_BASE_URL || "https://plove-xi.vercel.app";
 export const url = (p) => BASE.replace(/\/$/, "") + p;
 
 /* 메일 겉모양 — 이미지는 절대 URL 이라야 메일에서 뜬다 */
-export function shell(title, bodyHtml, cta) {
+/* foot 는 부르는 쪽이 정한다 — 만료되는 링크가 없는 메일(수락 알림 등)에
+   "7일 뒤에 닫혀요"가 붙으면 사실이 아닌 말이 나간다. */
+export function shell(title, bodyHtml, cta, foot) {
   return `<div style="margin:0;padding:32px 16px;background:#fffdfb;font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;color:#3a2624">
   <div style="max-width:520px;margin:0 auto;background:#fff;border:1px solid #ece4e2;border-radius:20px;overflow:hidden">
     <div style="background:#b62a22;padding:22px 24px">
@@ -71,11 +73,13 @@ export function shell(title, bodyHtml, cta) {
       <div style="font-weight:800;font-size:17px;color:#2e1211;margin-bottom:12px">${title}</div>
       <div style="font-size:14px;line-height:1.7">${bodyHtml}</div>
       ${cta ? `<div style="margin-top:22px"><a href="${cta.href}" style="display:inline-block;padding:13px 26px;border-radius:999px;background:#b62a22;color:#fffdfb;font-weight:700;font-size:14px;text-decoration:none">${cta.label}</a></div>` : ""}
-      <div style="margin-top:22px;font-size:12px;color:#7a6360;line-height:1.6">이 링크는 7일 뒤에 닫혀요.<br>원하지 않으시면 이 메일을 무시하면 됩니다.</div>
+      ${foot ? `<div style="margin-top:22px;font-size:12px;color:#7a6360;line-height:1.6">${foot}</div>` : ""}
     </div>
   </div>
 </div>`;
 }
+
+export const FOOT_LINK = "이 링크는 7일 뒤에 닫혀요.<br>원하지 않으시면 이 메일을 무시하면 됩니다.";
 
 export function readBody(req) {
   let b = req.body;

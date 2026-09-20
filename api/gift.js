@@ -1,5 +1,5 @@
 // 구독권 선물 — 토큰을 만들어 저장하고 받는 사람에게 메일을 보낸다.
-import { db, hasDb, readBody, token, sendMail, shell, url, isEmail } from "./_lib.js";
+import { db, hasDb, readBody, token, sendMail, shell, url, isEmail, FOOT_LINK } from "./_lib.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "method" });
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
       html: shell(
         `${name}님이 한 달 구독권을 보냈어요`,
         `사랑에도 기술이 있습니다. PLove는 Practice Love의 합성어로, 알고 있지만 표현하지 못했던 마음을 AI와 함께 매일 하나씩 실천하는 서비스입니다. 지금 구독권 선물을 수락하고, 서비스를 시작해보세요!`,
-        { href: url(`/?gift=${tk}`), label: "선물 받기" }
+        { href: url(`/?gift=${tk}`), label: "선물 받기" }, FOOT_LINK
       ),
     });
   } catch (e) {
