@@ -4,6 +4,15 @@ import { db, hasDb, sendMail, shell } from "../_lib.js";
 
 const TO = process.env.INQUIRY_TO || process.env.GMAIL_USER;
 
+/* 남용 문지기가 남긴 호출 기록은 하루면 쓸모가 없다 — 쌓이지 않게 치운다.
+   차단 줄(api:block)은 24시간 막는 근거라 남긴다. */
+async function sweepHits() {
+  try {
+    const cut = new Date(Date.now() - 24 * 3600000).toISOString();
+    await db(`events?step=like.api:*&step=neq.api:block&at=lt.${cut}`, { method: "DELETE", prefer: "return=minimal" });
+  } catch (e) { console.warn("[sweep] 실패", e.message); }
+}
+
 export default async function handler(req, res) {
   // Vercel Cron 은 Authorization: Bearer <CRON_SECRET> 으로 온다. 손으로 돌릴 때는 ?secret=
   const secret = process.env.CRON_SECRET;
@@ -16,6 +25,7 @@ export default async function handler(req, res) {
 
   try {
     const rows = await db("inquiries?mailed_at=is.null&select=*&order=created_at.asc&limit=200");
+    if (!rows.length) { await sweepHits(); }
     if (!rows.length) return res.status(200).json({ ok: true, sent: 0 });
 
     const esc = (s) => String(s || "").replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
@@ -35,6 +45,7 @@ export default async function handler(req, res) {
 
     const ids = rows.map((r) => r.id).join(",");
     await db(`inquiries?id=in.(${ids})`, { method: "PATCH", prefer: "return=minimal", body: { mailed_at: new Date().toISOString() } });
+    await sweepHits();
     return res.status(200).json({ ok: true, sent: rows.length });
   } catch (e) {
     console.error("[inquiry-digest]", e.message);

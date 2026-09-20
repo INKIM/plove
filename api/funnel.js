@@ -21,7 +21,7 @@ export default async function handler(req, res) {
 
   try {
     let ev = [];
-    try { ev = await db("events?select=anon_id,email,step&limit=100000"); }
+    try { ev = await db("events?step=in.(visit,signin,mission_done)&select=anon_id,email,step&limit=100000"); }
     catch (e) { return res.status(200).json({ ok: false, error: "events_table_missing", hint: "supabase/events.sql 을 SQL Editor 에서 한 번 실행하세요" }); }
 
     const prog = await db("progress?select=email,data&limit=100000");
