@@ -2900,6 +2900,14 @@ class Component extends DCLogic {
     const mine = log.filter(c => c.who === "me");
     const chars = mine.reduce((s, c) => s + c.text.length, 0);
     const need = this.turnsFor(m);
+    // 채점 화면을 먼저 연다 — 사진 판정이 먼저 돌면 그동안 대화 화면에
+    // 아무 일도 안 일어나 누른 게 먹혔는지 알 수 없다.
+    this.gradeStart = Date.now();
+    clearInterval(this.gradeT);
+    this.gradeT = setInterval(() => {
+      this.setState({ gradeStep: Math.min(2, (this.state.gradeStep || 0) + 1) });
+    }, 2200);
+    this.setState({ screen: "mresult", gradeStep: 0, mXp: 0, mGems: 0, mComment: "", grading: true, gradeFailed: false, mBreak: null, mMismatch: [] });
     const ph = await this.analyzePhotos();
     const lvArr = this.state.lineVals || [];
     const filled = (m.lh || []).filter((h, li) => (lvArr[li] || "").trim().length >= 2).length;
@@ -2910,12 +2918,6 @@ class Component extends DCLogic {
     let score = Math.max(0, Math.min(100, ph.photoScore + recordScore + chatScore));
     let comment = "";
     let graded = false;
-    this.gradeStart = Date.now();
-    clearInterval(this.gradeT);
-    this.gradeT = setInterval(() => {
-      this.setState({ gradeStep: Math.min(2, (this.state.gradeStep || 0) + 1) });
-    }, 2200);
-    this.setState({ screen: "mresult", gradeStep: 0, mXp: 0, mGems: 0, mComment: "", grading: true, gradeFailed: false, mBreak: { photo: ph.photoScore, record: recordScore, chat: chatScore }, mMismatch: ph.mismatch });
     try {
       const t = await window.claude.complete({
         max_tokens: 400,
@@ -2964,6 +2966,7 @@ class Component extends DCLogic {
       streak: st.streak, lastDay: st.lastDay, freezes: st.freezes, extraToday: st.extraToday != null ? st.extraToday : this.state.extraToday,
       doneDays: st.doneDays || this.state.doneDays, bestStreak: st.bestStreak || this.state.bestStreak,
       talkBonus: 0, gradeFailed: !graded, popPending: firstToday,
+      mBreak: { photo: ph.photoScore, record: recordScore, chat: chatScore }, mMismatch: ph.mismatch,
       mXp: xp, mGems: gems, mComment: comment, grading: false,
       completedMap: comp,
       totalXp: (this.state.totalXp || 0) + xp + (st.xpBonus || 0),
