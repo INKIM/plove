@@ -91,7 +91,8 @@
              kind 는 지금 미리 실어 둔다(공유 페이지가 사진·영상·음성을 가려 그린다). */
           var proofs = (r.photos || []).filter(function (p2) { return p2 && p2.url && p2.url.indexOf("blob:") !== 0; })
             .map(function (p2) { return { url: p2.url, memo: p2.memo || "", label: p2.label || "", kind: p2.kind || "", mime: p2.mime || "" }; });
-          entries.push({ num: r.num, title: r.title, stage: r.stage, lines: lines, free: r.free || "", photos: proofs });
+          entries.push({ num: r.num, title: r.title, stage: r.stage, lines: lines, free: r.free || "",
+                         photos: proofs, chat: r.chat || [], comment: r.comment || "" });
         });
         var np = L.npc();
         post("/api/share", {

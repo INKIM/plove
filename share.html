@@ -41,6 +41,14 @@ body{margin:0;background:#fffdfb;color:#3a2624;font-family:'Noto Sans KR',sans-s
 .line{display:flex;gap:10px}
 .lnum{flex:none;font-weight:700;font-size:11px;color:#7a6360;padding-top:3px}
 .lval{font-weight:500;font-size:15px;line-height:1.65;color:#2e1211;text-wrap:pretty}
+.chatbox{display:flex;flex-direction:column;gap:7px;padding:14px;border-radius:16px;background:#fdf8f7}
+.crow{display:flex}
+.crow.me{justify-content:flex-end}
+.bub{max-width:80%;padding:9px 13px;border-radius:14px;font-weight:500;font-size:13px;line-height:1.6;text-wrap:pretty;background:#f6ecea;color:#2e1211}
+.bub.me{background:#b62a22;color:#fffdfb}
+.cmt{display:flex;align-items:flex-start;gap:10px}
+.cmtnpc{flex:none;width:44px;height:44px;background-position:center;background-size:contain;background-repeat:no-repeat}
+.cmttx{flex:1;min-width:0;font-weight:500;font-size:14px;line-height:1.75;color:#3a2624;text-wrap:pretty;padding-top:4px}
 .letter{display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:20px;background:#fdf2f0}
 .lname{font-weight:700;font-size:13px;color:#b62a22}
 .lbody{font-weight:500;font-size:15px;line-height:1.85;color:#3a2624;text-wrap:pretty}
@@ -134,6 +142,19 @@ body{margin:0;background:#fffdfb;color:#3a2624;font-family:'Noto Sans KR',sans-s
           h += '</div>';
         }
         if (x.free) h += '<div class="lines"><span class="lval">' + esc(x.free) + '</span></div>';
+        /* 회고 화면에는 미션마다 나눈 대화와 NPC 한 마디가 들어간다 */
+        var ch = (x.chat || []).filter(function (c) { return c && c.text; });
+        if (ch.length) {
+          h += '<div class="chatbox">' + ch.map(function (c) {
+            var me = c.who === "me";
+            return '<div class="crow' + (me ? ' me' : '') + '"><span class="bub' + (me ? ' me' : '') + '">' + esc(c.text) + '</span></div>';
+          }).join("") + '</div>';
+        }
+        if (x.comment) {
+          h += '<div class="cmt">' +
+               (p.npcFile ? '<div class="cmtnpc" style="background-image:url(\'/assets/' + esc(p.npcFile) + '\')"></div>' : '') +
+               '<span class="cmttx">' + esc(x.comment) + '</span></div>';
+        }
         h += '</div>';
       });
       h += '</div>';
