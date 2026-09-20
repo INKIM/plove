@@ -535,7 +535,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onQuiz }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100vh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="{{ quizScreenStyle }}">
 
 <div style="flex:none;padding:20px clamp(20px,5vw,64px) 0">
 <div style="width:100%;max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:12px">
@@ -561,9 +561,9 @@ Google로 계속하기
 </div>
 </div>
 
-<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(24px,5vh,56px) clamp(20px,5vw,64px)">
-<div style="width:100%;max-width:720px;display:flex;flex-direction:column;gap:clamp(20px,4vh,36px)">
-<span style="font-weight:700;font-size:clamp(22px,3vw,32px);line-height:1.35;color:#2e1211;text-wrap:pretty">{{ qText }}</span>
+<div style="{{ quizBodyStyle }}">
+<div style="{{ quizInnerStyle }}">
+<span style="{{ quizQStyle }}">{{ qText }}</span>
 
 <sc-if value="{{ isShort }}" hint-placeholder-val="{{ true }}">
 <div style="position:relative;display:flex;align-items:center">
@@ -574,7 +574,7 @@ Google로 계속하기
 </div>
 </sc-if>
 <sc-if value="{{ isLong }}" hint-placeholder-val="{{ false }}">
-<textarea ref="{{ ansRef }}" value="{{ ans }}" onChange="{{ setAns }}" placeholder="생각을 정리해서 적어보세요" style="width:100%;height:200px;padding:16px;border:2px solid #e3dbd9;outline:0;border-radius:16px;background:transparent;resize:none;font-family:'Noto Sans KR',sans-serif;font-weight:500;font-size:17px;line-height:1.6;color:#2e1211" style-focus="border-color:#b62a22"></textarea>
+<textarea ref="{{ ansRef }}" value="{{ ans }}" onChange="{{ setAns }}" placeholder="생각을 정리해서 적어보세요" style="{{ quizTaStyle }}" style-focus="border-color:#b62a22"></textarea>
 </sc-if>
 </div>
 </div>
@@ -5671,6 +5671,21 @@ class Component extends DCLogic {
       onDone: sc === "done",
       onCount: sc === "count",
       onQuiz: sc === "quiz",
+      // 좁은 화면 — 화면보다 길면 입력할 때마다 브라우저가 스크롤해 흔들린다.
+      // 한 화면에 가두고 스크롤을 없앤다(100vh 는 iOS 에서 보이는 영역보다 크다).
+      quizScreenStyle: this.state.narrow
+        ? { flex: 1, height: "100dvh", maxHeight: "100dvh", overflow: "hidden", background: "#fffdfb", display: "flex", flexDirection: "column" }
+        : { flex: 1, minHeight: "100vh", background: "#fffdfb", display: "flex", flexDirection: "column" },
+      quizBodyStyle: { flex: 1, minHeight: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                       padding: this.state.narrow ? "14px 18px" : "clamp(24px,5vh,56px) clamp(20px,5vw,64px)" },
+      quizInnerStyle: { width: "100%", maxWidth: "720px", display: "flex", flexDirection: "column",
+                        gap: this.state.narrow ? "16px" : "clamp(20px,4vh,36px)" },
+      quizQStyle: { fontWeight: 700, fontSize: this.state.narrow ? "19px" : "clamp(22px,3vw,32px)",
+                    lineHeight: 1.35, color: "#2e1211", textWrap: "pretty" },
+      quizTaStyle: { width: "100%", height: this.state.narrow ? "124px" : "200px", padding: "16px",
+                     border: "2px solid #e3dbd9", outline: 0, borderRadius: "16px", background: "transparent",
+                     resize: "none", fontFamily: "'Noto Sans KR',sans-serif", fontWeight: 500,
+                     fontSize: this.state.narrow ? "15px" : "17px", lineHeight: 1.6, color: "#2e1211" },
       onResult: sc === "result" && !this.state.testGrading,
       onTestGrading: sc === "result" && !!this.state.testGrading,
       testLine: (this.state.testStep || 0) === 0 ? "답을 하나씩 읽고 있어요"
