@@ -2482,13 +2482,15 @@ class Component extends DCLogic {
       setTimeout(() => this.ansRef.current && this.ansRef.current.focus(), 60);
     });
   }
+  // 기획서 ⑦ — 68점↑ LV.3 · 40점↑ LV.2 · 그 외 LV.1. 테스트로는 LV.3 을 넘지 않는다.
+  TEST_MAX_LV = 3;
   finish(answers) {
     const shorts = answers.slice(0, 14);
     const filled = shorts.filter(a => a && a.length > 0);
     const longLen = (answers[14] || "").length;
     const avg = filled.length ? filled.reduce((s, a) => s + a.length, 0) / filled.length : 0;
     const score = (filled.length / 14) * 50 + Math.min(avg / 12, 1) * 20 + Math.min(longLen / 120, 1) * 30;
-    const level = score >= 68 ? 3 : score >= 40 ? 2 : 1;
+    const level = Math.min(this.TEST_MAX_LV, score >= 68 ? 3 : score >= 40 ? 2 : 1);
     this.testStart = Date.now();
     clearInterval(this.testT);
     this.testT = setInterval(() => {
@@ -4581,9 +4583,11 @@ class Component extends DCLogic {
       goStudy: () => {
         const k = this.state.pendingCourse || this.courseKey();
         const levels = Object.assign({}, this.state.levels || {});
-        levels[k] = this.state.level || 1;
+        // 테스트가 정할 수 있는 최대는 LV.3 이다(기획서 ⑦ "테스트로 4 이상 불가")
+        const lv = Math.max(1, Math.min(this.TEST_MAX_LV, this.state.level || 1));
+        levels[k] = lv;
         const comp0 = Object.assign({}, this.state.completedMap || {});
-        comp0[k] = Math.max(comp0[k] || 0, this.state.level || 1);
+        comp0[k] = Math.max(comp0[k] || 0, lv);
         this.setState({
           levels, completedMap: comp0, course: k, selected: k, pendingCourse: null, screen: "home", openM: null, showSheet: false,
           totalXp: (this.state.totalXp || 0) + (this.state.xp || 0),

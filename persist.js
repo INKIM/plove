@@ -59,6 +59,27 @@
   }
 
   function attach(L) {
+    // ?reset=1 — 이 기기에 남은 진행을 지우고 처음부터 시작한다.
+    // 서버를 비워도 이 브라우저 저장본은 안 지워진다(서버가 잠깐 안 될 때
+    // 진행이 날아가지 않게 빈 값으로는 덮어쓰지 않기 때문이다).
+    try {
+      if (new URLSearchParams(location.search).get("reset") === "1") {
+        localStorage.removeItem(KEY);
+        Object.keys(localStorage).filter(function (x) { return x.indexOf("plove.draft.") === 0; })
+          .forEach(function (x) { localStorage.removeItem(x); });
+        history.replaceState(null, "", location.pathname);
+        L.setState({
+          screen: "start", levels: {}, completedMap: {}, records: {},
+          totalXp: 0, totalGems: 0, streak: 0, lastDay: "", name: "", photo: "",
+          plus: false, couplePaid: false, subCancelled: false, subEnds: "", subSince: 0,
+          partner: null, myOpen: [], course: "", selected: "", q3: null, q5: "", step: 1,
+          famMembers: [], petKinds: [], petNames: {}, freezes: 0, extraToday: 0, retryCredits: 0,
+          doneDays: {}, frozenDays: {}, bestStreak: 0
+        });
+        L.toast && L.toast("진행을 초기화했어요");
+      }
+    } catch (e) {}
+
     var saved = null;
     try { saved = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
 
