@@ -14,10 +14,50 @@
       }, 150);
     });
   }
+  /* 공통 로딩 막 — 버튼을 누르고 서버를 기다리는 동안 화면이 멎어 보이지 않게.
+     React 밖의 DOM 이다. 화면 코드를 건드리지 않고 덮는다.
+     250ms 안에 끝나는 요청에는 안 띄운다 — 깜빡임이 기다림보다 거슬린다. */
+  var busyN = 0, busyT = null, busyEl = null;
+  function busyDom() {
+    if (busyEl) return busyEl;
+    var st = document.createElement("style");
+    st.textContent = "@keyframes ploveSpin{to{transform:rotate(360deg)}}";
+    document.head.appendChild(st);
+    busyEl = document.createElement("div");
+    busyEl.setAttribute("aria-live", "polite");
+    busyEl.style.cssText = "position:fixed;inset:0;z-index:99999;display:none;" +
+      "align-items:center;justify-content:center;background:#fffaf8cc;backdrop-filter:blur(2px)";
+    busyEl.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:14px">' +
+      '<div style="width:34px;height:34px;border-radius:50%;border:3px solid #f0d8d4;' +
+      'border-top-color:#b62a22;animation:ploveSpin .8s linear infinite"></div>' +
+      '<div style="font-size:13px;font-weight:700;color:#b62a22">보내는 중이에요</div></div>';
+    document.body.appendChild(busyEl);
+    return busyEl;
+  }
+  function busyOn() {
+    busyN++;
+    if (busyT) return;
+    busyT = setTimeout(function () { busyT = null; if (busyN > 0) busyDom().style.display = "flex"; }, 250);
+  }
+  function busyOff() {
+    busyN = Math.max(0, busyN - 1);
+    if (busyN) return;
+    clearTimeout(busyT); busyT = null;
+    if (busyEl) busyEl.style.display = "none";
+  }
+  /* 막을 띄울 곳 — 사람이 누르고 결과를 기다리는 것만.
+     발화·사진 판정·진행도 저장은 뒤에서 도는 일이라 덮으면 안 된다. */
+  var BUSY_PATHS = ["/api/partner", "/api/gift", "/api/share", "/api/inquiry"];
+
   function post(path, body) {
+    var show = BUSY_PATHS.indexOf(path) >= 0;
+    if (show) busyOn();
     return fetch(path, {
       method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body || {}),
-    }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok && d.ok !== false, status: r.status, d: d }; }); });
+    }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok && d.ok !== false, status: r.status, d: d }; }); })
+      .then(function (r) { if (show) busyOff(); return r; },
+            function (e) { if (show) busyOff(); throw e; });
   }
   function myEmail(L) { return (L.state.gEmail || "").trim(); }
 

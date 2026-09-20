@@ -5335,10 +5335,16 @@ class Component extends DCLogic {
       const img = new Image();
       img.onload = () => { this._iconOk[slug] = true; this.forceUpdate(); };
       img.onerror = () => { this._iconOk[slug] = false; };
-      img.src = "assets/stage-" + slug + ".png";
+      img.src = this.stagePath(slug);
       return "";
     }
-    return this._iconOk[slug] === true ? "assets/stage-" + slug + ".png" : "";
+    return this._iconOk[slug] === true ? this.stagePath(slug) : "";
+  }
+  // 아이콘 주소 — 뒤의 판 번호는 캐시를 깨려고 붙인다.
+  // assets 는 하루를 캐시하므로(vercel.json), 그림을 갈면 이 숫자를 올려야
+  // 전에 들어왔던 사람 화면에서도 새 그림이 나온다.
+  stagePath(slug) {
+    return "assets/stage-" + slug + ".png?v=2";
   }
   // 효과음 — 음원 파일 없이 Web Audio로 합성한다.
   // 실제 음원으로 바꿀 때: assets/sfx/<name>.mp3 를 넣고 tone() 대신 new Audio(...).play() 로 교체.
