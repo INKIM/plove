@@ -29,6 +29,10 @@ body{margin:0;background:#fffdfb;color:#3a2624;font-family:'Noto Sans KR',sans-s
 .entry:last-child{border-bottom:0;padding-bottom:0}
 .emeta{font-weight:700;font-size:11px;letter-spacing:.08em;color:#b62a22}
 .etitle{font-weight:800;font-size:19px;line-height:1.4;color:#2e1211;text-wrap:pretty}
+.photos{display:flex;flex-direction:column;gap:14px}
+.shot{display:flex;flex-direction:column;gap:8px}
+.frame{width:100%;aspect-ratio:3/2;border-radius:16px;background:#f6ecea center/cover no-repeat}
+.memo{font-weight:500;font-size:13px;line-height:1.6;color:#7a6360;text-align:center;text-wrap:pretty}
 .lines{display:flex;flex-direction:column;gap:7px;padding-left:16px;border-left:2px solid #f0d8d4}
 .line{display:flex;gap:10px}
 .lnum{flex:none;font-weight:700;font-size:11px;color:#7a6360;padding-top:3px}
@@ -94,6 +98,13 @@ body{margin:0;background:#fffdfb;color:#3a2624;font-family:'Noto Sans KR',sans-s
         h += '<div class="entry"><div style="display:flex;flex-direction:column;gap:4px">' +
              '<span class="emeta">' + esc(x.stage || "") + ' · 미션 ' + esc(x.num || "") + '</span>' +
              '<span class="etitle">' + esc(x.title || "") + '</span></div>';
+        var ph = (x.photos || []).filter(function (p2) { return p2 && p2.url; });
+        if (ph.length) {
+          h += '<div class="photos">' + ph.map(function (p2) {
+            return '<div class="shot"><div class="frame" style="background-image:url(\'' + esc(p2.url) + '\')"></div>' +
+                   (p2.memo ? '<span class="memo">' + esc(p2.memo) + '</span>' : '') + '</div>';
+          }).join("") + '</div>';
+        }
         var ls = (x.lines || []).filter(function (l) { return l && l.value; });
         if (ls.length) {
           h += '<div class="lines">';
@@ -130,7 +141,7 @@ body{margin:0;background:#fffdfb;color:#3a2624;font-family:'Noto Sans KR',sans-s
 
       h += '<div style="display:flex;flex-direction:column;gap:12px">' +
            '<a class="cta" href="/">나도 PLove 시작하기</a>' +
-           '<span class="note">이 회고는 글쓴이가 공유한 것이에요. 사진은 공유되지 않아요.</span></div>';
+           '<span class="note">이 회고는 글쓴이가 공유한 것이에요.</span></div>';
 
       root.innerHTML = h;
       document.title = (p.subject ? p.subject + " 회고" : "PLove 회고") + " · PLove";
