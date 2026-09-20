@@ -1,3 +1,6 @@
 handoff/
 docs/
 CLAUDE.md
+
+dev-server.mjs
+.env.local

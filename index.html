@@ -12,6 +12,30 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/assets/plove-cupid-v3.png">
 <script src="./support.js"></script>
+<script>
+/* PLOVE — 프로토타입이 부르던 window.claude.complete 를 우리 서버로 돌린다.
+   화면 코드(5곳)는 한 줄도 고치지 않는다. 실패하면 던진다 — 호출부마다
+   이미 try/catch 와 폴백 문구가 있어서, 던져야 그 폴백이 산다. */
+window.claude = {
+  async complete(opts) {
+    const o = opts || {};
+    const r = await fetch("/api/llm", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        system: o.system,
+        messages: o.messages || [],
+        max_tokens: o.max_tokens,
+        temperature: o.temperature
+      })
+    });
+    if (!r.ok) throw new Error("llm_" + r.status);
+    const d = await r.json();
+    if (!d || !d.text) throw new Error("llm_empty");
+    return d.text;
+  }
+};
+</script>
 </head>
 <body>
 <x-dc>
