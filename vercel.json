@@ -21,7 +21,7 @@
   "rewrites": [
     {
       "source": "/s/:slug",
-      "destination": "/s.html"
+      "destination": "/share"
     }
   ]
 }
