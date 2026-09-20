@@ -1,0 +1,16 @@
+.DS_Store
+*.log
+
+# 의존성·빌드 산출물 (스택이 정해지면 정리한다)
+node_modules/
+.next/
+dist/
+build/
+out/
+.venv/
+__pycache__/
+
+# 비밀
+.env
+.env.*
+!.env.example
