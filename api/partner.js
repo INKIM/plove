@@ -44,10 +44,11 @@ export default async function handler(req, res) {
         : "";
       await sendMail({
         to,
-        subject: `${b.myName || me}님이 PLove에 함께하자고 해요`,
+        subject: `${b.myName || me}님이 파트너 구독권을 선물했어요`,
         html: shell(
-          `${b.myName || me}님이 사랑을 연습하는 30일에 초대했어요`,
-          `수락하면 서로의 기록을 볼 수 있어요.${list ? `<div style="margin-top:14px">함께 볼 클래스${list}</div>` : ""}`,
+          `${b.myName || me}님이 파트너 구독권을 선물했어요`,
+          `사랑에도 기술이 있습니다. PLove는 Practice Love의 합성어로, 알고 있지만 표현하지 못했던 마음을 AI와 함께 매일 하나씩 실천하는 서비스입니다. 지금 구독권 선물을 수락하고, 서비스를 시작해보세요!` +
+          `${list ? `<div style="margin-top:16px">함께 볼 클래스${list}</div>` : ""}`,
           { href: url(`/?invite=${tk}`), label: "초대 수락하기" }
         ),
       });
