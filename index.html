@@ -773,6 +773,17 @@ Google로 계속하기
 </div>
 </div>
 
+<sc-if value="{{ showCourseStrip }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:8px;overflow-x:auto;padding:12px 2px 2px;-webkit-overflow-scrolling:touch">
+<sc-for list="{{ navCourses }}" as="c" hint-placeholder-count="6">
+<div onClick="{{ c.go }}" style="{{ c.chipStyle }}">
+<span style="{{ c.chipIcon }}"></span>
+<span style="flex:none">{{ c.name }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
 <div style="display:flex;align-items:center;gap:14px;padding:12px 4px 18px">
 <span style="display:flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:#2e1211"><img src="assets/ui-xp.png" alt="" style="width:18px;height:18px;display:block">{{ totalXp }}</span>
 <span style="display:flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:#2e1211"><img src="assets/ui-gem.png" alt="" style="width:18px;height:18px;display:block">{{ totalGems }}</span>
@@ -3621,6 +3632,8 @@ class Component extends DCLogic {
       reqOpen: () => this.answerReq(this.state.reqPopup, "open"),
       reqLater: () => this.answerReq(this.state.reqPopup, "later"),
       reqDecline: () => this.answerReq(this.state.reqPopup, "decline"),
+      // 좁은 화면은 옆 목록이 없다 — 홈 위에 클래스 띠를 둔다
+      showCourseStrip: !!this.state.narrow && sc === "home",
       navCourses: this.COURSES.map(c => {
         const on = c.key === k;
         const pv = this.viewingPartner();
@@ -3647,6 +3660,16 @@ class Component extends DCLogic {
             this.goCourse(c.key);
             this.setState({ homeBackTo: "" });
           },
+          chipStyle: {
+            flex: "none", display: "flex", alignItems: "center", gap: "7px",
+            padding: "8px 13px", borderRadius: "999px", whiteSpace: "nowrap",
+            cursor: soon ? "default" : "pointer", fontWeight: 700, fontSize: "13px",
+            background: on && !locked && !soon ? "#b62a22" : "#fffdfb",
+            color: on && !locked && !soon ? "#fffdfb" : soon ? "#a89290" : "#3a2624",
+            border: on && !locked && !soon ? "1px solid #b62a22" : "1px solid #ece4e2",
+            opacity: soon ? 0.55 : locked ? 0.75 : 1
+          },
+          chipIcon: { flex: "none", width: "20px", height: "20px", borderRadius: "6px", background: "#f6ecea url('assets/subj-" + c.key + ".png') center/cover no-repeat", filter: (locked || soon) ? "grayscale(1)" : "none" },
           style: { display: "flex", alignItems: "center", gap: "10px", padding: "9px 10px", borderRadius: "12px", cursor: soon ? "default" : "pointer", background: on && !locked && !soon ? "#fdf2f0" : "transparent", color: soon ? "#a89290" : on && !locked ? "#b62a22" : locked ? "#a89290" : "#3a2624", border: on && !locked && !soon ? "1px solid #f0d8d4" : "1px solid transparent", opacity: soon ? 0.55 : locked ? 0.75 : 1 },
           iconStyle: { flex: "none", width: "26px", height: "26px", borderRadius: "8px", background: "#f6ecea url('assets/subj-" + c.key + ".png') center/cover no-repeat", filter: (locked || soon) ? "grayscale(1)" : "none" },
           isLocked: locked && !soon, notLocked: !locked && !soon,

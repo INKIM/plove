@@ -45,6 +45,23 @@
     var L = await waitLogic();
     if (!L) { console.warn("[auth] 컴포넌트를 못 찾았다"); return; }
 
+    var advanced = false;
+    // 구글에서 돌아오면 첫 화면이 다시 뜬다 — 계정은 붙었는데 로그인 화면이라 고장처럼 보인다.
+    // 진행이 있으면 학습으로, 없으면 과목 선택으로 넘긴다.
+    function advance() {
+      if (advanced) return;
+      var sc = L.state.screen;
+      if (sc && sc !== "start" && sc !== "signin") return;
+      advanced = true;
+      // 진행도는 저장본·서버에서 늦게 올 수 있다 — 잠깐 기다렸다 정한다
+      setTimeout(function () {
+        var sc2 = L.state.screen;
+        if (sc2 !== "start" && sc2 !== "signin") return;
+        var started = Object.keys(L.state.levels || {}).length > 0;
+        L.setState({ screen: started ? "home" : "pick" });
+      }, 1200);
+    }
+
     function apply(session) {
       var u = session && session.user;
       if (u) {
@@ -54,6 +71,7 @@
           name: (L.state.name || "").trim() || nameOf(u),
           photo: (u.user_metadata || {}).avatar_url || L.state.photo
         });
+        advance();
       } else {
         // 세션이 없으면 저장본이 로그인 상태였더라도 내린다 — 실제 인증이 정본이다.
         // 게스트 모드가 없으므로 진행이 남아 있어도 시작 화면에서 막는다.
