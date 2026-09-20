@@ -2688,14 +2688,18 @@ class Component extends DCLogic {
     else this.setState({ pendingCourse: k, selected: k, screen: "greet", step: 5, q5: "basic", openM: null });
   }
   openMission(i, locked) { this.setState({ openM: this.state.openM === i ? null : i }); }
+  // 지금 보고 있는 사람의 그 미션 기록 — 내 것과 파트너 것이 사는 자리가 다르다.
+  // (파트너 것은 서버가 대화·코멘트를 빼고 내려준다)
+  recOf(i, k) {
+    const key = k || this.courseKey();
+    const src = this.viewingPartner()
+      ? ((this.state.partner || {}).records || {})
+      : (this.state.records || {});
+    return (src[key] || {})[i];
+  }
   openReview(i) {
-    if (this.viewingPartner()) {
-      // 파트너 기록은 사진·글만 본다. 대화는 제외한다.
-      this.setState({ reviewM: i });
-      return;
-    }
-    const recs = (this.state.records || {})[this.courseKey()] || [];
-    if (!recs[i]) { this.toast("남아 있는 기록이 없어요"); return; }
+    // 파트너 기록은 사진·글만 본다(대화는 서버가 빼고 내려준다)
+    if (!this.recOf(i)) { this.toast("남아 있는 기록이 없어요"); return; }
     this.setState({ reviewM: i });
   }
   startMission(i) {
@@ -4039,7 +4043,7 @@ class Component extends DCLogic {
           startLabel: dayLock && i < unlocked ? "미리 시작" : locked ? (isLast ? (ms.length - 1) + "개 미션을 모두 마치면 열려요" : "이전 미션을 완료해야 열려요") : done ? "다시 하기" : (isLast ? "회고 열어보기" : "미션 시작"),
           // 완료한 미션은 다시 보기(무료)와 다시 하기(보석)로 나눈다
           // 레벨 테스트로 건너뛴 미션은 완료로 잡히지만 기록이 없다 — 보여줄 게 없으면 버튼도 없다
-          canReview: done && !locked && !(dayLock && i < unlocked) && !!((this.state.records || {})[k] || [])[i],
+          canReview: done && !locked && !(dayLock && i < unlocked) && !!this.recOf(i, k),
           review: () => { this.sfx("tap"); this.openReview(i); },
           showFreeIn: !pv && dayLock && i < unlocked,
           showCost: !pv && ((dayLock && i < unlocked) || (done && !locked)),
@@ -4267,12 +4271,12 @@ class Component extends DCLogic {
       })(),
       reviewMeta: (() => {
         const rm = ms[this.state.reviewM];
-        const r = ((this.state.records || {})[k] || [])[this.state.reviewM];
+        const r = this.recOf(this.state.reviewM, k);
         if (!rm || !r) return "";
         return (np.subject || "") + " · 미션 " + rm.n + (r.date ? " · " + r.date : "");
       })(),
       reviewShots: (() => {
-        const r = ((this.state.records || {})[k] || [])[this.state.reviewM];
+        const r = this.recOf(this.state.reviewM, k);
         return ((r && r.photos) || []).map(s => {
           const t = s.type || "";
           const isV = t.indexOf("video") === 0, isA = t.indexOf("audio") === 0;
@@ -4292,20 +4296,20 @@ class Component extends DCLogic {
         });
       })(),
       reviewLines: (() => {
-        const r = ((this.state.records || {})[k] || [])[this.state.reviewM];
+        const r = this.recOf(this.state.reviewM, k);
         return ((r && r.lines) || []).filter(Boolean).map((t, i2) => ({ num: String(i2 + 1).padStart(2, "0"), text: (t && t.value != null) ? t.value : String(t) }));
       })(),
       yes: true,
       hasReviewProof: (() => {
-        const r = ((this.state.records || {})[k] || [])[this.state.reviewM];
+        const r = this.recOf(this.state.reviewM, k);
         return !!(((r && r.photos) || []).length || ((r && r.lines) || []).filter(Boolean).length);
       })(),
-      hasReviewChat: !this.viewingPartner() && (((((this.state.records || {})[k] || [])[this.state.reviewM] || {}).chat || []).length > 0),
-      reviewEmpty: this.viewingPartner() && !((this.state.records || {})[k] || [])[this.state.reviewM],
+      hasReviewChat: !this.viewingPartner() && (((this.recOf(this.state.reviewM, k) || {}).chat || []).length > 0),
+      reviewEmpty: this.viewingPartner() && !this.recOf(this.state.reviewM, k),
       reviewEmptyText: ((this.state.partner || {}).name || "") + "님이 남긴 기록이 여기에 보여요.",
       reviewChat: (() => {
         if (this.viewingPartner()) return [];
-        const r = ((this.state.records || {})[k] || [])[this.state.reviewM];
+        const r = this.recOf(this.state.reviewM, k);
         return ((r && r.chat) || []).map(c => ({
           text: c.text,
           wrapStyle: { display: "flex", justifyContent: c.who === "me" ? "flex-end" : "flex-start" },
@@ -4318,12 +4322,12 @@ class Component extends DCLogic {
         }));
       })(),
       reviewComment: (() => {
-        const r = ((this.state.records || {})[k] || [])[this.state.reviewM];
+        const r = this.recOf(this.state.reviewM, k);
         return (r && r.comment) || "";
       })(),
-      hasReviewComment: !!(((this.state.records || {})[k] || [])[this.state.reviewM] || {}).comment,
+      hasReviewComment: !!(this.recOf(this.state.reviewM, k) || {}).comment,
       reviewReward: (() => {
-        const r = ((this.state.records || {})[k] || [])[this.state.reviewM];
+        const r = this.recOf(this.state.reviewM, k);
         if (!r) return [];
         return [
           { ico: this.ico("ui-xp", 15), v: "+" + (r.xp || 0) },
