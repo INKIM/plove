@@ -1553,6 +1553,9 @@ Google로 계속하기
 <span style="flex:none;font-weight:600;font-size:13px;color:#2e1211">구독 관리</span>
 <div style="flex:1;min-width:0;display:flex;align-items:center;justify-content:flex-end;gap:12px">
 <span style="font-weight:600;font-size:13px;color:#7a6360;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ subName }}</span>
+<sc-if value="{{ hasNextBill }}" hint-placeholder-val="{{ false }}">
+<span style="flex:none;font-weight:600;font-size:12px;color:#a89290;white-space:nowrap">{{ nextBillLabel }}</span>
+</sc-if>
 <sc-if value="{{ canCancelSub }}" hint-placeholder-val="{{ false }}">
 <span onClick="{{ askCancelSub }}" style="flex:none;font-weight:600;font-size:11px;color:#7a6360;cursor:pointer;white-space:nowrap;text-decoration:underline" style-hover="color:#b62a22">해지하기</span>
 </sc-if>
@@ -4648,14 +4651,14 @@ class Component extends DCLogic {
     this.payThen("결제하고 있어요", () => {
       const pc = this.state.pendingCourse;
       this.sfx("gem");
-      this.setState(pc ? { plus: true, selected: pc, screen: "greet", step: 5, q5: "basic" } : { plus: true });
+      this.setState(pc ? { plus: true, subSince: Date.now(), selected: pc, screen: "greet", step: 5, q5: "basic" } : { plus: true, subSince: Date.now() });
       this.toast("플러스가 시작됐어요", "ok");
     });
   }
   doBuyCouple() {
     this.payThen("결제하고 있어요", () => {
       this.sfx("gem");
-      this.setState({ plus: true, couplePaid: true, screen: "invite", inviteSel: [] });
+      this.setState({ plus: true, couplePaid: true, subSince: Date.now(), screen: "invite", inviteSel: [] });
       this.toast("파트너 구독이 시작됐어요", "ok");
     });
   }
@@ -5653,6 +5656,20 @@ class Component extends DCLogic {
       subName: this.state.plus
         ? ((this.state.couplePaid ? "파트너" : "플러스") + (this.state.subCancelled ? " · 만료 예정 (~" + (this.state.subEnds || "") + ")" : (this.state.couplePaid ? " · 월 14,900원" : " · 월 9,900원")))
         : "베이직",
+      // 다음 결제 예정일 — 결제한 날의 '며칠'을 오늘 이후 가장 가까운 달에서 찾는다.
+      // 31일에 결제했는데 다음 달이 짧으면 그 달의 마지막 날로 당긴다.
+      // 해지했으면 안 띄운다 — 다음 결제가 없는데 날짜를 보이면 거짓말이 된다.
+      hasNextBill: !!this.state.plus && !this.state.subCancelled,
+      nextBillLabel: (() => {
+        if (!this.state.plus || this.state.subCancelled) return "";
+        const since = new Date(this.state.subSince || Date.now());
+        const day = since.getDate();
+        const now = new Date();
+        const at = (y, m) => new Date(y, m, Math.min(day, new Date(y, m + 1, 0).getDate()));
+        let d = at(now.getFullYear(), now.getMonth());
+        if (d <= now) d = at(now.getFullYear(), now.getMonth() + 1);
+        return "다음 결제 " + (d.getMonth() + 1) + "월 " + d.getDate() + "일";
+      })(),
       canCancelSub: !!this.state.plus && !this.state.subCancelled,
       canResumeSub: !!this.state.plus && !!this.state.subCancelled,
       resumeSub: () => { this.sfx("gem"); this.setState({ subCancelled: false, subEnds: "" }); this.toast("구독을 이어가요"); },

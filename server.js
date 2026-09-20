@@ -260,7 +260,7 @@
        localStorage 는 그대로 둔다 — 서버가 죽어도 혼자서는 계속 돈다. */
     var KEEP = ["name","levels","completedMap","totalXp","totalGems","records",
                 "streak","lastDay","doneDays","frozenDays","freezes","extraToday",
-                "retryCredits","plus","couplePaid","subCancelled","subEnds","famMembers","petKinds","petNames","myOpen"];
+                "retryCredits","plus","couplePaid","subCancelled","subEnds","subSince","famMembers","petKinds","petNames","myOpen"];
     function snapshot() {
       var o = {};
       KEEP.forEach(function (k) { if (L.state[k] !== undefined) o[k] = L.state[k]; });
