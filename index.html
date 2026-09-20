@@ -5376,7 +5376,10 @@ class Component extends DCLogic {
     "통합": "integrate", "마무리": "integrate", "표현": "express", "대화": "talk", "갈등": "conflict",
     "지속": "sustain", "이해": "understand", "감사": "thanks", "회복": "repair", "관심": "attention",
     "함께하기": "together", "진심": "sincere", "존중": "respect", "협력": "collab",
-    "피드백": "feedback", "소통": "comm", "유대": "bond", "책임": "duty"
+    "피드백": "feedback", "소통": "comm", "유대": "bond", "책임": "duty",
+    // 미션에 쓰이는데 빠져 있던 둘 — 없으면 번호로 남는다.
+    // 그림은 이미 있던 것을 쓴다(신뢰=맞물린 고리, 기록=흩어진 것을 모음).
+    "신뢰": "bond", "기록": "integrate"
   };
   stageIcon(stage) {
     const slug = this.STAGE_SLUG[stage];
