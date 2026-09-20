@@ -111,8 +111,9 @@
           lastDay: t.getFullYear() + "-" + String(t.getMonth() + 1).padStart(2, "0") + "-" + String(t.getDate()).padStart(2, "0")
         };
         L.setState(seed);
-        // 서버 진행도가 조금 뒤에 내려와 이 값을 덮는다 — 그 뒤에 한 번 더 얹고
-        // 서버에도 올려 다음 접속부터는 다툼이 없게 한다.
+        // 서버 진행도가 언제 내려올지 모른다(로그인·회선에 따라 다르다).
+        // 시간으로 이기려 하지 말고 자리를 남겨, 서버 것을 얹은 쪽이 이 위에 다시 덮게 한다.
+        window.__ploveSeed = seed;
         setTimeout(function () {
           L.setState(seed);
           try { window.__ploveServer && window.__ploveServer.pushProgress(); } catch (e) {}

@@ -324,8 +324,11 @@
       try { var t = sessionStorage.getItem("plove.invite"); if (t) { sessionStorage.removeItem("plove.invite"); history.replaceState(null,"","?invite="+t); } } catch (e) {}
       var r = await post("/api/progress", { action: "mine", email: me });
       if (r.ok && r.d.data && Object.keys(r.d.data.levels || {}).length) {
-        L.setState(Object.assign({}, r.d.data, { screen: L.state.screen }));
+        // ?streak= 로 심어둔 값이 있으면 서버 것 위에 다시 얹는다.
+        // 안 그러면 서버가 늦게 내려온 기기에서만 시드가 지워진다.
+        L.setState(Object.assign({}, r.d.data, window.__ploveSeed || {}, { screen: L.state.screen }));
       }
+      if (window.__ploveSeed) { pushProgress(); window.__ploveSeed = null; }
       await handleInvite();
       await loadPartner();
     }
