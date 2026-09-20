@@ -3754,11 +3754,11 @@ class Component extends DCLogic {
       ],
       hideNavMenu: this.viewingPartner(),
       navMenu: this.viewingPartner() ? [] : [
+        { name: "랭킹", icoStyle: this.ico("nav-rank", 26), go: () => this.setState({ screen: "rank", openM: null }) },
         { name: "스토어", icoStyle: this.ico("nav-store", 26), go: () => this.setState({ screen: "store", openM: null }) },
-        { name: "프로필", icoStyle: this.ico("nav-profile", 26), go: () => this.setState({ screen: "profile", openM: null }) },
         { name: "출석표", icoStyle: this.ico("nav-streak", 26), go: () => this.setState({ screen: "streak", openM: null }), hasBadge: true, badge: (this.state.streak || 0) + "일 연속",
           badgeStyle: { flex: "none", whiteSpace: "nowrap", padding: "3px 8px", borderRadius: "999px", fontWeight: 700, fontSize: "10px", background: this.doneToday() ? "#b62a22" : "#f6ecea", color: this.doneToday() ? "#fffdfb" : "#b62a22" } },
-        { name: "랭킹", icoStyle: this.ico("nav-rank", 26), go: () => this.setState({ screen: "rank", openM: null }) }
+        { name: "프로필", icoStyle: this.ico("nav-profile", 26), go: () => this.setState({ screen: "profile", openM: null }) }
       ],
       navAnim: (this.trackNav(), (this.navDir === -1 ? "plSlideR" : "plSlideL") + " .28s cubic-bezier(.22,.9,.3,1) both"),
       muted: !!this.state.muted,
