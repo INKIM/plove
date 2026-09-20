@@ -11,7 +11,9 @@
     "levels", "completedMap", "totalXp", "totalGems",
     "course", "selected", "records",
     "streak", "lastDay", "doneDays", "frozenDays",
-    "freezes", "extraToday", "retryCredits", "plus",
+    "freezes", "extraToday", "retryCredits",
+    /* 구독 상태 — plus 만 남기면 파트너가 새로고침 뒤 플러스로 내려앉는다 */
+    "plus", "couplePaid", "subCancelled", "subEnds",
     "famMembers", "petKinds", "petNames", "avatar", "photo"
   ];
 
