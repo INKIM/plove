@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Noto Sans KR',sans-serif;background:#fffdfb}
+a{color:#b62a22;text-decoration:underline}
+a:hover{color:#8f201b}
+@keyframes evIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#fffdfb;display:flex;flex-direction:column">
+
+<div style="flex:none;border-bottom:1px solid #ece4e2">
+<div style="width:100%;max-width:1120px;margin:0 auto;padding:20px clamp(20px,4vw,44px);display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+<div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+<span style="font-weight:700;font-size:11px;letter-spacing:.1em;color:#b62a22">PLOVE · LLM EVAL</span>
+<span style="font-weight:800;font-size:clamp(19px,2.4vw,24px);color:#2e1211">LLM 이밸 리포트</span>
+</div>
+<span style="flex:1"></span>
+<span style="{{ summaryStyle }}">{{ summaryLabel }}</span>
+<div onClick="{{ runAll }}" style="{{ runStyle }}">{{ runLabel }}</div>
+</div>
+</div>
+
+<div style="flex:1;overflow:auto;padding:24px clamp(20px,4vw,44px) 64px">
+<div style="width:100%;max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:26px">
+
+<div style="display:flex;flex-direction:column;gap:6px">
+<span style="font-weight:500;font-size:14px;line-height:1.7;color:#3a2624;text-wrap:pretty;max-width:760px">호출 지점 4곳 × 입력 케이스 7종을 실제 모델로 돌려, 규칙 위반을 자동으로 검출합니다. 채점은 같은 입력을 3번 반복해 점수 편차도 함께 봅니다.</span>
+<span style="font-weight:500;font-size:13px;color:#7a6360">전체 실행은 {{ totalRuns }}회 호출이 발생해요.</span>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px">
+<sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;gap:4px;padding:16px 18px;border:1px solid #ece4e2;border-radius:16px">
+<span style="font-weight:600;font-size:11px;color:#7a6360">{{ s.label }}</span>
+<span style="{{ s.valueStyle }}">{{ s.value }}</span>
+</div>
+</sc-for>
+</div>
+
+<sc-for list="{{ suites }}" as="su" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+<span style="font-weight:800;font-size:17px;color:#2e1211">{{ su.name }}</span>
+<span style="font-weight:600;font-size:12px;color:#7a6360">{{ su.desc }}</span>
+<span style="flex:1"></span>
+<span style="{{ su.badgeStyle }}">{{ su.badge }}</span>
+<div onClick="{{ su.run }}" style="height:34px;padding:0 14px;display:flex;align-items:center;justify-content:center;border:1px solid #e3dbd9;border-radius:999px;cursor:pointer;font-weight:600;font-size:12px;color:#7a6360" style-hover="border-color:#d9b8b4;color:#2e1211">이 항목만 실행</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:5px;padding:14px 16px;border:1px solid #ece4e2;border-radius:14px;background:#fdf8f7">
+<span style="font-weight:700;font-size:12px;color:#2e1211">판정 기준</span>
+<sc-for list="{{ su.rules }}" as="r" hint-placeholder-count="4">
+<span style="font-weight:500;font-size:12px;line-height:1.6;color:#3a2624">· {{ r.text }}</span>
+</sc-for>
+</div>
+
+<div style="border:1px solid #ece4e2;border-radius:16px;overflow:hidden">
+<div style="display:grid;grid-template-columns:130px 1fr 92px;gap:0;background:#faf3f1;border-bottom:1px solid #ece4e2">
+<span style="padding:10px 14px;font-weight:700;font-size:11px;color:#7a6360">케이스</span>
+<span style="padding:10px 14px;font-weight:700;font-size:11px;color:#7a6360">결과</span>
+<span style="padding:10px 14px;font-weight:700;font-size:11px;color:#7a6360;text-align:right">판정</span>
+</div>
+<sc-for list="{{ su.rows }}" as="row" hint-placeholder-count="7">
+<div style="{{ row.rowStyle }}">
+<div style="padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0">
+<span style="font-weight:700;font-size:12px;color:#2e1211">{{ row.caseName }}</span>
+<span style="font-weight:500;font-size:11px;line-height:1.4;color:#7a6360;text-wrap:pretty">{{ row.caseHint }}</span>
+</div>
+<div style="padding:12px 14px;display:flex;flex-direction:column;gap:5px;min-width:0">
+<span style="{{ row.outStyle }}">{{ row.output }}</span>
+<sc-if value="{{ row.hasViolations }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-wrap:wrap;gap:5px">
+<sc-for list="{{ row.violations }}" as="v" hint-placeholder-count="1">
+<span style="padding:3px 9px;border-radius:999px;background:#fdf2f0;border:1px solid #e8d6d3;font-weight:700;font-size:10px;color:#b62a22">{{ v.text }}</span>
+</sc-for>
+</div>
+</sc-if>
+</div>
+<div style="padding:12px 14px;display:flex;align-items:flex-start;justify-content:flex-end">
+<span style="{{ row.verdictStyle }}">{{ row.verdict }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+
+<div style="display:flex;flex-direction:column;gap:8px;padding:20px 22px;border-radius:18px;border:1px solid #ece4e2;background:#fdf8f7">
+<span style="font-weight:700;font-size:13px;color:#2e1211">이 리포트를 읽는 방법</span>
+<span style="font-weight:500;font-size:13px;line-height:1.75;color:#3a2624;text-wrap:pretty">위반은 문구 규칙을 기계적으로 검사한 결과입니다. 반말, 점수·숫자 노출, 한 번에 두 개 이상 질문, 두 문장 초과는 자동으로 잡힙니다. 채점 편차는 같은 입력을 3번 돌려 최대·최소 차이를 봅니다. 12점을 넘으면 프롬프트가 흔들린다는 뜻이에요. 프롬프트를 고친 뒤 같은 케이스를 다시 돌려 위반 수가 줄었는지 비교하세요.</span>
+</div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { rows: {}, busy: "" };
+
+  CASES = [
+    { key: "good", name: "성실", hint: "구체적이고 길게 답함", text: "거울 앞에서 60초를 봤어요. 눈이 부어 있고, 입꼬리가 내려가 있고, 턱에 힘이 들어가 있었어요. 생각보다 제 얼굴을 오래 본 게 처음이라 어색했어요." },
+    { key: "lazy", name: "불성실", hint: "한두 단어로 끝냄", text: "했어요" },
+    { key: "empty", name: "무응답", hint: "빈 문자열", text: "" },
+    { key: "short", name: "아주 짧음", hint: "한 문장 미만", text: "괜찮았어요" },
+    { key: "long", name: "아주 긺", hint: "장문, 주제 이탈 포함", text: "오늘 아침에 일어나서 거울을 봤는데 어제 늦게 잔 게 티가 나더라고요. 그런데 생각해보니 요즘 회사 일이 너무 많아서 잠을 제대로 못 자고 있고, 그래서 점심도 거르고, 저녁은 배달로 때우고, 주말에도 일을 하고 있어요. 이렇게 살면 안 되는 걸 아는데 어떻게 바꿔야 할지 모르겠어요. 아무튼 거울은 봤습니다." },
+    { key: "offtopic", name: "엉뚱한 답", hint: "미션과 무관", text: "어제 본 영화가 정말 재미있었어요. 주인공이 마지막에 우는 장면이 특히요." },
+    { key: "heavy", name: "무거운 답", hint: "감정적으로 취약한 내용", text: "거울을 보는데 제가 너무 싫어서 눈물이 났어요. 요즘 제 자신이 쓸모없게 느껴져요." }
+  ];
+
+  SUITES = [
+    {
+      key: "ask", name: "① 회고 질문 생성", desc: "askNpc — 미션 수행 뒤 첫 질문",
+      rules: ["미션과 관련 있는지", "한 번에 질문 하나만", "두 문장 이내", "평가하거나 점수를 언급하지 않는지", "존댓말"],
+      repeat: 1
+    },
+    {
+      key: "grade", name: "② 미션 채점", desc: "gradeMission — SCORE + 코멘트",
+      rules: ["성실·불성실 응답의 점수 차가 벌어지는지", "같은 입력을 3번 돌렸을 때 편차 12점 이하", "코멘트에 숫자·점수가 없는지", "부족한 점을 다음 연습 제안으로 바꿔 말하는지"],
+      repeat: 3
+    },
+    {
+      key: "reading", name: "③ 테스트 결과 해석", desc: "readTest — 레벨 판정 근거",
+      rules: ["존댓말", "숫자·점수 노출 없음", "사용자 표현을 인용하는지", "지적 대신 알아차리게 하는지"],
+      repeat: 1
+    },
+    {
+      key: "letter", name: "④ 코스 회고 편지", desc: "writeLetter — 30번 미션 편지",
+      rules: ["존댓말", "숫자·점수 노출 없음", "사용자가 남긴 말을 인용하는지", "3~5문장"],
+      repeat: 1
+    }
+  ];
+
+  sentenceCount(t) {
+    return (String(t).match(/[.!?…]|[다요]\s|[다요]$/g) || []).length || 1;
+  }
+  check(suiteKey, out, caseKey) {
+    const v = [];
+    const t = String(out || "").trim();
+    if (!t) { v.push("빈 응답"); return v; }
+    if (/(했어\?|이야\?|야\?|거야|했니|하니\?|자\.|해봐|그래\?)/.test(t) && !/요[.?!]|니다|세요/.test(t)) v.push("반말");
+    if (!/요[.?!]?|니다|세요/.test(t)) v.push("존댓말 아님");
+    const qs = (t.match(/\?/g) || []).length;
+    if (suiteKey === "ask") {
+      if (qs === 0) v.push("질문 없음");
+      if (qs > 1) v.push("질문 " + qs + "개");
+      if (this.sentenceCount(t) > 2) v.push("세 문장 이상");
+      if (/점수|점이|평가|잘했|훌륭|부족해요/.test(t)) v.push("평가 표현");
+    }
+    if (suiteKey === "grade") {
+      if (!/SCORE:\s*\d/i.test(t)) v.push("SCORE 누락");
+      const body = t.replace(/SCORE:\s*\d{1,3}/i, "");
+      if (/\d/.test(body)) v.push("코멘트에 숫자");
+    }
+    if (suiteKey === "reading" || suiteKey === "letter") {
+      if (/\d{1,3}\s*점|SCORE|LV\.?\s*\d/i.test(t)) v.push("점수 노출");
+      const sc = this.sentenceCount(t);
+      if (suiteKey === "letter" && (sc < 3 || sc > 6)) v.push(sc + "문장");
+    }
+    if (caseKey === "heavy" && /더 해보|부족|노력|열심히/.test(t)) v.push("취약 응답에 요구");
+    return v;
+  }
+
+  prompts(suiteKey, c) {
+    const mission = "거울 60초 보기";
+    const goal = "평가부터 하는 습관을 줄이고, 관찰하는 연습을 해요.";
+    const action = "거울 앞에서 60초 동안 얼굴을 보세요. 그리고, 내 얼굴에서 보이는 것 5개를 있는 그대로 옮겨 적어보세요.";
+    if (suiteKey === "ask") return {
+      system: "당신은 PLOVE의 코치 캐릭터 '프시케'입니다. 사용자가 방금 수행한 실천 미션에 대해 회고 대화를 합니다. 한국어 존댓말, 따뜻하고 담백하게. 한 번에 질문 하나만, 두 문장 이내로 짧게 말하세요. 평가하거나 점수를 언급하지 마세요.",
+      user: "미션: " + mission + "\n미션 목표: " + goal + "\n사용자가 한 행동: " + action + "\n사용자가 남긴 기록:\n" + (c.text || "(비움)") + "\n\n첫 질문을 던져주세요."
+    };
+    if (suiteKey === "grade") return {
+      system: "당신은 PLOVE의 코치 '프시케'입니다. 실천 미션의 수행 깊이를 평가합니다. 한국어 존댓말.",
+      user: "미션: " + mission + "\n완료 조건: 사진 1장 + 사실 5줄\n사용자가 남긴 인증과 기록:\n" + (c.text || "(비움)") + "\n\n회고 대화:\n프시케: 어떤 게 가장 먼저 보였나요?\n사용자: " + (c.text || "(비움)") + "\n\n이 사람이 미션을 얼마나 진심으로 수행했는지 판단하세요.\n첫 줄에 'SCORE: 숫자'(0~100)만 쓰고, 다음 줄부터 2~3문장으로 따뜻하게 코멘트를 쓰세요. 점수나 숫자는 코멘트에 쓰지 마세요. 부족한 점은 다음 연습 제안으로 바꿔 말하세요."
+    };
+    if (suiteKey === "reading") return {
+      system: "당신은 PLOVE의 캐릭터 '큐피드'입니다. 사랑을 연습하게 돕는 따뜻한 안내자예요. 한국어로 씁니다.",
+      user: "사용자가 15문항 레벨 테스트를 마쳤습니다. 마지막 서술형 답변:\n" + (c.text || "(비움)") + "\n\n이 사람의 상태를 3~4문장으로 읽어주세요. 존댓말로, 점수나 숫자는 쓰지 말고, 사용자가 쓴 표현을 한 번 인용하세요. 지적하지 말고 스스로 알아차리게 해주세요."
+    };
+    return {
+      system: "당신은 PLOVE의 코치 '프시케'입니다. 마음학 코스를 마친 사용자에게 마지막 편지를 씁니다. 한국어 존댓말, 따뜻하고 담백하게.",
+      user: "사용자가 30일 코스를 마쳤습니다. 기록 중 하나:\n" + (c.text || "(비움)") + "\n\n3~5문장 편지를 써주세요. 점수나 숫자는 쓰지 말고, 사용자가 남긴 말을 한 번 인용하세요."
+    };
+  }
+
+  async runSuite(suiteKey) {
+    const su = this.SUITES.find(s => s.key === suiteKey);
+    this.setState({ busy: suiteKey });
+    for (const c of this.CASES) {
+      const key = suiteKey + "." + c.key;
+      const cur = Object.assign({}, this.state.rows);
+      cur[key] = { status: "running" };
+      this.setState({ rows: cur });
+      const p = this.prompts(suiteKey, c);
+      const outs = [];
+      for (let r = 0; r < (su.repeat || 1); r++) {
+        try {
+          const t = await window.claude.complete({ max_tokens: 400, system: p.system, messages: [{ role: "user", content: p.user }] });
+          outs.push((t || "").trim());
+        } catch (e) { outs.push(""); }
+      }
+      const scores = outs.map(o => { const m = String(o).match(/SCORE:\s*(\d{1,3})/i); return m ? parseInt(m[1], 10) : null; }).filter(x => x != null);
+      const spread = scores.length > 1 ? Math.max.apply(null, scores) - Math.min.apply(null, scores) : null;
+      const v = this.check(suiteKey, outs[0], c.key);
+      if (spread != null && spread > 12) v.push("점수 편차 " + spread);
+      const next = Object.assign({}, this.state.rows);
+      next[key] = { status: "done", out: outs[0], scores: scores, spread: spread, violations: v };
+      this.setState({ rows: next });
+    }
+    this.setState({ busy: "" });
+  }
+
+  async runAll() {
+    for (const s of this.SUITES) await this.runSuite(s.key);
+  }
+
+  renderVals() {
+    const rows = this.state.rows || {};
+    const all = Object.keys(rows).filter(k => rows[k].status === "done");
+    const failed = all.filter(k => (rows[k].violations || []).length);
+    const busy = this.state.busy;
+    const totalRuns = this.SUITES.reduce((s, su) => s + this.CASES.length * (su.repeat || 1), 0);
+
+    return {
+      totalRuns: totalRuns,
+      runAll: () => { if (!busy) this.runAll(); },
+      runLabel: busy ? "실행 중…" : (all.length ? "다시 전체 실행" : "전체 실행"),
+      runStyle: {
+        flex: "none", height: "44px", padding: "0 22px", display: "flex", alignItems: "center", justifyContent: "center",
+        borderRadius: "999px", fontWeight: 700, fontSize: "14px",
+        background: busy ? "#f2e8e6" : "#b62a22", color: busy ? "#a89290" : "#fffdfb",
+        cursor: busy ? "default" : "pointer"
+      },
+      summaryLabel: all.length ? (all.length - failed.length) + " / " + all.length + " 통과" : "아직 실행 안 함",
+      summaryStyle: {
+        flex: "none", padding: "7px 14px", borderRadius: "999px", fontWeight: 700, fontSize: "12px",
+        background: all.length ? (failed.length ? "#fdf2f0" : "#f2f8f5") : "#f6ecea",
+        color: all.length ? (failed.length ? "#b62a22" : "#24614b") : "#7a6360"
+      },
+      stats: [
+        { label: "실행한 케이스", value: String(all.length) },
+        { label: "통과", value: String(all.length - failed.length) },
+        { label: "위반 있음", value: String(failed.length) },
+        { label: "검출된 위반", value: String(all.reduce((s, k) => s + (rows[k].violations || []).length, 0)) }
+      ].map((s, i) => ({
+        ...s,
+        valueStyle: { fontWeight: 800, fontSize: "24px", color: i === 2 && failed.length ? "#b62a22" : "#2e1211" }
+      })),
+      suites: this.SUITES.map(su => {
+        const mine = this.CASES.map(c => rows[su.key + "." + c.key]).filter(r => r && r.status === "done");
+        const bad = mine.filter(r => (r.violations || []).length).length;
+        return {
+          name: su.name, desc: su.desc,
+          rules: su.rules.map(r => ({ text: r })),
+          run: () => { if (!busy) this.runSuite(su.key); },
+          badge: mine.length ? (mine.length - bad) + " / " + mine.length + " 통과" : "미실행",
+          badgeStyle: {
+            flex: "none", padding: "5px 12px", borderRadius: "999px", fontWeight: 700, fontSize: "11px",
+            background: mine.length ? (bad ? "#fdf2f0" : "#f2f8f5") : "#f6ecea",
+            color: mine.length ? (bad ? "#b62a22" : "#24614b") : "#7a6360"
+          },
+          rows: this.CASES.map(c => {
+            const r = rows[su.key + "." + c.key];
+            const st = r ? r.status : "idle";
+            const vs = (r && r.violations) || [];
+            const ok = st === "done" && !vs.length;
+            return {
+              caseName: c.name, caseHint: c.hint,
+              output: st === "running" ? "실행 중…" : st === "done" ? (r.out || "(빈 응답)") : "—",
+              outStyle: {
+                fontWeight: 500, fontSize: "12px", lineHeight: 1.6,
+                color: st === "done" ? "#3a2624" : "#7a6360", textWrap: "pretty",
+                whiteSpace: "pre-wrap", maxHeight: "116px", overflow: "auto"
+              },
+              hasViolations: vs.length > 0,
+              violations: vs.map(t => ({ text: t })),
+              verdict: st === "running" ? "…" : st === "done" ? (ok ? "통과" : "위반 " + vs.length) : "대기",
+              verdictStyle: {
+                padding: "4px 11px", borderRadius: "999px", fontWeight: 700, fontSize: "11px", whiteSpace: "nowrap",
+                background: st !== "done" ? "#f6ecea" : ok ? "#f2f8f5" : "#fdf2f0",
+                color: st !== "done" ? "#7a6360" : ok ? "#24614b" : "#b62a22"
+              },
+              rowStyle: {
+                display: "grid", gridTemplateColumns: "130px 1fr 92px",
+                borderTop: "1px solid #f2e8e6",
+                background: st === "done" && vs.length ? "#fffbfa" : "transparent",
+                animation: st === "done" ? "evIn .2s ease-out both" : "none"
+              }
+            };
+          })
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

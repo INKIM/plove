@@ -1,0 +1,161 @@
+{
+  "version": "1.0.0",
+  "level": "코스에서 완료한 미션 수",
+  "ranking": {
+    "primary": "XP",
+    "secondary": "streak"
+  },
+  "mission": {
+    "baseXpRange": [
+      100,
+      130
+    ],
+    "finaleXp": 500,
+    "xpMultiplier": {
+      "95+": 1.4,
+      "80+": 1.2,
+      "else": 1
+    },
+    "gems": {
+      "base": 2,
+      "bonus95": 1,
+      "finale": 30
+    },
+    "scoring": {
+      "proof": 40,
+      "record": 30,
+      "chat": 30
+    }
+  },
+  "dailyLimit": {
+    "free": 1,
+    "plus": "unlimited",
+    "resetAt": "00:00 로컬"
+  },
+  "streakRewards": [
+    {
+      "day": 3,
+      "gems": 5,
+      "xp": 0
+    },
+    {
+      "day": 5,
+      "gems": 10,
+      "xp": 0
+    },
+    {
+      "day": 7,
+      "gems": 15,
+      "xp": 100
+    },
+    {
+      "day": 14,
+      "gems": 25,
+      "xp": 200
+    },
+    {
+      "day": 30,
+      "gems": 50,
+      "xp": 500
+    }
+  ],
+  "items": [
+    {
+      "key": "freeze",
+      "name": "미션 얼리기",
+      "gems": 15,
+      "icon": "assets/ui-freeze.png",
+      "desc": "하루 빠져도 연속 기록이 끊기지 않아요."
+    },
+    {
+      "key": "extra",
+      "name": "미션 미리하기",
+      "gems": 20,
+      "icon": "assets/ui-early.png",
+      "desc": "하루 1미션 제한을 한 번 풀어요."
+    },
+    {
+      "key": "retry",
+      "name": "미션 다시하기",
+      "gems": 10,
+      "icon": "assets/ui-retry.png",
+      "desc": "끝낸 미션을 다시 수행하고 보상을 새로 받아요."
+    }
+  ],
+  "inlinePurchases": [
+    {
+      "key": "chatExtend",
+      "name": "5분 연장",
+      "gems": 10,
+      "freeForPlus": true,
+      "grants": "대화 5분"
+    },
+    {
+      "key": "earlyStart",
+      "name": "미리 시작",
+      "gems": 20,
+      "grants": "오늘 미션 1개 추가"
+    },
+    {
+      "key": "redo",
+      "name": "다시 하기",
+      "gems": 10,
+      "grants": "완료 미션 재수행"
+    }
+  ],
+  "gemPacks": [
+    {
+      "gems": 100,
+      "price": 3900,
+      "tag": null
+    },
+    {
+      "gems": 300,
+      "price": 9900,
+      "tag": "인기"
+    },
+    {
+      "gems": 700,
+      "price": 19900,
+      "tag": "+40%"
+    }
+  ],
+  "plans": [
+    {
+      "key": "free",
+      "name": "Free",
+      "monthly": 0,
+      "seats": 1
+    },
+    {
+      "key": "plus",
+      "name": "PLOVE Plus",
+      "monthly": 9900,
+      "seats": 1
+    },
+    {
+      "key": "partner",
+      "name": "Partner Plus",
+      "monthly": 14900,
+      "seats": 2,
+      "note": "따로 사면 19,800원"
+    }
+  ],
+  "oneOff": [
+    {
+      "key": "gift",
+      "name": "구독권 선물",
+      "price": 6900,
+      "listPrice": 9900
+    },
+    {
+      "key": "team",
+      "name": "팀 구독권",
+      "pricePerSeat": 6900,
+      "listPrice": 9900,
+      "minSeats": 5
+    }
+  ],
+  "exclusivity": "plus와 partner는 동시 구독 불가. 해지 후 전환",
+  "cancellation": "해지해도 만료일까지 유지. 만료 예정 (~날짜) 표시"
+}

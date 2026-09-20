@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PLOVE 미션 검수표</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f7f2f0;font-family:'Noto Sans KR',sans-serif;color:#2e1211}
+a{color:#b62a22}
+.wrap{max-width:1280px;margin:0 auto;padding:32px clamp(16px,3vw,40px) 80px}
+.head{display:flex;flex-direction:column;gap:6px;margin-bottom:22px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;border-bottom:1px solid #e8dedb;margin-bottom:18px}
+.tab{height:38px;padding:0 16px;display:flex;align-items:center;border-radius:999px;background:#fffdfb;border:1px solid #ece4e2;font-weight:700;font-size:13px;color:#7a6360;cursor:pointer;white-space:nowrap}
+.tab.on{background:#b62a22;border-color:#b62a22;color:#fffdfb}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.pill{padding:6px 12px;border-radius:999px;background:#fffdfb;border:1px solid #ece4e2;font-weight:700;font-size:12px;color:#7a6360}
+table{width:100%;border-collapse:collapse;background:#fffdfb;border:1px solid #ece4e2;border-radius:16px;overflow:hidden}
+th{background:#faf3f1;text-align:left;font-weight:700;font-size:12px;color:#7a6360;padding:12px 14px;border-bottom:1px solid #ece4e2;white-space:nowrap;z-index:4}
+td{padding:14px;border-bottom:1px solid #f2e8e6;font-weight:500;font-size:13px;line-height:1.65;vertical-align:top;color:#3a2624}
+tr:last-child td{border-bottom:0}
+tr:hover td{background:#fdf8f7}
+.num{font-weight:800;color:#b62a22;white-space:nowrap}
+.stage{display:inline-block;padding:3px 9px;border-radius:999px;background:#f6ecea;font-weight:700;font-size:11px;color:#b62a22;white-space:nowrap}
+.title{font-weight:800;font-size:14px;color:#2e1211}
+.goal{color:#7a6360}
+.slot{display:inline-block;padding:3px 9px;margin:2px 4px 2px 0;border-radius:8px;background:#eef4f8;font-weight:600;font-size:11px;color:#2f6d94}
+.line{display:inline-block;padding:3px 9px;margin:2px 4px 2px 0;border-radius:8px;background:#f4eeec;font-weight:600;font-size:11px;color:#7a6360}
+.chip{display:inline-block;padding:3px 9px;border-radius:999px;background:#fdf2f0;font-weight:700;font-size:11px;color:#b62a22;white-space:nowrap}
+.warn{color:#b62a22;font-weight:700}
+.tok{background:#fff3cd;padding:0 3px;border-radius:3px;font-weight:700}
+.sec{font-weight:800;font-size:15px;margin:26px 0 10px}
+.note{font-weight:500;font-size:13px;line-height:1.7;color:#7a6360}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="head">
+<span style="font-weight:700;font-size:12px;letter-spacing:.1em;color:#b62a22">PLOVE · REVIEW</span>
+<span style="font-weight:800;font-size:26px">미션 검수표</span>
+<span class="note">코스별 30개 미션의 제목·목표·과제·인증 방법·완료 조건·캐릭터 질문을 한 번에 봅니다. <span class="tok">{m}</span>은 고른 가족, <span class="tok">{p}</span>은 반려동물 이름으로 바뀝니다.</span>
+</div>
+<div class="tabs" id="tabs"></div>
+<div class="meta" id="meta"></div>
+<div id="body"></div>
+</div>
+
+<script src="missions.js"></script>
+<script>
+const COURSES = [
+  { key: "self", name: "나", subject: "마음학", npc: "프시케" },
+  { key: "lover", name: "연인", subject: "연애학", npc: "큐피드" },
+  { key: "family", name: "가족", subject: "가족학", npc: "베스타" },
+  { key: "friend", name: "친구", subject: "우정학", npc: "아미" },
+  { key: "coworker", name: "동료", subject: "협업학", npc: "코디" },
+  { key: "pet", name: "반려동물", subject: "교감학", npc: "파우나" }
+];
+const M = window.PLOVE_MISSIONS || {};
+let cur = "self";
+
+const esc = s => String(s == null ? "" : s).replace(/[<>&]/g, c => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
+const tok = s => esc(s).replace(/\{m\}/g, '<span class="tok">{m}</span>').replace(/\{p\}/g, '<span class="tok">{p}</span>');
+
+function renderTabs() {
+  document.getElementById("tabs").innerHTML = COURSES.map(c =>
+    `<div class="tab ${c.key === cur ? "on" : ""}" data-k="${c.key}">${c.subject} · ${c.name}</div>`).join("");
+  document.querySelectorAll(".tab").forEach(el => el.onclick = () => { cur = el.dataset.k; render(); });
+}
+
+function render() {
+  renderTabs();
+  const c = COURSES.find(x => x.key === cur);
+  const list = M[cur] || [];
+  const photos = list.filter(m => (m.sl || []).length).length;
+  const multi = list.filter(m => m.md).length;
+  const stages = [];
+  list.forEach(m => { if (stages.indexOf(m.s) < 0) stages.push(m.s); });
+  const avgTitle = Math.round(list.reduce((s, m) => s + (m.t || "").length, 0) / Math.max(1, list.length));
+
+  document.getElementById("meta").innerHTML = [
+    `NPC ${c.npc}`, `미션 ${list.length}개`, `단계 ${stages.length}개`,
+    `사진 인증 ${photos}개`, `상대 대기 ${multi}개`, `제목 평균 ${avgTitle}자`
+  ].map(t => `<span class="pill">${t}</span>`).join("");
+
+  const rows = list.map((m, i) => {
+    const slots = (m.sl || []).map(s => `<span class="slot">📷 ${tok(s)}</span>`).join("");
+    const lines = (m.lh || []).map(s => `<span class="line">${tok(s)}</span>`).join("");
+    const free = (!(m.sl || []).length && !(m.lh || []).length) ? '<span class="line">자유 기록 1칸</span>' : "";
+    const long = (m.t || "").length > 16;
+    const sents = ((m.a || "").match(/[.!?]/g) || []).length;
+    const flags = [];
+    if (long) flags.push("제목 " + m.t.length + "자");
+    if (sents > 2) flags.push("과제 " + sents + "문장");
+    if (!(m.g || "").match(/(요|예요|해요|돼요|어요|아요)[.!]?$/)) flags.push("목표 어미");
+    if (!(m.a || "").match(/(세요|볼까요|주세요)/)) flags.push("과제 청유X");
+    const need = (String(m.a).match(/(\d+)\s*(개|가지|곳|줄|명)/) || [])[1];
+    if (need && (m.lh || []).length > 1 && parseInt(need, 10) !== (m.lh || []).length) flags.push("요구 " + need + " ≠ 칸 " + m.lh.length);
+
+    return `<tr>
+      <td class="num">${esc(m.n)}<br><span class="stage">${esc(m.s)}</span></td>
+      <td style="min-width:180px">
+        <div class="title">${tok(m.t)}</div>
+        <div class="goal" style="margin-top:4px">${tok(m.g)}</div>
+        ${flags.length ? `<div class="warn" style="margin-top:6px">⚠ ${flags.join(" · ")}</div>` : ""}
+      </td>
+      <td style="min-width:240px">${tok(m.a)}</td>
+      <td style="min-width:200px">${slots}${lines}${free}</td>
+      <td style="min-width:110px">
+        <div>${tok(m.d)}</div>
+        <div style="margin-top:6px"><span class="chip">⏱ ${esc(m.m)}분</span></div>
+        <div style="margin-top:4px"><span class="chip">🔥 +${esc(m.x)}</span></div>
+        ${m.md ? '<div style="margin-top:4px"><span class="chip">상대 대기</span></div>' : ""}
+      </td>
+      <td style="min-width:200px;color:#7a6360">${tok(m.k)}</td>
+    </tr>`;
+  }).join("");
+
+  document.getElementById("body").innerHTML = `
+    <table>
+      <thead><tr>
+        <th>번호</th><th>제목 · 목표</th><th>수행 과제</th><th>인증 입력칸</th><th>완료 · 보상</th><th>캐릭터 후속 질문</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+render();
+</script>
+</body>
+</html>

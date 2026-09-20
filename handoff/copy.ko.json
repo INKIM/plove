@@ -1,0 +1,152 @@
+{
+  "version": "1.0.0",
+  "note": "문체 규칙 — 해요체. 실패를 사용자 탓으로 돌리지 않는다. 점수·숫자는 보상 외에 노출하지 않는다.",
+  "onboarding": {
+    "startTagline": "사랑, 연습하러 가볼까요?",
+    "startCta": "시작하기",
+    "signinTitle": "기록을 남기려면 계정이 필요해요",
+    "signinDesc": "사진과 기록, 경험치가 계정에 저장돼요. 기기를 바꿔도 이어서 할 수 있어요.",
+    "signinGoogle": "Google로 계속하기",
+    "signinGuest": "계정 없이 둘러보기",
+    "pickTitle": "먼저 배우고 싶은 사랑",
+    "pickNote": "나중에 더 추가할 수 있어요.",
+    "greet": "안녕하세요, 저는 {npc}예요!",
+    "greetCta": "인사하기",
+    "askName": "헤헤 반가워요! 이름이 뭐에요?",
+    "namePlaceholder": "이름을 입력해 주세요",
+    "q5": "{name}님, 사랑을 잘하려면 무엇을 해야 할까요?",
+    "q5Options": [
+      "먼저 사랑하기",
+      "배려하고 존중하기",
+      "자주 표현하기",
+      "끝까지 들어주기"
+    ],
+    "q5Reply": "그것도 맞는데요. 사랑을 잘하려면 일단은 사랑이 뭔지 알아야 해요! 사랑에도 기술이 있거든요~",
+    "startPoint": "처음 듣는 {subject}이네요, 뭐부터 시작할까요?",
+    "startBasic": {
+      "title": "기초부터 시작하기",
+      "desc": "1번 미션부터 차례대로 시작해요."
+    },
+    "startTest": {
+      "title": "내 레벨 찾기",
+      "desc": "15문항 테스트로 시작 지점을 찾아요."
+    },
+    "familyAsk": "누구와 함께 살고 있나요?",
+    "petAsk": "어떤 아이와 함께 지내나요?",
+    "petNameNote": "이름은 선택이에요. 알려주면 미션에서 이름으로 불러요."
+  },
+  "mission": {
+    "proofNotice": "사진과 메모를 올려주시면 검증 단계로 넘어갑니다.",
+    "next": "다음",
+    "recordPlaceholder": "기록을 남겨주세요",
+    "draftBanner": "쓰던 기록이 남아 있어 그대로 불러왔어요.",
+    "draftKeep": "이어쓰기",
+    "draftDrop": "새로쓰기",
+    "photoErrorType": "이미지 파일만 올릴 수 있어요. 다시 골라주세요.",
+    "photoErrorSize": "사진이 너무 커요. 12MB 이하로 올려주세요.",
+    "photoErrorLoad": "사진을 불러오지 못했어요. 다시 골라주세요.",
+    "startLocked": "이전 미션을 완료해야 열려요",
+    "startFinaleLocked": "{n}개 미션을 모두 마치면 열려요",
+    "startDone": "다시 하기",
+    "startReview": "다시 보기",
+    "startFinale": "회고 열어보기",
+    "start": "미션 시작",
+    "startEarly": "미리 시작",
+    "freeIn": "무료 시작까지 {time}"
+  },
+  "chat": {
+    "inputPlaceholder": "느낀 점을 적어주세요",
+    "inputDone": "대화가 끝났어요",
+    "send": "전송",
+    "wrap": "마무리",
+    "extend": "5분 연장",
+    "extendPlus": "PLUS 5분 연장",
+    "thinking": "{npc}가 생각하고 있어요…",
+    "failed": "잠깐 말이 끊겼어요. 다시 물어봐도 될까요?",
+    "retry": "다시 물어보기",
+    "wrapAskTitle": "대화를 마칠까요?",
+    "wrapAskDesc": "지금까지 나눈 이야기를 정리하고 미션을 완료할까요?",
+    "wrapAskCancel": "더 이야기하기",
+    "wrapAskOk": "마치기",
+    "fallbackFirst": "미션을 어떻게 했는지 하나만 자세히 말해줄래요?",
+    "fallbackNext": "그때 마음이 어땠는지도 말해줄 수 있어요?",
+    "fallbackWrap": "오늘 남긴 말들, 잘 들었어요. 여기서 마무리할게요."
+  },
+  "grading": {
+    "steps": [
+      "기록을 읽고 있어요",
+      "나눈 대화를 다시 보고 있어요",
+      "오늘의 마음을 정리하고 있어요"
+    ],
+    "stepLabels": [
+      "기록",
+      "대화",
+      "마음"
+    ],
+    "resultTitle": "미션 완료!",
+    "resultFinaleTitle": "코스 수료!",
+    "xpLabel": "획득 경험치",
+    "gemLabel": "획득 보석",
+    "retryGrade": "평가를 다시 받아보기",
+    "fallbackComment": "기록을 남긴 것만으로도 오늘 한 걸음 옮겼어요. 다음엔 상대의 반응까지 적어보면 더 선명해질 거예요."
+  },
+  "streak": {
+    "popSuffix": "일 연속",
+    "popFirst": "오늘부터 다시 시작이에요. 내일도 만나요.",
+    "popContinue": "어제에 이어 오늘도 사랑을 연습했어요.",
+    "popMilestone": "{n}일을 쉬지 않고 이어왔어요.",
+    "popBonus": "💎 {gems} · 🔥 {xp} 더 받았어요",
+    "continueCta": "계속하기",
+    "broken": "오늘부터 다시",
+    "freezeTitle": "미션 얼리기",
+    "freezePick": "달력에서 빠진 날을 눌러 얼려주세요.",
+    "freezeNone": "미션 얼리기가 없어요",
+    "freezeNoneDesc": "스토어에서 얼리기를 사면 빠진 날을 메워 연속 기록을 이어갈 수 있어요.",
+    "rewardNote": "3·5·7·14·30일째에 보석과 경험치를 받아요. 하루 쉬면 처음부터 다시 세요."
+  },
+  "store": {
+    "gemSection": "보석 충전",
+    "itemSection": "아이템",
+    "subSection": "구독",
+    "giftSection": "선물하기",
+    "owned": "{n}개 보유",
+    "payLoading": "결제하고 있어요",
+    "buyLoading": "구매하고 있어요",
+    "paySuccess": "{name}가 시작됐어요",
+    "gemSuccess": "보석 {n}개를 충전했어요",
+    "itemSuccess": "{name} 구매 완료",
+    "gemShort": "보석이 부족해요",
+    "gemShortDesc": "{name}에 보석 {n}개가 필요해요. 스토어로 갈까요?",
+    "subConfirmDesc": "{price}으로 구독을 시작할까요?",
+    "subConfirmNote": "언제든 해지할 수 있어요",
+    "exclusive": "플러스를 해지한 뒤에 바꿀 수 있어요"
+  },
+  "partner": {
+    "inviteTitle": "어떤 클래스를 보여줄까요?",
+    "inviteDesc": "고른 클래스의 사진과 기록이 상대에게 보여요. 회고 대화 내용은 보이지 않아요. 나중에 바꿀 수 있어요.",
+    "inviteSend": "초대 메일 보내기",
+    "stages": [
+      "결제",
+      "승인 대기",
+      "승인 완료"
+    ],
+    "reqTitle": "{subject} 권한 요청",
+    "reqDesc": "{name}님과 함께 기록을 하자고 요청할까요?",
+    "approveTitle": "{subject} 권한 승인",
+    "approveDesc": "{name}님이 요청한 {subject}을 함께 볼까요?",
+    "revokeTitle": "{subject} 권한 차단",
+    "revokeDesc": "{name}님이 기록을 볼 수 없도록 잠글까요?",
+    "unlinkTitle": "{name}님과 연결을 해제할까요?",
+    "unlinkDesc": "서로의 기록을 더 이상 볼 수 없어요. 한 번 해제하면 이 사람과 다시 연결할 수 없어요. 남은 기간은 두 사람 모두 Plus를 쓸 수 있고, 다음 결제일부터 개인 Plus로 바뀌어요.",
+    "partnerNoRecord": "{name}님이 남긴 기록이 여기에 보여요.",
+    "partnerNotDone": "아직 하지 않은 미션이에요."
+  },
+  "empty": {
+    "finaleNoRecord": "아직 기록이 없어요. 미션을 하나씩 해보면 이 자리에 사진과 내 말이 쌓여요.",
+    "comeback": "{n}일 만이네요. 오늘은 짧은 것부터 해볼까요?",
+    "comebackLong": "{n}일 만이네요. 그동안의 기록은 그대로 있어요. 오늘은 짧은 것부터 해볼까요?",
+    "courseDone": "30일을 지나왔어요. 다음은 {subject}이 기다리고 있어요.",
+    "allCourseDone": "여섯 코스를 모두 끝냈어요. 마음에 남는 미션은 다시 해볼 수 있어요.",
+    "soon": "{subject}은 준비 중이에요"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "version": "1.0.0",
+  "color": {
+    "primary": "#b62a22",
+    "primaryHover": "#c53228",
+    "primaryActive": "#a3241d",
+    "primaryDeep": "#8f201b",
+    "bg": "#fffdfb",
+    "bgSoft": "#faf3f1",
+    "bgTint": "#fdf8f7",
+    "bgTintStrong": "#fdf2f0",
+    "bgPink": "#f6ecea",
+    "ink": "#2e1211",
+    "body": "#3a2624",
+    "muted": "#7a6360",
+    "faint": "#a89290",
+    "disabled": "#c0aca9",
+    "border": "#ece4e2",
+    "borderInput": "#e3dbd9",
+    "borderStrong": "#d9b8b4",
+    "success": "#2f7d61",
+    "successDeep": "#24614b",
+    "successBg": "#f2f8f5",
+    "lockBg": "#f4eeec",
+    "lockInk": "#c0aca9",
+    "lockShadow": "#e8e0de",
+    "freeze": "#e3eef5",
+    "freezeInk": "#2f6d94"
+  },
+  "font": {
+    "family": "'Noto Sans KR', sans-serif",
+    "weight": {
+      "body": 500,
+      "label": 600,
+      "bold": 700,
+      "display": 800
+    },
+    "size": {
+      "screenTitle": "clamp(20px,2.6vw,26px)",
+      "sectionTitle": "17px",
+      "cardTitle": "16px",
+      "body": "14px",
+      "sub": "13px",
+      "caption": "12px",
+      "badge": "11px",
+      "micro": "10px"
+    }
+  },
+  "radius": {
+    "pill": "999px",
+    "card": "16px",
+    "cardLarge": "20px",
+    "modal": "20px",
+    "input": "12px",
+    "tile": "20px"
+  },
+  "space": {
+    "screenX": "clamp(20px,4vw,44px)",
+    "cardPad": "20px",
+    "rowGap": "20px",
+    "itemGap": "10px",
+    "sectionGap": "30px"
+  },
+  "layout": {
+    "contentWide": "1120px",
+    "contentNarrow": "640px",
+    "contentDoc": "760px",
+    "sidebarWidth": "232px",
+    "narrowBreakpoint": "760px",
+    "iconSidebar": 26,
+    "iconStoreItem": 76,
+    "iconChip": 15,
+    "iconStat": 24
+  },
+  "motion": {
+    "screenForward": "plSlideL .28s cubic-bezier(.22,.9,.3,1) both",
+    "screenBack": "plSlideR .28s cubic-bezier(.22,.9,.3,1) both",
+    "modal": "plPop .26s cubic-bezier(.34,1.5,.64,1) both",
+    "enter": "plIn .4s ease-out both",
+    "celebrate": "plCelebrate .55s cubic-bezier(.3,1.4,.5,1) both",
+    "burst": "plBurst .5s cubic-bezier(.3,1.6,.5,1) both",
+    "shake": "plShake 1.6s ease-in-out infinite",
+    "spin": "plSpin .8s linear infinite",
+    "buttonPress": "transform: translateY(1px)"
+  },
+  "rules": {
+    "minContrastBody": 4.5,
+    "mutedFloor": "#7a6360 — 이보다 연한 회색을 본문에 쓰지 않는다",
+    "toastDuration": 3600,
+    "payLoadingDuration": 1500,
+    "gradingMinDuration": 7000,
+    "gradingStepInterval": 2200
+  }
+}

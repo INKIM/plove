@@ -1,0 +1,273 @@
+{
+  "version": "1.0.0",
+  "stateKey": "screen",
+  "screens": [
+    {
+      "key": "start",
+      "name": "시작",
+      "from": [],
+      "to": [
+        "signin",
+        "pick"
+      ]
+    },
+    {
+      "key": "signin",
+      "name": "로그인",
+      "from": [
+        "start"
+      ],
+      "to": [
+        "pick",
+        "policy"
+      ]
+    },
+    {
+      "key": "policy",
+      "name": "개인정보 처리방침",
+      "from": [
+        "signin",
+        "profile"
+      ],
+      "to": [
+        "back"
+      ]
+    },
+    {
+      "key": "terms",
+      "name": "이용약관",
+      "from": [
+        "profile"
+      ],
+      "to": [
+        "back"
+      ]
+    },
+    {
+      "key": "pick",
+      "name": "과목 선택",
+      "from": [
+        "signin"
+      ],
+      "to": [
+        "greet",
+        "family",
+        "petSetup"
+      ]
+    },
+    {
+      "key": "greet",
+      "name": "온보딩 대화",
+      "from": [
+        "pick",
+        "nav"
+      ],
+      "to": [
+        "home",
+        "countdown"
+      ],
+      "steps": 5
+    },
+    {
+      "key": "family",
+      "name": "가족 구성",
+      "from": [
+        "greet",
+        "nav"
+      ],
+      "to": [
+        "greet"
+      ]
+    },
+    {
+      "key": "petSetup",
+      "name": "반려동물 설정",
+      "from": [
+        "greet",
+        "nav"
+      ],
+      "to": [
+        "greet"
+      ]
+    },
+    {
+      "key": "countdown",
+      "name": "테스트 카운트다운",
+      "from": [
+        "greet"
+      ],
+      "to": [
+        "quiz"
+      ]
+    },
+    {
+      "key": "quiz",
+      "name": "레벨 테스트",
+      "from": [
+        "countdown"
+      ],
+      "to": [
+        "result"
+      ],
+      "items": 15
+    },
+    {
+      "key": "result",
+      "name": "테스트 결과",
+      "from": [
+        "quiz"
+      ],
+      "to": [
+        "home"
+      ],
+      "note": "1회만 응시"
+    },
+    {
+      "key": "home",
+      "name": "미션 경로",
+      "from": [
+        "*"
+      ],
+      "to": [
+        "run",
+        "finale",
+        "store",
+        "profile",
+        "rank",
+        "streak"
+      ]
+    },
+    {
+      "key": "run",
+      "name": "미션 수행",
+      "from": [
+        "home"
+      ],
+      "to": [
+        "chat"
+      ]
+    },
+    {
+      "key": "chat",
+      "name": "회고 대화",
+      "from": [
+        "run"
+      ],
+      "to": [
+        "mresult"
+      ]
+    },
+    {
+      "key": "mresult",
+      "name": "미션 결과",
+      "from": [
+        "chat"
+      ],
+      "to": [
+        "streakPop",
+        "home"
+      ]
+    },
+    {
+      "key": "streakPop",
+      "name": "연속 축하",
+      "from": [
+        "mresult"
+      ],
+      "to": [
+        "home"
+      ],
+      "note": "그날 첫 완료만"
+    },
+    {
+      "key": "finale",
+      "name": "코스 회고",
+      "from": [
+        "home"
+      ],
+      "to": [
+        "home"
+      ]
+    },
+    {
+      "key": "store",
+      "name": "스토어",
+      "from": [
+        "nav"
+      ],
+      "to": [
+        "invite",
+        "gift",
+        "back"
+      ]
+    },
+    {
+      "key": "invite",
+      "name": "파트너 초대",
+      "from": [
+        "store"
+      ],
+      "to": [
+        "home"
+      ]
+    },
+    {
+      "key": "gift",
+      "name": "구독권 선물",
+      "from": [
+        "store"
+      ],
+      "to": [
+        "back"
+      ]
+    },
+    {
+      "key": "profile",
+      "name": "프로필",
+      "from": [
+        "nav"
+      ],
+      "to": [
+        "home",
+        "policy",
+        "terms"
+      ]
+    },
+    {
+      "key": "streak",
+      "name": "출석표",
+      "from": [
+        "nav"
+      ],
+      "to": [
+        "store",
+        "back"
+      ]
+    },
+    {
+      "key": "rank",
+      "name": "랭킹",
+      "from": [
+        "nav"
+      ],
+      "to": [
+        "back"
+      ]
+    }
+  ],
+  "modals": [
+    "askBuy — 구매·결제 확인",
+    "paying — 결제 로딩",
+    "toast — 완료 안내",
+    "confirmM — 보석으로 미션 시작",
+    "wrapAsk — 대화 마무리 확인",
+    "reviewM — 완료 미션 다시 보기",
+    "freezeAsk — 얼리기 없음",
+    "reqPopup — 파트너 권한 요청",
+    "closeAsk — 권한 차단",
+    "unlinkAsk — 연결 해제",
+    "wipe — 로그아웃·계정 삭제",
+    "teamOpen — 팀 구독 문의",
+    "sheet — 채점표"
+  ]
+}

@@ -1,0 +1,1981 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-09-20",
+  "tokens": {
+    "{m}": "사용자가 고른 가족 구성원",
+    "{p}": "사용자가 입력한 반려동물 이름"
+  },
+  "courses": [
+    {
+      "key": "self",
+      "name": "나",
+      "subject": "마음학",
+      "npc": "프시케",
+      "npcFile": "assets/npc-psyche.png",
+      "missionCount": 11,
+      "missions": [
+        {
+          "index": 0,
+          "number": "01",
+          "stage": "관찰",
+          "title": "거울 속의 나를 바라보기",
+          "goal": "평가부터 하는 습관을 줄이고, 관찰하는 연습을 해요.",
+          "action": "거울 앞에서 60초 동안 얼굴을 바라보세요. 그리고, 내 얼굴에 보이는 것 5개를 옮겨 적어보세요.",
+          "minutes": 8,
+          "baseXp": 100,
+          "completion": "사진 1장 + 기록 5줄",
+          "followUp": "평가어가 사실 묘사로 바뀌었는지 묻고, 지금 표정과 실제 감정이 같은지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "거울 앞에서 찍은 셀카",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "보이는 것"
+            },
+            {
+              "hint": "보이는 것"
+            },
+            {
+              "hint": "보이는 것"
+            },
+            {
+              "hint": "보이는 것"
+            },
+            {
+              "hint": "보이는 것"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 1,
+          "number": "02",
+          "stage": "관찰",
+          "title": "하루 3번 내 표정 남기기",
+          "goal": "표정이 하루 중 언제 바뀌는지 알면 내 기분의 흐름이 보여요.",
+          "action": "아침, 점심, 저녁에 각각 셀카를 한 장 찍어보세요. 그리고, 표정에서 느껴지는 점을 적어보세요.",
+          "minutes": 10,
+          "baseXp": 100,
+          "completion": "사진 3장 + 기록 3줄",
+          "followUp": "세 표정이 어떻게 달랐는지, 무엇이 그 차이를 만들었는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "아침 셀카",
+              "kind": "photo"
+            },
+            {
+              "label": "점심 셀카",
+              "kind": "photo"
+            },
+            {
+              "label": "저녁 셀카",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "표정에서 느껴지는 점"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 2,
+          "number": "03",
+          "stage": "관찰",
+          "title": "나를 닮은 물건 3개 찾기",
+          "goal": "내 취향은 말보다 물건에 남아 있어요. 그걸 확인해봐요.",
+          "action": "방에서 나를 설명하는 물건 3개를 골라보세요. 그리고, 왜 그걸 골랐는지 이유를 적어보세요.",
+          "minutes": 12,
+          "baseXp": 110,
+          "completion": "사진 3장 + 기록 3줄",
+          "followUp": "세 물건에 공통점이 있는지 함께 찾아보는 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "첫 번째 물건",
+              "kind": "photo"
+            },
+            {
+              "label": "두 번째 물건",
+              "kind": "photo"
+            },
+            {
+              "label": "세 번째 물건",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "고른 이유"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 3,
+          "number": "04",
+          "stage": "수용",
+          "title": "5개의 감정에 이름 붙이기",
+          "goal": "감정을 좋다·나쁘다로 묶으면 진짜 마음을 놓쳐요.",
+          "action": "오늘 하루를 보내며 느낀 감정에 5개의 이름을 붙여주세요. 그리고, 그걸 소리내어 말해보세요.",
+          "minutes": 10,
+          "baseXp": 110,
+          "completion": "음성 1개 + 기록 5줄",
+          "followUp": "소리 내어 말했을 때 어떤 감정이 가장 낯설었는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "감정 다섯 개를 소리 내어 읽은 음성",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "감정 이름"
+            },
+            {
+              "hint": "감정 이름"
+            },
+            {
+              "hint": "감정 이름"
+            },
+            {
+              "hint": "감정 이름"
+            },
+            {
+              "hint": "감정 이름"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 4,
+          "number": "05",
+          "stage": "수용",
+          "title": "보정 없는 사진 한 장 남기기",
+          "goal": "보정 없는 내 얼굴을 한 번 마주해봐요.",
+          "action": "오늘 찍은 사진 한 장을 보정 없이 저장해보세요. 그리고, 마음에 걸리는 부분을 한 줄 적어보세요.",
+          "minutes": 8,
+          "baseXp": 110,
+          "completion": "사진 1장 + 기록 1줄",
+          "followUp": "그 부분이 남에게도 그렇게 보일지 묻고, 언제부터 신경 쓰였는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "보정 없는 원본 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "마음에 걸리는 부분"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 5,
+          "number": "06",
+          "stage": "수용",
+          "title": "잘하고 있는 일 3가지 말하기",
+          "goal": "부족한 것만 세다 보면 이미 하고 있는 걸 놓쳐요.",
+          "action": "이미 잘하고 있는 일 3가지를 소리 내어 말해보세요. 아주 사소한 것도 괜찮아요.",
+          "minutes": 8,
+          "baseXp": 110,
+          "completion": "음성 1개 + 기록 3줄",
+          "followUp": "말하고 나서 기분이 어땠는지, 누구에게 들려주고 싶은지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "잘하고 있는 일을 말한 음성",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "잘하고 있는 일"
+            },
+            {
+              "hint": "잘하고 있는 일"
+            },
+            {
+              "hint": "잘하고 있는 일"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 6,
+          "number": "07",
+          "stage": "돌봄",
+          "title": "캘린더에 나를 위한 20분 넣기",
+          "goal": "나를 위한 시간도 약속으로 만들어두면 지켜져요.",
+          "action": "캘린더에 나를 위한 20분을 등록해주세요. 그리고, 오늘 안에 그 시간을 지켜보세요.",
+          "minutes": 20,
+          "baseXp": 120,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "그 시간을 지키는 데 무엇이 방해가 됐는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "캘린더에 넣은 내 시간",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "그 20분에 한 일"
+            },
+            {
+              "hint": "끝나고 든 기분"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 7,
+          "number": "08",
+          "stage": "돌봄",
+          "title": "내일의 나를 위해 하나 준비하기",
+          "goal": "내일의 나를 돕는 건 오늘의 나예요.",
+          "action": "내일 아침의 나를 위해 한 가지를 미리 준비해보세요. 옷, 가방, 간단한 음식 무엇이든 좋아요.",
+          "minutes": 10,
+          "baseXp": 120,
+          "completion": "사진 1장 + 기록 1줄",
+          "followUp": "내일 아침의 내가 어떤 기분일지 상상해보는 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "내일의 나를 위해 준비한 것",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "준비한 것과 이유"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 8,
+          "number": "09",
+          "stage": "가치",
+          "title": "1년 전 나에게 편지 5문장 쓰기",
+          "goal": "지나온 시간을 인정하면 지금의 나를 덜 몰아붙여요.",
+          "action": "1년 전 나에게 하고 싶은 말을 손글씨로 써보세요. 꼭 편지지에 쓸 필요는 없어요.",
+          "minutes": 20,
+          "baseXp": 130,
+          "completion": "손글씨 사진 1장 + 기록 1줄",
+          "followUp": "쓰면서 울컥한 문장이 있었는지, 왜 그랬는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "1년 전 나에게 쓴 손편지",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "가장 하고 싶었던 말"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 9,
+          "number": "10",
+          "stage": "가치",
+          "title": "한 달 뒤 나와 약속 하나 정하기",
+          "goal": "지킬 수 있는 약속이 나에 대한 신뢰를 만들어요.",
+          "action": "한 달 뒤 나와 지킬 약속 하나를 정해보세요.",
+          "minutes": 12,
+          "baseXp": 130,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "이 약속을 왜 골랐는지, 지키려면 무엇이 필요한지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "달력에 적은 약속",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "약속 내용"
+            },
+            {
+              "hint": "지킬 날짜"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 10,
+          "number": "11",
+          "stage": "마무리",
+          "title": "지난 10일 돌아보기",
+          "goal": "나를 들여다본 열흘이 무엇을 남겼는지 보여요.",
+          "action": "그 동안 올린 사진과 글을 천천히 읽어보세요.",
+          "minutes": 15,
+          "baseXp": 500,
+          "completion": "기록 돌아보기",
+          "followUp": "",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [],
+          "records": [],
+          "isFinale": true
+        }
+      ]
+    },
+    {
+      "key": "lover",
+      "name": "연인",
+      "subject": "연애학",
+      "npc": "큐피드",
+      "npcFile": "assets/cupid-5.png",
+      "missionCount": 11,
+      "missions": [
+        {
+          "index": 0,
+          "number": "01",
+          "stage": "관찰",
+          "title": "좋아하는 것 5개 물어보기",
+          "goal": "좋아하는 게 바뀌었는데 예전 정보로 사랑하고 있을 수 있어요.",
+          "action": "연인이 좋아하는 것을 직접 물어보고, 5개를 옮겨 적어보세요.",
+          "minutes": 12,
+          "baseXp": 100,
+          "completion": "사진 1장 + 기록 5줄",
+          "followUp": "몰랐던 것이 있었는지, 언제부터 바뀐 건지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "물어본 대화 캡처",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "좋아하는 것"
+            },
+            {
+              "hint": "좋아하는 것"
+            },
+            {
+              "hint": "좋아하는 것"
+            },
+            {
+              "hint": "좋아하는 것"
+            },
+            {
+              "hint": "좋아하는 것"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 1,
+          "number": "02",
+          "stage": "관찰",
+          "title": "10분 동안 가만히 들어주기",
+          "goal": "짐작은 오해를 만들어요. 직접 듣는 10분이 필요해요.",
+          "action": "연인에게 요즘 제일 신경 쓰이는 게 무엇인지 물어보고, 10분 동안 가만히 들어주세요.",
+          "minutes": 15,
+          "baseXp": 110,
+          "completion": "음성 1개 + 기록 2줄",
+          "followUp": "말을 끊고 싶었던 순간이 있었는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "들은 말을 옮긴 음성",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "연인이 한 말"
+            },
+            {
+              "hint": "내가 참은 말"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 2,
+          "number": "03",
+          "stage": "표현",
+          "title": "원하는 애정 표현 3개 묻기",
+          "goal": "유형 검사보다 지금 원하는 걸 직접 묻는 게 정확해요.",
+          "action": "연인에게 사랑을 어떻게 표현해주면 좋겠는지 물어보세요. 그리고, 그걸 실천해보세요.",
+          "minutes": 15,
+          "baseXp": 110,
+          "completion": "사진 1장 + 기록 3줄",
+          "followUp": "내가 하던 방식과 얼마나 달랐는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "실천한 순간 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "연인이 원한 표현"
+            },
+            {
+              "hint": "원한 표현"
+            },
+            {
+              "hint": "원한 표현"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 3,
+          "number": "04",
+          "stage": "표현",
+          "title": "고마운 일 한 직접 말하기",
+          "goal": "고맙다는 말은 구체적일 때 전해져요.",
+          "action": "연인에게 오늘 고마운 일을 하나 골라 직접 말해보세요. 만나서든, 통화로든 괜찮아요.",
+          "minutes": 10,
+          "baseXp": 110,
+          "completion": "음성 1개 + 기록 2줄",
+          "followUp": "말하기 전 망설였는지, 말하고 나서 어땠는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "고맙다고 말한 목소리 녹음",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "실제로 말한 문장"
+            },
+            {
+              "hint": "연인의 반응"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 4,
+          "number": "05",
+          "stage": "경계",
+          "title": "서로 지켜줄 3가지 정하기",
+          "goal": "가까울수록 선을 말해두는 게 서로를 지켜요.",
+          "action": "연인과 서로 지켜줬으면 하는 3가지 경계를 의논하여 정해보세요.",
+          "minutes": 20,
+          "baseXp": 120,
+          "completion": "사진 1장 + 기록 3줄",
+          "followUp": "말 꺼내기 어려웠던 항목이 있었는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "함께 적은 경계 세 가지",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "지켜줬으면 하는 것"
+            },
+            {
+              "hint": "지켜줬으면 하는 것"
+            },
+            {
+              "hint": "지켜줬으면 하는 것"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 5,
+          "number": "06",
+          "stage": "표현",
+          "title": "평소보다 크게 축하하기",
+          "goal": "기쁨을 함께 키워주는 사람이 곁에 남아요.",
+          "action": "연인의 좋은 소식 하나를 평소보다 크게 축하해주세요. 작고 사소한 일도 상관없어요.",
+          "minutes": 15,
+          "baseXp": 120,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "평소와 무엇이 달랐는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "축하한 순간 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "어떻게 축하했는지"
+            },
+            {
+              "hint": "연인의 반응"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 6,
+          "number": "07",
+          "stage": "함께하기",
+          "title": "무조건 같은 편이 되주기",
+          "goal": "밖에서 내 편을 들어준 경험이 신뢰를 만들어요.",
+          "action": "연인이 무슨 말과 행동을 하든 같은 편에 서서 공감, 응원, 위로를 해주세요.",
+          "minutes": 12,
+          "baseXp": 120,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "동의하기 어려운 부분이 있었는지, 그래도 어떻게 곁에 섰는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "그 순간 남긴 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "있었던 일"
+            },
+            {
+              "hint": "내가 한 말"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 7,
+          "number": "08",
+          "stage": "갈등",
+          "title": "반복되는 싸움의 패턴 그리기",
+          "goal": "매번 다른 일로 싸우지만 패턴은 하나예요.",
+          "action": "최근에 연인과 싸웠던 일들을 떠올려 보고, 반복되는 패턴이 있는지 그려보세요.",
+          "minutes": 20,
+          "baseXp": 130,
+          "completion": "그림 사진 1장 + 기록 3줄",
+          "followUp": "그 패턴을 끊으려면 누가 먼저 무엇을 해야 할지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "싸움의 흐름을 그린 그림",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "시작되는 지점"
+            },
+            {
+              "hint": "서로가 하는 행동"
+            },
+            {
+              "hint": "끝나는 방식"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 8,
+          "number": "09",
+          "stage": "지속",
+          "title": "매주 반복할 우리 시간 정하기",
+          "goal": "특별한 날보다 반복되는 시간이 관계를 지켜요.",
+          "action": "관계의 발전을 위해 매주 반복할 일과 시간을 정해보세요. 사소한 것부터 쉽게!",
+          "minutes": 15,
+          "baseXp": 130,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "지키기 어려울 것 같은 지점이 어디인지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "달력에 넣은 우리 시간",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "언제"
+            },
+            {
+              "hint": "무엇을 할지"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 9,
+          "number": "10",
+          "stage": "지속",
+          "title": "의미 있는 장소 다시 가보기",
+          "goal": "같은 장소에 다시 가면 그때의 마음이 돌아와요.",
+          "action": "서로에게 의미 있는 장소를 다시 가보세요. 그때와 지금이 어떻게 다른지 나눠보세요.",
+          "minutes": 30,
+          "baseXp": 140,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "그 장소에서 떠오른 기억을 나누는 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "다시 찾은 장소 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "그때와 달라진 것"
+            },
+            {
+              "hint": "서로 나눈 말"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 10,
+          "number": "11",
+          "stage": "마무리",
+          "title": "지나온 10일 돌아보기",
+          "goal": "함께 지나온 열흘이 무엇을 바꿨는지 보여요.",
+          "action": "그 동안 올린 사진과 글을 천천히 읽어보세요.",
+          "minutes": 15,
+          "baseXp": 500,
+          "completion": "기록 돌아보기",
+          "followUp": "",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [],
+          "records": [],
+          "isFinale": true
+        }
+      ]
+    },
+    {
+      "key": "family",
+      "name": "가족",
+      "subject": "가족학",
+      "npc": "베스타",
+      "npcFile": "assets/npc-vesta.png",
+      "missionCount": 11,
+      "missions": [
+        {
+          "index": 0,
+          "number": "01",
+          "stage": "이해",
+          "title": "{m}의 젊은 시절 사진 이야기 듣기",
+          "goal": "부모가 되기 전의 그 사람을 알면 지금이 달리 보여요.",
+          "action": "{m}에게 젊은 시절 사진 한 장을 보여달라고 하세요. 그리고 그때 이야기를 들어주세요.",
+          "minutes": 20,
+          "baseXp": 100,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "사진 속 그 사람과 지금이 어떻게 다른지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "one",
+          "proofs": [
+            {
+              "label": "{m}이 보여준 젊은 시절 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "들은 이야기"
+            },
+            {
+              "hint": "몰랐던 것"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 1,
+          "number": "02",
+          "stage": "이해",
+          "title": "{m}에게 물어볼 질문 5개 만들기",
+          "goal": "오래 함께 살아도 아직 묻지 않은 질문이 남아 있어요.",
+          "action": "{m}에게 물어본 적 없는 질문을 5개 손글씨로 적어보세요. 그리고, 직접 물어보세요.",
+          "minutes": 20,
+          "baseXp": 110,
+          "completion": "손글씨 사진 1장 + 기록 5줄",
+          "followUp": "가장 뜻밖의 답이 무엇이었는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "one",
+          "proofs": [
+            {
+              "label": "손글씨로 적은 질문 다섯 개",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "질문과 답"
+            },
+            {
+              "hint": "질문과 답"
+            },
+            {
+              "hint": "질문과 답"
+            },
+            {
+              "hint": "질문과 답"
+            },
+            {
+              "hint": "질문과 답"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 2,
+          "number": "03",
+          "stage": "관찰",
+          "title": "우리 가족의 표현 방식 찾기",
+          "goal": "사랑을 표현하는 방식은 집집마다 달라요.",
+          "action": "우리 가족이 사랑을 표현하는 방식 3개를 찾아 사진을 찍어보세요.",
+          "minutes": 15,
+          "baseXp": 110,
+          "completion": "사진 3장 + 기록 3줄",
+          "followUp": "말 대신 행동으로 전해온 것이 있었는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "표현이 드러난 장면",
+              "kind": "photo"
+            },
+            {
+              "label": "또 다른 장면",
+              "kind": "photo"
+            },
+            {
+              "label": "또 다른 장면",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "그 방식이 뜻하는 것"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 3,
+          "number": "04",
+          "stage": "돌봄",
+          "title": "{m}이 좋아하는 음식 준비하기",
+          "goal": "좋아하는 걸 기억해서 차려주는 일이 말보다 크게 닿아요.",
+          "action": "{m}이 좋아하는 음식을 직접 준비하거나, 배달 시켜보세요. 그리고, 사진을 남겨보세요.",
+          "minutes": 30,
+          "baseXp": 120,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "왜 이 음식을 골랐는지, 어떤 기억이 있는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "one",
+          "proofs": [
+            {
+              "label": "{m}을 위해 차린 상",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "준비한 음식"
+            },
+            {
+              "hint": "{m}의 반응"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 4,
+          "number": "05",
+          "stage": "경계",
+          "title": "내 개인 시간이 필요하다고 말하기",
+          "goal": "가까울수록 선을 말해두는 게 서로를 지켜요.",
+          "action": "가족에게 내가 필요한 개인 시간에 대해 말해보세요. 언제, 얼마나 필요한지 구체적으로.",
+          "minutes": 15,
+          "baseXp": 120,
+          "completion": "손글씨 사진 1장 + 기록 2줄",
+          "followUp": "말 꺼내기가 어려웠는지, 어떻게 받아들여졌는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "말한 내용을 적은 손글씨",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "말한 내용"
+            },
+            {
+              "hint": "가족의 반응"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 5,
+          "number": "06",
+          "stage": "회복",
+          "title": "{m}에게 미뤄둔 사과 전하기",
+          "goal": "미룬 사과는 시간이 지날수록 무거워져요.",
+          "action": "{m} 과의 최근 갈등을 하나 골라 사과해보세요. 최근이 아니어도 괜찮아요.",
+          "minutes": 20,
+          "baseXp": 130,
+          "completion": "음성 1개 + 기록 2줄",
+          "followUp": "왜 지금까지 미뤘는지, 말하고 나서 어땠는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "one",
+          "proofs": [
+            {
+              "label": "사과를 전한 목소리 녹음",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "사과한 일"
+            },
+            {
+              "hint": "{m}의 반응"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 6,
+          "number": "07",
+          "stage": "경계",
+          "title": "{m}에게 반복하던 불만 멈추기",
+          "goal": "반복되는 말은 전달이 아니라 소음이 돼요.",
+          "action": "{m} 에게 습관적으로 하던 불만들을 적어보고, 그 중 하나를 멈춰보세요.",
+          "minutes": 15,
+          "baseXp": 120,
+          "completion": "손글씨 사진 1장 + 기록 2줄",
+          "followUp": "그 말을 참았을 때 무엇이 달라졌는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "one",
+          "proofs": [
+            {
+              "label": "적어본 불만 목록",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "멈추기로 한 말"
+            },
+            {
+              "hint": "멈춰본 순간"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 7,
+          "number": "08",
+          "stage": "함께하기",
+          "title": "휴대폰 없이 함께 식사하기",
+          "goal": "같이 있어도 화면을 보면 함께가 아니에요.",
+          "action": "한 끼 동안은 휴대폰을 내려 놓고, 서로 대화를 하면서 식사를 해보세요.",
+          "minutes": 30,
+          "baseXp": 120,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "평소 식사와 무엇이 달랐는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "휴대폰 내려둔 밥상 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "나눈 이야기"
+            },
+            {
+              "hint": "평소와 달랐던 점"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 8,
+          "number": "09",
+          "stage": "감사",
+          "title": "{m}과 좋은 기억 3개 나누기",
+          "goal": "함께 쌓은 기억을 꺼내면 지금의 거리도 줄어들어요.",
+          "action": "{m}과 좋은 기억 3개를 정리해보고, 그걸 직접 소리내어 읽어보세요.",
+          "minutes": 20,
+          "baseXp": 130,
+          "completion": "음성 1개 + 기록 3줄",
+          "followUp": "읽으면서 {m}이 어떤 반응이었는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "one",
+          "proofs": [
+            {
+              "label": "기억을 읽은 음성",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "좋은 기억"
+            },
+            {
+              "hint": "좋은 기억"
+            },
+            {
+              "hint": "좋은 기억"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 9,
+          "number": "10",
+          "stage": "지속",
+          "title": "가족 사진 한 장 남기기",
+          "goal": "같이 찍은 사진이 가족의 기록이 돼요.",
+          "action": "가족들이 모두 함께 나오는 사진을 한 장 찍어보세요. 인화를 하면 더 좋아요.",
+          "minutes": 20,
+          "baseXp": 130,
+          "completion": "사진 1장 + 기록 1줄",
+          "followUp": "마지막 가족 사진이 언제였는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "함께 찍은 가족 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "이 사진을 남긴 이유"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 10,
+          "number": "11",
+          "stage": "마무리",
+          "title": "지난 10일 돌아보기",
+          "goal": "가족에게 건넨 말들이 어떤 자리를 만들었는지 보여요.",
+          "action": "그 동안 올린 사진과 글을 천천히 읽어보세요.",
+          "minutes": 15,
+          "baseXp": 500,
+          "completion": "기록 돌아보기",
+          "followUp": "",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [],
+          "records": [],
+          "isFinale": true
+        }
+      ]
+    },
+    {
+      "key": "friend",
+      "name": "친구",
+      "subject": "우정학",
+      "npc": "아미",
+      "npcFile": "assets/npc-ami.png",
+      "missionCount": 11,
+      "missions": [
+        {
+          "index": 0,
+          "number": "01",
+          "stage": "관심",
+          "title": "친구에게 안부 먼저 묻기",
+          "goal": "연락은 용건이 있어야 한다고 생각하면 멀어져요.",
+          "action": "소중한 친구에게 따뜻한 안부를 적어 문자로 보내보세요.",
+          "minutes": 8,
+          "baseXp": 100,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "먼저 보내기까지 망설였는지, 답을 받고 어땠는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "보낸 안부 문자 캡처",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "보낸 말"
+            },
+            {
+              "hint": "친구의 답"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 1,
+          "number": "02",
+          "stage": "관심",
+          "title": "친구와의 좋은 기억 5개 적기",
+          "goal": "좋은 기억을 모아두면 서운한 순간에 꺼내 쓸 수 있어요.",
+          "action": "친구와의 좋은 기억을 메모지에 손글씨로 직접 적어보세요.",
+          "minutes": 15,
+          "baseXp": 100,
+          "completion": "손글씨 사진 1장 + 기록 5줄",
+          "followUp": "다섯 기억에 공통점이 있는지 함께 찾는 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "손글씨로 적은 메모지",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "좋은 기억"
+            },
+            {
+              "hint": "좋은 기억"
+            },
+            {
+              "hint": "좋은 기억"
+            },
+            {
+              "hint": "좋은 기억"
+            },
+            {
+              "hint": "좋은 기억"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 2,
+          "number": "03",
+          "stage": "이해",
+          "title": "친구와 좋아하는 것 따라해보기",
+          "goal": "상대의 세계에 들어가보면 이해가 쉬워져요.",
+          "action": "친구가 좋아하는 것 하나를 골라서, 직접 해보세요.",
+          "minutes": 20,
+          "baseXp": 110,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "친구가 왜 이걸 좋아하는지 알 것 같았는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "따라해본 순간 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "따라해본 것"
+            },
+            {
+              "hint": "해보고 알게 된 것"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 3,
+          "number": "04",
+          "stage": "함께하기",
+          "title": "친구와 30분 같이 걷기",
+          "goal": "나란히 걷는 30분이 카페 두 시간보다 편할 때가 있어요.",
+          "action": "친구와 산책 약속을 잡아보세요. 걷고 나서 나눈 이야기를 기록해보세요.",
+          "minutes": 30,
+          "baseXp": 120,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "마주 앉았을 때와 무엇이 달랐는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "함께 걸은 길 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "나눈 이야기"
+            },
+            {
+              "hint": "걸으며 느낀 것"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 4,
+          "number": "05",
+          "stage": "돌봄",
+          "title": "힘들 때 원하는 도움 묻기",
+          "goal": "필요한 도움은 사람마다 달라요. 짐작하지 말고 물어봐요.",
+          "action": "지금 친구에게 어떤 도움이 필요한지 물어보세요. 물어보는 것만으로도 힘이 될 수 있어요.",
+          "minutes": 12,
+          "baseXp": 120,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "내가 해오던 도움과 달랐는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "물어본 대화 캡처",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "친구가 원한 도움"
+            },
+            {
+              "hint": "내가 하던 방식"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 5,
+          "number": "06",
+          "stage": "회복",
+          "title": "미안했던 일 하나 말하기",
+          "goal": "미안한 마음은 시간이 지나면 더 말하기 어려워져요.",
+          "action": "친구에게 미안했던 일을 하나 말해보세요. 사과는 조금 늦어도 괜찮아요.",
+          "minutes": 15,
+          "baseXp": 130,
+          "completion": "음성 1개 + 기록 2줄",
+          "followUp": "말하기 전 무엇이 걸렸는지, 말하고 나서 어땠는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "사과를 전한 목소리 녹음",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "미안했던 일"
+            },
+            {
+              "hint": "친구의 반응"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 6,
+          "number": "07",
+          "stage": "이해",
+          "title": "친구의 주변 사람 3명 적기",
+          "goal": "친구를 아는 사람들을 알면 그 사람이 더 보여요.",
+          "action": "친구에게 가장 소중한 사람 3명이 누구인지 물어보고, 기록해보세요.",
+          "minutes": 12,
+          "baseXp": 120,
+          "completion": "사진 1장 + 기록 3줄",
+          "followUp": "내가 그중 몇 명을 알고 있었는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "물어본 대화 캡처",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "이름과 관계"
+            },
+            {
+              "hint": "이름과 관계"
+            },
+            {
+              "hint": "이름과 관계"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 7,
+          "number": "08",
+          "stage": "신뢰",
+          "title": "친구에게 작은 도움 부탁하기",
+          "goal": "도움을 청하는 것도 신뢰의 표현이에요.",
+          "action": "친구가 들어줄 수 있는 부탁 하나를 요청해보세요. 정말 사소한 것도 괜찮아요.",
+          "minutes": 10,
+          "baseXp": 120,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "부탁이 어려웠는지, 친구의 반응은 어땠는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "부탁한 대화 캡처",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "부탁한 것"
+            },
+            {
+              "hint": "부탁하기 전 마음"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 8,
+          "number": "09",
+          "stage": "감사",
+          "title": "친구에게 배운 것 말해주기",
+          "goal": "배운 걸 말해주면 상대는 자기 가치를 알게 돼요.",
+          "action": "친구에게 배운 점을 직접 소리 내어 말해주세요. 직접 만나서, 통화 모두 좋아요.",
+          "minutes": 12,
+          "baseXp": 130,
+          "completion": "음성 1개 + 기록 2줄",
+          "followUp": "친구가 그 말을 듣고 어떤 표정이었는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "배운 것을 말한 음성",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "배운 것"
+            },
+            {
+              "hint": "친구의 반응"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 9,
+          "number": "10",
+          "stage": "지속",
+          "title": "친구와 사진 한 장 남기기",
+          "goal": "같이 찍은 사진이 관계의 기록이 돼요.",
+          "action": "친구와 함께 찍은 사진 한 장을 남겨보세요. 셀카, 인생네컷 등 형식은 상관 없어요.",
+          "minutes": 15,
+          "baseXp": 130,
+          "completion": "사진 1장 + 기록 1줄",
+          "followUp": "마지막으로 같이 찍은 게 언제였는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "친구와 함께 찍은 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "이 사진을 남긴 이유"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 10,
+          "number": "11",
+          "stage": "마무리",
+          "title": "지난 10일 돌아보기",
+          "goal": "먼저 연락한 열흘이 우정을 어떻게 바꿨는지 보여요.",
+          "action": "그 동안 올린 사진과 글을 천천히 읽어보세요.",
+          "minutes": 15,
+          "baseXp": 500,
+          "completion": "기록 돌아보기",
+          "followUp": "",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [],
+          "records": [],
+          "isFinale": true
+        }
+      ]
+    },
+    {
+      "key": "coworker",
+      "name": "동료",
+      "subject": "협업학",
+      "npc": "코디",
+      "npcFile": "assets/npc-cody.png",
+      "missionCount": 11,
+      "missions": [
+        {
+          "index": 0,
+          "number": "01",
+          "stage": "관찰",
+          "title": "동료의 이름과 역할 정확히 부르기",
+          "goal": "이름과 역할을 정확히 부르는 것부터 존중이 시작돼요.",
+          "action": "오늘 동료 3명의 이름과 역할을 정확히 불러보세요. 그리고, 누구에게 어떻게 불렀는지 적어보세요.",
+          "minutes": 10,
+          "baseXp": 100,
+          "completion": "사진 1장 + 기록 3줄",
+          "followUp": "평소 어떻게 불러왔는지, 반응이 달랐는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "오늘 내 책상 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "이름과 역할"
+            },
+            {
+              "hint": "이름과 역할"
+            },
+            {
+              "hint": "이름과 역할"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 1,
+          "number": "02",
+          "stage": "대화",
+          "title": "60초 동안 끊지 않고 듣기",
+          "goal": "말을 끊지 않는 60초가 신뢰를 만들어요.",
+          "action": "동료의 말을 60초 동안 끊지 않고 들어보세요. 그리고, 참은 말을 적어보세요.",
+          "minutes": 10,
+          "baseXp": 110,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "끼어들고 싶었던 순간이 언제였는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "회의 끝난 자리 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "동료가 한 말"
+            },
+            {
+              "hint": "내가 참은 말"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 2,
+          "number": "03",
+          "stage": "이해",
+          "title": "동료의 업무 제약 물어보기",
+          "goal": "상대의 제약을 알면 일이 쉬워져요.",
+          "action": "동료가 지금 겪는 제약이 무엇인지 물어보세요. 그리고, 들은 내용을 손글씨로 적어보세요.",
+          "minutes": 15,
+          "baseXp": 110,
+          "completion": "손글씨 사진 1장 + 기록 2줄",
+          "followUp": "몰랐던 제약이 있었는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "들은 제약을 적은 손글씨",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "동료의 제약"
+            },
+            {
+              "hint": "내가 할 수 있는 것"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 3,
+          "number": "04",
+          "stage": "감사",
+          "title": "고마운 일 구체적으로 말하기",
+          "goal": "칭찬은 구체적일 때만 기억돼요.",
+          "action": "동료에게 고마운 일 하나를 구체적으로 말해보세요. 언제, 무엇이 도움이 됐는지 함께요.",
+          "minutes": 10,
+          "baseXp": 110,
+          "completion": "음성 1개 + 기록 2줄",
+          "followUp": "말하기 전 어색했는지, 하고 나서 어땠는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "고맙다고 말한 목소리 녹음",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "실제로 말한 문장"
+            },
+            {
+              "hint": "동료의 반응"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 4,
+          "number": "05",
+          "stage": "존중",
+          "title": "조용한 사람에게 의견 묻기",
+          "goal": "조용한 사람의 의견이 자주 사라져요.",
+          "action": "회의에서 말이 없던 사람에게 의견을 물어보세요.",
+          "minutes": 12,
+          "baseXp": 120,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "그 의견이 회의를 어떻게 바꿨는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "회의실 앞 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "누구에게 물었는지"
+            },
+            {
+              "hint": "그 사람이 한 말"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 5,
+          "number": "06",
+          "stage": "협력",
+          "title": "완료 기준 먼저 확인하기",
+          "goal": "완료 기준이 다르면 서로 고생만 해요.",
+          "action": "요청을 받을 때 완료 기준을 확인해보세요. 무엇을 언제까지인지 물어주세요.",
+          "minutes": 12,
+          "baseXp": 120,
+          "completion": "손글씨 사진 1장 + 기록 2줄",
+          "followUp": "확인하지 않았다면 어긋났을 부분이 있었는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "확인한 완료 기준 손글씨",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "받은 요청"
+            },
+            {
+              "hint": "확인한 기준"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 6,
+          "number": "07",
+          "stage": "피드백",
+          "title": "행동에 대해 피드백하기",
+          "goal": "사람을 말하면 방어가 되고 행동을 말하면 개선이 돼요.",
+          "action": "개선 피드백 하나를 사람이 아니라 행동으로 바꿔 말해보세요.",
+          "minutes": 15,
+          "baseXp": 130,
+          "completion": "손글씨 사진 1장 + 기록 2줄",
+          "followUp": "상대의 반응이 어떻게 달랐을지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "두 문장을 비교한 손글씨",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "원래 하려던 말"
+            },
+            {
+              "hint": "행동으로 바꾼 말"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 7,
+          "number": "08",
+          "stage": "존중",
+          "title": "내 실수 먼저 인정하기",
+          "goal": "실수를 먼저 인정하면 팀의 기준이 올라가요.",
+          "action": "회의나 대화에서 내 실수 하나를 인정해보세요.",
+          "minutes": 12,
+          "baseXp": 130,
+          "completion": "손글씨 사진 1장 + 기록 2줄",
+          "followUp": "말하기 전 무엇이 걸렸는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "인정한 실수를 적은 손글씨",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "인정한 실수"
+            },
+            {
+              "hint": "사람들의 반응"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 8,
+          "number": "09",
+          "stage": "경계",
+          "title": "업무량의 한계 공유하기",
+          "goal": "한계를 말하지 않으면 계속 쌓여요.",
+          "action": "내 업무량의 한계를 한 번 공유해보세요. 무엇을 언제까지 할 수 있는지 구체적으로요.",
+          "minutes": 15,
+          "baseXp": 130,
+          "completion": "손글씨 사진 1장 + 기록 2줄",
+          "followUp": "말하고 나서 일이 어떻게 조정됐는지 대화",
+          "needsPartnerWait": true,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "공유한 내용 손글씨",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "공유한 내용"
+            },
+            {
+              "hint": "상대의 답"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 9,
+          "number": "10",
+          "stage": "지속",
+          "title": "이번 주 회고 5분 정리하기",
+          "goal": "회고는 5분만 해도 팀이 달라져요.",
+          "action": "이번 주 감사한 일과 아쉬운 일을 5분 동안 정리해보세요. 책상 위 사물 사진으로 남겨주세요.",
+          "minutes": 10,
+          "baseXp": 130,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "다음 주에 하나만 바꾼다면 무엇일지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "이번 주를 기억할 사물 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "감사한 일"
+            },
+            {
+              "hint": "아쉬운 일"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 10,
+          "number": "11",
+          "stage": "마무리",
+          "title": "지난 10일 돌아보기",
+          "goal": "존중하며 일한 열흘이 팀을 어떻게 바꿨는지 보여요.",
+          "action": "그 동안 올린 사진과 글을 천천히 읽어보세요.",
+          "minutes": 15,
+          "baseXp": 500,
+          "completion": "기록 돌아보기",
+          "followUp": "",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [],
+          "records": [],
+          "isFinale": true
+        }
+      ]
+    },
+    {
+      "key": "pet",
+      "name": "반려동물",
+      "subject": "교감학",
+      "npc": "파우나",
+      "npcFile": "assets/npc-fauna.png",
+      "missionCount": 11,
+      "missions": [
+        {
+          "index": 0,
+          "number": "01",
+          "stage": "관찰",
+          "title": "{p}의 하루 따라다니기",
+          "goal": "곁에 있어도 하루를 통째로 본 적은 드물어요.",
+          "action": "오늘 {p}이 무엇을 하며 보내는지 지켜보고, 기억에 남는 세 장면을 찍어보세요.",
+          "minutes": 20,
+          "baseXp": 100,
+          "completion": "사진 3장 + 기록 3줄",
+          "followUp": "평소 놓치던 순간이 있었는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "첫 번째 장면",
+              "kind": "photo"
+            },
+            {
+              "label": "두 번째 장면",
+              "kind": "photo"
+            },
+            {
+              "label": "세 번째 장면",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "그 장면이 남은 이유"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 1,
+          "number": "02",
+          "stage": "함께하기",
+          "title": "처음 가보는 길 산책하기",
+          "goal": "늘 가던 길 말고 새 길에서 {p}의 다른 모습이 보여요.",
+          "action": "{p}과 한 번도 가보지 않은 길을 걸어보세요. 그리고, 그 길에서 한 장 찍어주세요.",
+          "minutes": 30,
+          "baseXp": 110,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "평소 산책과 무엇이 달랐는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "새로 걸어본 길 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "{p}의 반응"
+            },
+            {
+              "hint": "나에게 남은 장면"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 2,
+          "number": "03",
+          "stage": "함께하기",
+          "title": "15분 휴대폰 없이 놀아주기",
+          "goal": "같이 있어도 화면을 보면 함께가 아니에요.",
+          "action": "산책이나 놀이 15분을 휴대폰 없이 {p}과 온전히 함께해보세요.",
+          "minutes": 20,
+          "baseXp": 110,
+          "completion": "영상 1개 + 기록 1줄",
+          "followUp": "누가 더 즐거워 보였는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "함께 논 순간 영상",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "그 15분 동안의 모습"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 3,
+          "number": "04",
+          "stage": "진심",
+          "title": "{p}과 셀카 한 장 남기기",
+          "goal": "같이 찍은 사진이 우리의 기록이 돼요.",
+          "action": "{p}과 얼굴이 함께 나오는 셀카를 한 장 남겨보세요. 잘 안 찍혀도 괜찮아요.",
+          "minutes": 12,
+          "baseXp": 110,
+          "completion": "사진 1장 + 기록 1줄",
+          "followUp": "마지막으로 같이 찍은 게 언제였는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "{p}과 함께 찍은 셀카",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "찍으면서 있었던 일"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 4,
+          "number": "05",
+          "stage": "소통",
+          "title": "{p}이 가는 길로 따라가기",
+          "goal": "선택할 수 있으면 하루가 훨씬 즐거워져요.",
+          "action": "산책에서 {p}이 가고 싶어 하는 길로 3번 따라가보세요.",
+          "minutes": 25,
+          "baseXp": 120,
+          "completion": "영상 1개 + 기록 3줄",
+          "followUp": "내가 정할 때와 무엇이 달랐는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "{p}이 고른 길 영상",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "어디로 갔는지"
+            },
+            {
+              "hint": "어디로 갔는지"
+            },
+            {
+              "hint": "어디로 갔는지"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 5,
+          "number": "06",
+          "stage": "돌봄",
+          "title": "{p}이 가장 좋아하는 간식 만들어주기",
+          "goal": "좋아하는 걸 직접 준비하는 시간이 마음에 남아요.",
+          "action": "{p}이 좋아하는 간식을 직접 만들거나 새로 골라 주세요. 먹는 모습을 남겨주세요.",
+          "minutes": 30,
+          "baseXp": 120,
+          "completion": "영상 1개 + 기록 2줄",
+          "followUp": "고를 때 무엇을 고민했는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "먹는 모습 영상",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "준비한 간식"
+            },
+            {
+              "hint": "{p}의 반응"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 6,
+          "number": "07",
+          "stage": "함께하기",
+          "title": "{p}과 친구 만나러 가기",
+          "goal": "다른 존재와 어울리는 모습에서 새로운 성격이 보여요.",
+          "action": "{p}과 다른 반려동물이나 사람을 만나러 가보세요. 거리는 {p}이 정하게 해주세요.",
+          "minutes": 30,
+          "baseXp": 120,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "{p}이 편해 보였는지, 언제 긴장했는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "만난 순간 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "{p}이 보인 반응"
+            },
+            {
+              "hint": "내가 지킨 거리"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 7,
+          "number": "08",
+          "stage": "진심",
+          "title": "{p}에게 하고 싶은 말 녹음하기",
+          "goal": "말이 통하지 않아도 목소리는 전해져요.",
+          "action": "{p}을 보면서 하고 싶은 말을 소리 내어 녹음해보세요. 짧아도 괜찮아요.",
+          "minutes": 12,
+          "baseXp": 130,
+          "completion": "음성 1개 + 기록 2줄",
+          "followUp": "말하면서 어떤 마음이 들었는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "{p}에게 한 말 녹음",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "한 말"
+            },
+            {
+              "hint": "{p}의 반응"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 8,
+          "number": "09",
+          "stage": "기록",
+          "title": "{p}의 지금 모습 남겨두기",
+          "goal": "오늘의 모습은 오늘만 남길 수 있어요.",
+          "action": "{p}의 발, 귀, 얼굴을 가까이 찍어 오늘의 모습을 남겨주세요.",
+          "minutes": 15,
+          "baseXp": 130,
+          "completion": "사진 2장 + 기록 2줄",
+          "followUp": "1년 뒤 이 사진을 보면 어떤 기분일지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "발 사진",
+              "kind": "photo"
+            },
+            {
+              "label": "얼굴 사진",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "오늘의 {p}에게 한 줄"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 9,
+          "number": "10",
+          "stage": "기록",
+          "title": "{p}과 나의 사진첩 만들기",
+          "goal": "흩어진 사진을 모으면 함께한 시간이 보여요.",
+          "action": "그동안 찍은 {p} 사진 중 가장 아끼는 것들을 모아 한 곳에 정리해보세요.",
+          "minutes": 25,
+          "baseXp": 130,
+          "completion": "사진 1장 + 기록 2줄",
+          "followUp": "모으면서 잊고 있던 기억이 떠올랐는지 대화",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [
+            {
+              "label": "정리한 사진첩 화면",
+              "kind": "photo"
+            }
+          ],
+          "records": [
+            {
+              "hint": "가장 아끼는 한 장"
+            },
+            {
+              "hint": "그 사진의 이야기"
+            }
+          ],
+          "isFinale": false
+        },
+        {
+          "index": 10,
+          "number": "11",
+          "stage": "마무리",
+          "title": "지난 10일 돌아보기",
+          "goal": "말없이 나눈 열흘이 어떤 추억을 남겼는지 보여요.",
+          "action": "그 동안 올린 사진과 글을 천천히 읽어보세요.",
+          "minutes": 15,
+          "baseXp": 500,
+          "completion": "기록 돌아보기",
+          "followUp": "",
+          "needsPartnerWait": false,
+          "familyScope": "all",
+          "proofs": [],
+          "records": [],
+          "isFinale": true
+        }
+      ]
+    }
+  ]
+}
