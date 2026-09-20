@@ -94,6 +94,27 @@
       try { L.setState(saved); } catch (e) { console.warn("[persist] 복원 실패", e); }
     }
 
+    // ?streak=N — 오늘을 포함해 N 일을 연속 참여로 채운다(시연·촬영용).
+    // 서버에 직접 넣으면 이 브라우저가 자기 상태를 도로 밀어 덮는다 — 여기서 넣어야 이긴다.
+    try {
+      var sn = parseInt(new URLSearchParams(location.search).get("streak") || "", 10);
+      if (sn > 0 && sn <= 400) {
+        var done = {}, t = new Date();
+        for (var i2 = 0; i2 < sn; i2++) {
+          var d2 = new Date(t.getFullYear(), t.getMonth(), t.getDate() - i2);
+          done[d2.getFullYear() + "-" + String(d2.getMonth() + 1).padStart(2, "0") + "-" + String(d2.getDate()).padStart(2, "0")] = 1;
+        }
+        history.replaceState(null, "", location.pathname);
+        L.setState({
+          doneDays: done, frozenDays: {}, streak: sn,
+          bestStreak: Math.max(sn, L.state.bestStreak || 0),
+          lastDay: t.getFullYear() + "-" + String(t.getMonth() + 1).padStart(2, "0") + "-" + String(t.getDate()).padStart(2, "0")
+        });
+        L.toast && L.toast(sn + "일 연속으로 맞췄어요");
+      }
+    } catch (e) {}
+
+
     var t = null;
     var orig = L.setState.bind(L);
     L.setState = function (patch, cb) {
