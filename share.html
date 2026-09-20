@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PLove 회고</title>
+<title>PLove | 회고</title>
 <meta name="description" content="사랑에도 연습이 필요한 거 아세요?">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="PLove">
@@ -163,7 +163,7 @@ body{margin:0;background:#fffdfb;color:#3a2624;font-family:'Noto Sans KR',sans-s
            '<span class="note">이 회고는 글쓴이가 공유한 것이에요.</span></div>';
 
       root.innerHTML = h;
-      document.title = (p.subject ? p.subject + " 회고" : "PLove 회고") + " · PLove";
+      document.title = "PLove | " + (p.subject ? p.subject + " 회고" : "회고");
     })
     .catch(function () { state("열지 못했어요", "잠시 뒤 다시 시도해주세요."); });
 })();
