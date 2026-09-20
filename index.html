@@ -2488,14 +2488,41 @@ class Component extends DCLogic {
   }
   // 기획서 ⑦ — 68점↑ LV.3 · 40점↑ LV.2 · 그 외 LV.1. 테스트로는 LV.3 을 넘지 않는다.
   TEST_MAX_LV = 3;
+  // 답변이 얼마나 말이 되는가 — 0(아무 내용 없음) ~ 1(온전함).
+  // 길이만 보면 'ㅇㅇㅇ' 도 성의로 잡힌다. 사전이 없으니 뜻은 못 보지만,
+  // 낱자(ㅇ·ㅏ)나 같은 글자 반복처럼 '치다 만 흔적'은 또렷해서 그것만 본다.
+  answerQuality(t) {
+    const raw = String(t == null ? "" : t).trim();
+    const cs = Array.from(raw.replace(/\s/g, ""));
+    if (!cs.length) return 0;
+    const jamo = cs.filter(c => /[\u3131-\u318E]/.test(c)).length;      // ㄱ~ㅎ, ㅏ~ㅣ 낱자
+    const word = cs.filter(c => /[\uAC00-\uD7A3a-zA-Z0-9]/.test(c)).length; // 뜻을 이루는 글자
+    const uniq = new Set(cs).size;
+    const freq = {};
+    cs.forEach(c => { freq[c] = (freq[c] || 0) + 1; });
+    const top = Math.max.apply(null, Object.keys(freq).map(k => freq[k]));
+    let q = 1;
+    q -= Math.min(0.8, jamo * 0.5);                 // 낱자가 하나만 껴도 대개 치다 만 것이다
+    // '커피'·'모름' 처럼 두 글자 단어는 건드리지 않는다 — 되풀이가 있을 때만 본다
+    if (uniq <= 2 && cs.length >= 3) q -= 0.5;      // 서로 다른 글자가 둘 이하인데 길다
+    if (cs.length >= 3 && top / cs.length > 0.6) q -= 0.4; // 한 글자가 대부분
+    if (word / cs.length < 0.5) q -= 0.4;           // 뜻을 이룰 글자가 절반도 안 된다
+    if (cs.length <= 1) q -= 0.5;                   // 한 글자로는 답이 되지 않는다
+    return Math.max(0, Math.min(1, q));
+  }
   finish(answers) {
     const shorts = answers.slice(0, 14);
-    const filled = shorts.filter(a => a && a.length > 0);
-    const longLen = (answers[14] || "").length;
-    const avg = filled.length ? filled.reduce((s, a) => s + a.length, 0) / filled.length : 0;
+    // 내용이 없는 답은 센 만큼 깎는다 — 'ㅇㅇㅇ' 열네 개로 레벨이 오르면 안 된다
+    const qs = shorts.map(a => this.answerQuality(a));
+    const filledQ = qs.reduce((s, q) => s + q, 0);
+    const real = shorts.filter((a, i) => qs[i] >= 0.5);
+    const essay = answers[14] || "";
+    const longLen = (essay || "").length * this.answerQuality(essay);
+    const avg = real.length ? real.reduce((s, a) => s + a.length, 0) / real.length : 0;
+    const filled = real;
     // 만점 기준 — 평균 20자, 서술형 300자. 기획서 값(12자·120자)은 너무 쉽게 차서
     // 대충 답해도 LV.3 이 나왔다. 정말 성의 있게 쓴 경우만 3이 되게 올렸다.
-    const score = (filled.length / 14) * 50 + Math.min(avg / 20, 1) * 20 + Math.min(longLen / 300, 1) * 30;
+    const score = (filledQ / 14) * 50 + Math.min(avg / 20, 1) * 20 + Math.min(longLen / 300, 1) * 30;
     // 임계도 함께 올렸다(기획서는 68/40). 14문항을 다 채우고 서술형까지 길게 쓴 사람만 3이다.
     const level = Math.min(this.TEST_MAX_LV, score >= 85 ? 3 : score >= 50 ? 2 : 1);
     this.testStart = Date.now();
