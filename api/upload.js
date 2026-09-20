@@ -1,6 +1,7 @@
 // 인증물 업로드 — 서버가 서명된 주소를 내주고 브라우저가 거기로 직접 올린다.
 // 파일을 서버로 통과시키지 않는 이유: 영상은 수십 MB라 서버리스 본문 한도를 넘는다.
 import { readBody, isEmail, token } from "./_lib.js";
+import { blocked } from "./_guard.js";
 
 const SB_URL = process.env.SUPABASE_URL || "";
 const SB_KEY = process.env.SUPABASE_SERVICE_ROLE || "";
@@ -8,6 +9,8 @@ const BUCKET = "proofs";
 const MAX = 50 * 1024 * 1024;
 
 export default async function handler(req, res) {
+  // 돈이 나가는 자리다 — 남용은 여기서 끊는다
+  if (await blocked(req, res, "upload")) return;
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "method" });
   if (!SB_URL || !SB_KEY) return res.status(503).json({ ok: false, error: "storage_not_configured" });
 

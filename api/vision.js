@@ -1,7 +1,10 @@
 // 인증 사진이 미션 요구와 맞는지 본다. 없으면 채점이 "파일이 있나"만 보게 된다.
+import { blocked } from "./_guard.js";
 const MODEL = process.env.GEMINI_VISION_MODEL || process.env.GEMINI_MODEL || "gemini-3-flash-preview";
 
 export default async function handler(req, res) {
+  // 돈이 나가는 자리다 — 남용은 여기서 끊는다
+  if (await blocked(req, res, "vision")) return;
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "method" });
   const key = process.env.GEMINI_API_KEY;
   if (!key) return res.status(503).json({ ok: false, error: "ai_disabled" });

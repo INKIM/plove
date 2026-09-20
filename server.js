@@ -61,15 +61,6 @@
   }
   function myEmail(L) { return (L.state.gEmail || "").trim(); }
 
-  /* 초대 토큰은 화면이 뜨기도 전에 챙긴다.
-     boot() 은 로그인 전이면 먼저 돌아나가서 저장할 기회가 없고,
-     구글 로그인은 origin+pathname 으로 돌아와 ?invite= 를 떨군다.
-     여기서 안 챙기면 로그인 안 한 사람의 초대는 그대로 사라진다. */
-  try {
-    var tk0 = new URLSearchParams(location.search).get("invite");
-    if (tk0) sessionStorage.setItem("plove.invite", tk0);
-  } catch (e) {}
-
   (async function () {
     var L = await waitLogic();
     if (!L) return;
@@ -304,6 +295,26 @@
       L.setState({ partner: r.d.partner, partnerEmail: r.d.email, myOpen: r.d.openCourses || [] });
     }
 
+    /* 선물 링크로 들어온 경우 — ?gift=토큰 (메일의 '선물 받기') */
+    async function handleGift() {
+      var tk;
+      try { tk = sessionStorage.getItem("plove.gift"); } catch (e) {}
+      if (!tk) return;
+      var me = myEmail(L);
+      if (!me) return;                       // 로그인 뒤에 다시 부른다
+      try { sessionStorage.removeItem("plove.gift"); } catch (e) {}
+      var r = await post("/api/gift", { action: "claim", token: tk, email: me });
+      if (r.ok && r.d.granted) {
+        L.setState({ plus: true, subSince: Date.now(), subCancelled: false, subEnds: "" });
+        L.sfx && L.sfx("done");
+        L.toast && L.toast((r.d.from ? r.d.from + "님의 " : "") + "선물이 도착했어요");
+      } else {
+        var m = { already_claimed: "이미 받은 선물이에요", expired: "선물이 만료됐어요",
+                  not_found: "선물을 찾을 수 없어요" }[r.d && r.d.error] || "선물을 받지 못했어요";
+        L.toast && L.toast(m);
+      }
+    }
+
     /* 초대 링크로 들어온 경우 — ?invite=토큰 */
     async function handleInvite() {
       var tk = new URLSearchParams(location.search).get("invite");
@@ -338,6 +349,7 @@
         L.setState(Object.assign({}, r.d.data, window.__ploveSeed || {}, { screen: L.state.screen }));
       }
       if (window.__ploveSeed) { pushProgress(); window.__ploveSeed = null; }
+      await handleGift();
       await handleInvite();
       await loadPartner();
     }

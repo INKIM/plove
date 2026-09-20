@@ -4,6 +4,27 @@ import { db, hasDb, readBody, token, sendMail, shell, url, isEmail, FOOT_LINK } 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "method" });
   const b = readBody(req);
+
+  // 선물 받기 — 메일의 링크로 들어온 사람이 로그인한 뒤에 부른다
+  if (b.action === "claim") {
+    const tk = String(b.token || "").trim();
+    const me = String(b.email || "").trim();
+    if (!tk || !isEmail(me)) return res.status(400).json({ ok: false, error: "bad_request" });
+    if (!hasDb()) return res.status(200).json({ ok: true, granted: true, note: "db_not_configured" });
+    try {
+      const rows = await db(`gifts?token=eq.${encodeURIComponent(tk)}&select=id,status,expires_at,sender_name`);
+      const g = rows[0];
+      if (!g) return res.status(404).json({ ok: false, error: "not_found" });
+      if (g.status === "claimed") return res.status(409).json({ ok: false, error: "already_claimed" });
+      if (new Date(g.expires_at) < new Date()) return res.status(410).json({ ok: false, error: "expired" });
+      await db(`gifts?id=eq.${g.id}`, { method: "PATCH", prefer: "return=minimal", body: {
+        status: "claimed", claimed_at: new Date().toISOString(), claimed_by: me } });
+      return res.status(200).json({ ok: true, granted: true, from: g.sender_name || "" });
+    } catch (e) {
+      return res.status(500).json({ ok: false, error: String(e.message || e) });
+    }
+  }
+
   const to = String(b.toEmail || "").trim();
   if (!isEmail(to)) return res.status(400).json({ ok: false, error: "invalid_email" });
   const from = String(b.senderEmail || "").trim();

@@ -58,6 +58,18 @@
     return clean(o);
   }
 
+  // 메일 링크(초대·선물)로 들어오면 남아 있던 화면을 띄우지 않는다.
+  // 받는 사람은 대개 로그인부터 해야 하고, 남의 진행 화면이 먼저 뜨면 안 된다.
+  var FROM_LINK = false;
+  try {
+    var qs = new URLSearchParams(location.search);
+    var gk = qs.get("gift"), ik = qs.get("invite");
+    if (gk) sessionStorage.setItem("plove.gift", gk);
+    if (ik) sessionStorage.setItem("plove.invite", ik);
+    FROM_LINK = !!(gk || ik);
+    window.__ploveFromLink = FROM_LINK;
+  } catch (e) {}
+
   function attach(L) {
     // ?reset=1 — 이 기기에 남은 진행을 지우고 처음부터 시작한다.
     // 서버를 비워도 이 브라우저 저장본은 안 지워진다(서버가 잠깐 안 될 때
@@ -94,6 +106,7 @@
         saved.selected = saved.selected || saved.course;
       }
       delete saved.screen;
+      if (FROM_LINK) saved.screen = "start";   // 링크로 왔으면 처음부터
       try { L.setState(saved); } catch (e) { console.warn("[persist] 복원 실패", e); }
     }
 

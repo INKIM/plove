@@ -1,6 +1,7 @@
 // PLOVE — 프로토타입의 window.claude.complete 를 대신하는 단 하나의 LLM 통로.
 // 화면 코드는 그대로 두고 이 라우트만 갈아끼운다. 키는 서버에만 있다.
 
+import { blocked } from "./_guard.js";
 const MODEL = process.env.GEMINI_MODEL || "gemini-3-flash-preview";
 const ENDPOINT = (m) =>
   `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`;
@@ -22,6 +23,8 @@ async function callGemini(body, key, signal) {
 }
 
 export default async function handler(req, res) {
+  // 돈이 나가는 자리다 — 남용은 여기서 끊는다
+  if (await blocked(req, res, "llm")) return;
   if (req.method !== "POST") {
     return res.status(405).json({ error: "method_not_allowed" });
   }

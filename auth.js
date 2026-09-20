@@ -57,6 +57,8 @@
       if (advanced) return;
       var sc = L.state.screen;
       if (sc && sc !== "start" && sc !== "signin") return;
+      // 메일 링크로 온 사람은 로그인 화면에 둔다 — 토큰을 받는 것이 먼저다
+      if (window.__ploveFromLink) return;
       advanced = true;
       // 이 기기에 이미 진행이 있으면 기다릴 이유가 없다
       if (Object.keys(L.state.levels || {}).length) { L.setState({ screen: "home" }); return; }
