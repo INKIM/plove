@@ -55,6 +55,7 @@ body{margin:0;word-break:keep-all;overflow-wrap:break-word;background:#b62a22}
 a{color:#fffdfb;text-decoration:underline}
 a:hover{color:#ffd9d5}
 @keyframes plIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.gmail-field:focus-within{border-bottom-color:#b62a22}
 @keyframes plBobX{0%,100%{transform:translate(0,-50%)}50%{transform:translate(5px,-50%)}}
 @keyframes plSpin{to{transform:rotate(360deg)}}
 @keyframes plBounce{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-7px);opacity:1}}
@@ -304,9 +305,12 @@ Google로 계속하기
 <div style="display:flex;flex-direction:column;gap:10px">
 <div style="display:flex;flex-direction:column;gap:3px">
 <span style="font-weight:800;font-size:15px;color:#2e1211">누구를 초대할까요?</span>
-<span style="font-weight:500;font-size:13px;line-height:1.6;color:#7a6360;text-wrap:pretty">상대가 쓰는 구글 계정 주소를 적어주세요. 이 계정으로 로그인한 사람만 수락할 수 있어요.</span>
+<span style="font-weight:500;font-size:13px;line-height:1.6;color:#7a6360;text-wrap:pretty">상대가 쓰는 구글 아이디를 적어주세요. 이 계정으로 로그인한 사람만 수락할 수 있어요.</span>
 </div>
-<input value="{{ inviteEmail }}" onChange="{{ setInviteEmail }}" placeholder="name@gmail.com" style="width:100%;height:52px;padding:0 4px;border:0;border-bottom:2px solid #e3dbd9;outline:0;background:transparent;font-family:'Noto Sans KR',sans-serif;font-weight:500;font-size:17px;color:#2e1211" style-focus="border-bottom-color:#b62a22">
+<div class="gmail-field" style="display:flex;align-items:center;gap:2px;border-bottom:2px solid #e3dbd9">
+<input value="{{ inviteId }}" onChange="{{ setInviteEmail }}" placeholder="아이디" style="flex:1;min-width:0;height:52px;padding:0 4px;border:0;outline:0;background:transparent;font-family:'Noto Sans KR',sans-serif;font-weight:500;font-size:17px;color:#2e1211">
+<span style="flex:none;font-weight:500;font-size:17px;color:#7a6360;white-space:nowrap">@gmail.com</span>
+</div>
 <sc-if value="{{ hasInviteErr }}" hint-placeholder-val="{{ false }}">
 <span style="font-weight:600;font-size:12px;color:#b62a22">{{ inviteErr }}</span>
 </sc-if>
@@ -5061,7 +5065,12 @@ class Component extends DCLogic {
         : "이 계정으로 로그인한 사람만 수락할 수 있어요.",
       inviteExpiry: "7일 뒤 만료돼요. 지나면 다시 만들 수 있어요.",
       inviteEmail: this.state.inviteEmail || "",
-      setInviteEmail: e => this.setState({ inviteEmail: e.target.value, inviteErr: "" }),
+      // 구글 로그인만 받으므로 @gmail.com 은 고정이다. 입력칸엔 아이디만 보인다.
+      inviteId: (this.state.inviteEmail || "").split("@")[0],
+      setInviteEmail: e => {
+        const id = String(e.target.value).replace(/[@\s]/g, "");
+        this.setState({ inviteEmail: id ? id + "@gmail.com" : "", inviteErr: "" });
+      },
       inviteErr: this.state.inviteErr || "",
       hasInviteErr: !!this.state.inviteErr,
       emailOk: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((this.state.inviteEmail || "").trim()),
@@ -5082,7 +5091,7 @@ class Component extends DCLogic {
       })(),
       makeInvite: () => {
         const v = (this.state.inviteEmail || "").trim();
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { this.sfx("error"); this.setState({ inviteErr: "이메일 주소를 정확히 적어주세요." }); return; }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { this.sfx("error"); this.setState({ inviteErr: "구글 아이디를 정확히 적어주세요." }); return; }
         // 서버 연결 지점 — 초대 코드 생성(7일 만료) + 수락 계정을 이 이메일로 잠그고 초대 메일 발송
         const code = Math.random().toString(36).slice(2, 8).toUpperCase();
         this.sfx("submit");
