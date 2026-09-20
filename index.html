@@ -1788,7 +1788,8 @@ Google로 계속하기
 <div style="flex:1;overflow:auto;padding:30px clamp(24px,4vw,56px) 64px">
 <div style="width:100%;max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:14px">
 <span style="font-weight:500;font-size:13px;line-height:1.6;color:#7a6360">{{ rankTitle }} {{ rankNote }}</span>
-<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;flex-direction:column">
+<div style="height:1px;background:#ece4e2"></div>
 <sc-for list="{{ rankRows }}" as="r" hint-placeholder-count="10">
 <div style="{{ r.rowStyle }}">
 <span style="{{ r.rankStyle }}">{{ r.rank }}</span>
@@ -3502,14 +3503,15 @@ class Component extends DCLogic {
           xp: r.streak + "일 연속",
           avStyle: this.avaStyle(r.me ? (this.state.photo || "") : "", r.name, 40),
           initial: this.initialOf(r.name),
-          rowStyle: {
-            display: "flex", alignItems: "center", gap: "14px", padding: "13px 16px",
-            borderRadius: "14px",
-            background: r.me ? "#fdf2f0" : "#fffdfb",
-            border: r.me ? "2px solid #b62a22" : "1px solid #ece4e2"
-          },
+          rowStyle: Object.assign(
+            { display: "flex", alignItems: "center", gap: "14px", padding: "16px 12px" },
+            // 내 행은 배경으로 짚는다 — 둥근 배경 아래에 구분선을 그으면 선이 잘려 보인다
+            r.me
+              ? { background: "#fdf2f0", borderRadius: "14px" }
+              : { borderBottom: "1px solid #ece4e2" }
+          ),
           rankStyle: { flex: "none", width: "26px", fontWeight: 800, fontSize: "15px", color: i < 3 ? "#b62a22" : "#a89290" },
-          nameStyle: { flex: 1, minWidth: 0, fontWeight: r.me ? 800 : 600, fontSize: "14px", color: "#2e1211" },
+          nameStyle: { flex: 1, minWidth: 0, fontWeight: 700, fontSize: "16px", color: "#2e1211" },
           lvStyle: { flex: "none", fontWeight: 800, fontSize: "14px", color: "#b62a22" },
           xpStyle: { flex: "none", minWidth: "72px", textAlign: "right", fontWeight: 600, fontSize: "13px", color: "#7a6360" }
         }));
