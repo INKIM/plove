@@ -70,6 +70,18 @@ create table if not exists shares (
 );
 create index if not exists shares_slug on shares (slug);
 
+
+-- 6) 진행도 — 계정마다 한 줄. 파트너가 내 기록을 보려면 서버에 있어야 한다.
+--    (localStorage 에만 두면 상대 화면에서 가져올 데가 없다)
+create table if not exists progress (
+  email       text primary key,
+  name        text,
+  photo_url   text,
+  data        jsonb not null,            -- levels·completedMap·records·xp·gems·streak 스냅샷
+  updated_at  timestamptz not null default now()
+);
+alter table progress enable row level security;
+
 -- RLS — 브라우저(anon)는 아무것도 못 읽고 못 쓴다. 전부 서버(service_role)를 거친다.
 alter table inquiries      enable row level security;
 alter table gifts          enable row level security;

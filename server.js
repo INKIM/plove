@@ -137,6 +137,87 @@
       }
     };
 
-    window.__ploveServer = { post: post };
+    /* ── 진행도 동기화 ───────────────────────────────────────────
+       파트너가 내 기록을 보려면 서버에 있어야 한다. 덤으로 기기가 바뀌어도 이어진다.
+       localStorage 는 그대로 둔다 — 서버가 죽어도 혼자서는 계속 돈다. */
+    var KEEP = ["name","levels","completedMap","totalXp","totalGems","records",
+                "streak","lastDay","doneDays","frozenDays","freezes","extraToday",
+                "retryCredits","plus","famMembers","petKinds","petNames","myOpen"];
+    function snapshot() {
+      var o = {};
+      KEEP.forEach(function (k) { if (L.state[k] !== undefined) o[k] = L.state[k]; });
+      // 사진은 blob: URL 이라 남의 화면에서 안 열린다 — 보내지 않는다
+      var r = JSON.parse(JSON.stringify(o.records || {}));
+      Object.keys(r).forEach(function (ck) {
+        Object.keys(r[ck] || {}).forEach(function (mi) { if (r[ck][mi]) r[ck][mi].photos = []; });
+      });
+      o.records = r;
+      return o;
+    }
+    var pushT = null;
+    function pushProgress() {
+      var me = myEmail(L);
+      if (!me) return;
+      clearTimeout(pushT);
+      pushT = setTimeout(function () {
+        post("/api/progress", { action: "save", email: me, name: (L.state.name || "").trim(), data: snapshot() })
+          .then(function (r) { if (!r.ok && r.d && r.d.error !== "db_not_configured") console.warn("[progress]", r.d); });
+      }, 2500);
+    }
+
+    /* 파트너 — 연결 상태와 상대 진행도를 받아 드롭다운을 켠다 */
+    async function loadPartner() {
+      var me = myEmail(L);
+      if (!me) return;
+      var r = await post("/api/progress", { action: "partner", email: me });
+      if (!r.ok || !r.d.partner) return;
+      L.setState({ partner: r.d.partner, partnerEmail: r.d.email, myOpen: r.d.openCourses || [] });
+    }
+
+    /* 초대 링크로 들어온 경우 — ?invite=토큰 */
+    async function handleInvite() {
+      var tk = new URLSearchParams(location.search).get("invite");
+      if (!tk) return;
+      var me = myEmail(L);
+      if (!me) { try { sessionStorage.setItem("plove.invite", tk); } catch (e) {} return; }
+      var r = await post("/api/partner", { action: "accept", token: tk, myEmail: me, openCourses: L.state.myOpen || [] });
+      history.replaceState(null, "", location.pathname);
+      if (r.ok) {
+        L.sfx && L.sfx("done");
+        L.toast && L.toast("이제 서로의 기록을 볼 수 있어요");
+        await loadPartner();
+      } else {
+        var m = { expired: "초대가 만료됐어요", invalid_invite: "이미 처리된 초대예요",
+                  wrong_account: "이 초대는 다른 주소로 보내진 초대예요",
+                  blocked: "이 사람과는 다시 연결할 수 없어요" }[r.d && r.d.error] || "초대를 수락하지 못했어요";
+        L.toast && L.toast(m);
+      }
+    }
+
+    // 로그인해 있으면 서버 것을 먼저 받아온다 (기기가 바뀌어도 이어지게)
+    var booted = false;
+    async function boot() {
+      var me = myEmail(L);
+      if (booted || !me) return;
+      booted = true;
+      try { var t = sessionStorage.getItem("plove.invite"); if (t) { sessionStorage.removeItem("plove.invite"); history.replaceState(null,"","?invite="+t); } } catch (e) {}
+      var r = await post("/api/progress", { action: "mine", email: me });
+      if (r.ok && r.d.data && Object.keys(r.d.data.levels || {}).length) {
+        L.setState(Object.assign({}, r.d.data, { screen: L.state.screen }));
+      }
+      await handleInvite();
+      await loadPartner();
+    }
+
+    var origSet = L.setState.bind(L);
+    L.setState = function (patch, cb) {
+      var r = origSet(patch, cb);
+      if (patch && Object.keys(patch).some(function (k) { return KEEP.indexOf(k) >= 0; })) pushProgress();
+      if (patch && patch.gEmail) setTimeout(boot, 300);
+      return r;
+    };
+    setTimeout(boot, 2500);
+
+    window.__ploveServer = { post: post, pushProgress: pushProgress, loadPartner: loadPartner, boot: boot };
   })();
 })();
