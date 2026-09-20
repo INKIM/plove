@@ -77,10 +77,64 @@
       cg(to);   // 화면은 먼저 넘어간다 (결제 흐름 그대로)
       post("/api/gift", {
         toEmail: to, senderEmail: myEmail(L), senderName: (L.state.name || "").trim(),
-        message: (L.state.giftMsg || "").trim(),
       }).then(function (r) {
         if (!r.ok) { console.warn("[gift]", r.status, r.d); L.toast && L.toast("선물은 담겼는데 메일이 안 갔어요"); }
       });
+    };
+
+    /* 인증 사진 판정 — 원래는 "파일이 있나"만 봤다. 실제 내용을 본다.
+       보내기 전에 1024px 로 줄인다: 토큰이 절반 이하로 줄고 판정은 거의 같다. */
+    async function shrink(url, mime) {
+      const blob = await (await fetch(url)).blob();
+      const bmp = await createImageBitmap(blob);
+      const max = 1024;
+      const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
+      const w = Math.round(bmp.width * k), h = Math.round(bmp.height * k);
+      const cv = document.createElement("canvas");
+      cv.width = w; cv.height = h;
+      cv.getContext("2d").drawImage(bmp, 0, 0, w, h);
+      const out = cv.toDataURL("image/jpeg", 0.8);
+      return { mime: "image/jpeg", data: out.slice(out.indexOf(",") + 1) };
+    }
+
+    var rawAnalyze = L.analyzePhotos.bind(L);
+    L.analyzePhotos = async function () {
+      var base = await rawAnalyze();          // 빠진 슬롯 검사는 그대로 쓴다
+      var m = L.courseMissions()[L.state.runM] || {};
+      var slots = m.sl || [];
+      var sf = L.state.slotFiles || [];
+      if (!slots.length) return base;
+
+      var items = [];
+      for (var i = 0; i < slots.length; i++) {
+        var f = sf[i];
+        if (!f || !f.url || !/^image\//.test(f.type || "")) continue;   // 사진만 본다
+        try { var im = await shrink(f.url, f.type); items.push({ i: i, label: L.famFill(slots[i], L.state.runM), mime: im.mime, data: im.data }); }
+        catch (e) { console.warn("[vision] 사진을 못 읽었다", e && e.message); }
+      }
+      if (!items.length) return base;
+
+      try {
+        var r = await post("/api/vision", {
+          mission: L.famFill(m.t, L.state.runM) + " — " + (m.a || ""),
+          items: items.map(function (x) { return { label: x.label, mime: x.mime, data: x.data }; }),
+        });
+        if (!r.ok || !r.d.results) return base;      // 실패하면 기존 판정으로 — 반려하지 않는다
+        var okCount = 0, mismatch = [];
+        r.d.results.forEach(function (res, n) {
+          if (res.ok) { okCount++; return; }
+          mismatch.push({ label: items[n].label, why: res.why || "요구한 장면이 잘 안 보여요" });
+        });
+        var missing = slots.length - items.length;    // 아예 안 올린 슬롯
+        return {
+          photoScore: Math.round(40 * okCount / slots.length),
+          mismatch: base.mismatch.filter(function (x) { return /사진이 없어요/.test(x.why); }).concat(mismatch),
+          vision: true,
+        };
+      } catch (e) {
+        console.warn("[vision]", e && e.message);
+        return base;
+      }
     };
 
     window.__ploveServer = { post: post };

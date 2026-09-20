@@ -11,13 +11,12 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, error: "self_gift" });
 
   const name = String(b.senderName || "").trim() || "친구";
-  const msg = String(b.message || "").trim().slice(0, 300);
   const tk = token();
 
   if (hasDb()) {
     try {
       await db("gifts", { method: "POST", prefer: "return=minimal", body: {
-        sender_email: from || null, sender_name: name, to_email: to, message: msg || null, token: tk,
+        sender_email: from || null, sender_name: name, to_email: to, token: tk,
       }});
     } catch (e) { console.error("[gift] 저장 실패", e.message); }
   }
@@ -28,8 +27,7 @@ export default async function handler(req, res) {
       subject: `${name}님이 PLove 구독권을 선물했어요`,
       html: shell(
         `${name}님이 한 달 구독권을 보냈어요`,
-        `사랑을 연습하는 30일, 같이 해보자는 마음이에요.` +
-        (msg ? `<div style="margin-top:14px;padding:14px 16px;background:#fdf2f0;border-radius:14px;color:#2e1211">“${msg}”</div>` : ""),
+        `사랑에도 기술이 있습니다. PLove는 Practice Love의 합성어로, 알고 있지만 표현하지 못했던 마음을 AI와 함께 매일 하나씩 실천하는 서비스입니다. 지금 구독권 선물을 수락하고, 서비스를 시작해보세요!`,
         { href: url(`/?gift=${tk}`), label: "선물 받기" }
       ),
     });
