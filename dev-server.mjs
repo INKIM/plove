@@ -9,18 +9,22 @@ const TYPES = { ".html":"text/html; charset=utf-8", ".js":"text/javascript; char
   ".json":"application/json; charset=utf-8", ".png":"image/png", ".webp":"image/webp",
   ".jpg":"image/jpeg", ".svg":"image/svg+xml", ".ico":"image/x-icon", ".mp4":"video/mp4" };
 
-const handler = (await import("./api/llm.js")).default;
 
 createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
-  if (url.pathname === "/api/llm") {
+  if (url.pathname.startsWith("/api/")) {
+    const name = url.pathname.slice(5).replace(/[^a-z0-9_-]/gi, "");
     const chunks = []; for await (const c of req) chunks.push(c);
     let body = null; try { body = JSON.parse(Buffer.concat(chunks).toString("utf8")); } catch {}
     const shim = {
+      setHeader(k, v) { res.setHeader(k, v); return shim; },
       status(c) { res.statusCode = c; return shim; },
       json(o) { res.setHeader("content-type", "application/json; charset=utf-8"); res.end(JSON.stringify(o)); return shim; },
     };
-    try { await handler({ method: req.method, body }, shim); }
+    try {
+      const mod = await import("./api/" + name + ".js?t=" + Date.now());
+      await mod.default({ method: req.method, body }, shim);
+    }
     catch (e) { res.statusCode = 500; res.end(JSON.stringify({ error: String(e?.message) })); }
     return;
   }

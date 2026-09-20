@@ -85,6 +85,8 @@
     window.__ploveSave = { key: KEY, logic: L, wipe: function () { localStorage.removeItem(KEY); } };
   }
 
+  window.__ploveFindLogic = findLogic;
+
   var tries = 0;
   var iv = setInterval(function () {
     var L = findLogic();
