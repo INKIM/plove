@@ -5314,7 +5314,6 @@ class Component extends DCLogic {
     "피드백": "feedback", "소통": "comm", "유대": "bond", "책임": "duty"
   };
   stageIcon(stage) {
-    return "";
     const slug = this.STAGE_SLUG[stage];
     if (!slug) return "";
     if (!this._iconOk) this._iconOk = {};
