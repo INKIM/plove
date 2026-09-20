@@ -4815,7 +4815,7 @@ class Component extends DCLogic {
       giftFormTitle: (this.state.giftList || []).length ? "누구에게 선물할까요?" : "누구에게 보낼까요?",
       giftEmail: this.state.giftEmail || "",
       giftIdWidth: (Math.max(4, (this.state.giftEmail || "").length) * 9.5 + 26) + "px",
-      setGiftEmail: e => this.setState({ giftEmail: String(e.target.value).replace(/[@\s]/g, ""), giftErr: "" }),
+      setGiftEmail: e => this.setState({ giftEmail: String(e.target.value).split("@")[0].replace(/\s/g, ""), giftErr: "" }),
       giftErr: this.state.giftErr || "",
       hasGiftErr: !!this.state.giftErr,
       giftMsg: this.state.giftMsg || "",
@@ -5068,7 +5068,8 @@ class Component extends DCLogic {
       // 구글 로그인만 받으므로 @gmail.com 은 고정이다. 입력칸엔 아이디만 보인다.
       inviteId: (this.state.inviteEmail || "").split("@")[0],
       setInviteEmail: e => {
-        const id = String(e.target.value).replace(/[@\s]/g, "");
+        // 주소를 통째로 붙여넣으면 @ 앞만 쓴다 — 글자만 지우면 abcgmail.com 이 된다
+        const id = String(e.target.value).split("@")[0].replace(/\s/g, "");
         this.setState({ inviteEmail: id ? id + "@gmail.com" : "", inviteErr: "" });
       },
       inviteErr: this.state.inviteErr || "",
