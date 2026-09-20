@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PLove 회고</title>
+<meta name="description" content="사랑에도 연습이 필요한 거 아세요?">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PLove">
+<meta property="og:title" content="PLove 회고">
+<meta property="og:description" content="사랑에도 연습이 필요한 거 아세요?">
+<meta property="og:image" content="https://plove-xi.vercel.app/assets/og-thumbnail.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/plove-cupid-v3.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fffdfb;color:#3a2624;font-family:'Noto Sans KR',sans-serif;word-break:keep-all;overflow-wrap:break-word}
+.wrap{max-width:640px;margin:0 auto;padding:0 clamp(20px,4vw,44px) 72px}
+.top{background:#b62a22;color:#fffdfb;padding:30px clamp(20px,4vw,44px) 34px;margin-bottom:26px}
+.top .brand{font-weight:800;font-size:19px;letter-spacing:.02em}
+.top .tag{font-size:12px;color:#ffd9d5;margin-top:3px}
+.top h1{font-weight:800;font-size:clamp(20px,2.6vw,26px);margin:18px 0 0;line-height:1.35}
+.top .sub{font-size:13px;color:#ffd9d5;margin-top:7px}
+.stats{display:flex;gap:8px;margin:0 0 26px;flex-wrap:wrap}
+.stat{flex:1;min-width:92px;border:1px solid #ece4e2;border-radius:14px;padding:13px 14px;background:#fff}
+.stat b{display:block;font-weight:800;font-size:19px;color:#2e1211}
+.stat span{font-size:12px;color:#7a6360}
+.card{border:1px solid #ece4e2;border-radius:18px;padding:18px 18px 16px;background:#fff;margin-bottom:12px}
+.meta{font-weight:700;font-size:11px;letter-spacing:.05em;color:#b62a22;margin-bottom:5px}
+.card h2{font-weight:800;font-size:16px;color:#2e1211;margin:0 0 11px;line-height:1.4}
+.line{display:flex;gap:10px;padding:7px 0;border-top:1px solid #f4eeec;font-size:14px;line-height:1.65}
+.line:first-of-type{border-top:0}
+.line i{flex:none;font-style:normal;font-weight:700;font-size:11px;color:#a89290;padding-top:3px;min-width:18px}
+.letter{border:1px solid #d9b8b4;background:#fdf8f7;border-radius:18px;padding:20px;margin:24px 0 0;font-size:14px;line-height:1.85}
+.letter .who{font-weight:800;color:#b62a22;font-size:13px;margin-bottom:9px}
+.note{font-size:12px;color:#7a6360;margin-top:10px;line-height:1.6}
+.cta{display:block;text-align:center;margin:30px 0 0;padding:15px;border-radius:999px;background:#b62a22;color:#fffdfb;font-weight:700;font-size:15px;text-decoration:none}
+.state{max-width:480px;margin:90px auto;padding:0 24px;text-align:center}
+.state h2{font-weight:800;font-size:19px;color:#2e1211;margin:0 0 8px}
+.state p{font-size:14px;color:#7a6360;margin:0 0 24px;line-height:1.7}
+</style>
+</head>
+<body>
+<div id="root"><div class="state"><p>불러오는 중이에요…</p></div></div>
+<script>
+(function () {
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[<>&"]/g, function (c) { return { "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]; }); };
+  var slug = (location.pathname.match(/\/s\/([a-z0-9]+)/i) || [])[1]
+          || new URLSearchParams(location.search).get("slug") || "";
+
+  function state(title, msg) {
+    document.getElementById("root").innerHTML =
+      '<div class="state"><h2>' + esc(title) + '</h2><p>' + esc(msg) + '</p>' +
+      '<a class="cta" href="/">PLove 시작하기</a></div>';
+  }
+  if (!slug) return state("링크가 올바르지 않아요", "주소를 다시 확인해주세요.");
+
+  fetch("/api/share?action=get&slug=" + encodeURIComponent(slug))
+    .then(function (r) { return r.json().then(function (d) { return { s: r.status, d: d }; }); })
+    .then(function (r) {
+      if (!r.d.ok) {
+        if (r.s === 410) return state("링크가 닫혔어요", "이 회고는 공유 기간이 지났어요.");
+        if (r.s === 403) return state("비공개 회고예요", "글쓴이가 공개하지 않기로 했어요.");
+        return state("회고를 찾지 못했어요", "주소가 바뀌었거나 삭제됐을 수 있어요.");
+      }
+      var p = r.d.share.payload || {};
+      var e = p.entries || [];
+      var t = p.totals || {};
+      var html = '<div class="top"><div class="brand">PLove</div><div class="tag">사랑에도 연습이 필요한 거 아세요?</div>' +
+        '<h1>' + esc(p.title || (p.subject || "") + " 회고") + '</h1>' +
+        '<div class="sub">' + esc(p.ownerName || "") + (p.ownerName ? "님이 " : "") + '남긴 기록 ' + e.length + '개</div></div>' +
+        '<div class="wrap">' +
+        '<div class="stats">' +
+          '<div class="stat"><b>' + (t.missions != null ? t.missions : e.length) + '</b><span>완료한 미션</span></div>' +
+          '<div class="stat"><b>' + (t.xp || 0) + '</b><span>쌓은 경험치</span></div>' +
+          '<div class="stat"><b>' + (t.chars || 0) + '</b><span>남긴 글자</span></div>' +
+        '</div>';
+
+      if (!e.length) html += '<div class="card"><h2>아직 기록이 없어요</h2></div>';
+      e.forEach(function (x) {
+        html += '<div class="card"><div class="meta">' + esc(x.stage || "") + ' · 미션 ' + esc(x.num || "") + '</div>' +
+                '<h2>' + esc(x.title || "") + '</h2>';
+        (x.lines || []).forEach(function (l, i) {
+          if (!l || !l.value) return;
+          html += '<div class="line"><i>' + String(i + 1).padStart(2, "0") + '</i><div>' + esc(l.value) + '</div></div>';
+        });
+        if (x.free) html += '<div class="line"><i></i><div>' + esc(x.free) + '</div></div>';
+        html += '</div>';
+      });
+
+      if (p.letter) {
+        html += '<div class="letter"><div class="who">' + esc(p.npcName || "") + '의 편지</div>' + esc(p.letter) + '</div>';
+      }
+      html += '<div class="note">이 회고는 글쓴이가 공유한 것이에요. 사진은 공유되지 않아요.</div>' +
+              '<a class="cta" href="/">나도 연습 시작하기</a></div>';
+      document.getElementById("root").innerHTML = html;
+      if (p.title) document.title = p.title + " · PLove";
+    })
+    .catch(function () { state("열지 못했어요", "잠시 뒤 다시 시도해주세요."); });
+})();
+</script>
+</body>
+</html>

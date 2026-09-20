@@ -68,6 +68,46 @@
         });
       };
 
+      /* 회고 공유 — 그 시점을 스냅샷으로 떠서 서버에 올리고 링크를 돌려받는다.
+         나중에 미션을 더 해도 공유한 링크의 내용은 안 바뀐다. */
+      var ds = v.doShare;
+      v.doShare = function () {
+        var scope = L.state.shareScope || "link";
+        if (scope === "private") { ds && ds.apply(this, arguments); return; }
+        var me = myEmail(L);
+        if (!me) { L.toast && L.toast("로그인 후에 공유할 수 있어요"); return; }
+        var k = L.courseKey();
+        var ms = L.courseMissions();
+        var recs = (L.state.records || {})[k] || {};
+        var entries = [], chars = 0, xp = 0;
+        Object.keys(recs).sort(function (a, b) { return a - b; }).forEach(function (i) {
+          var r = recs[i]; if (!r) return;
+          var lines = (r.lines || []).filter(function (l) { return l && l.value; });
+          lines.forEach(function (l) { chars += (l.value || "").length; });
+          chars += (r.free || "").length;
+          xp += r.xp || 0;
+          entries.push({ num: r.num, title: r.title, stage: r.stage, lines: lines, free: r.free || "", photos: [] });
+        });
+        var np = L.npc();
+        post("/api/share", {
+          action: "create", email: me, courseKey: k, scope: scope,
+          hidePhotos: !!L.state.hidePhotos, expiry: L.state.shareExpiry || "30일",
+          payload: {
+            title: (np.subject || "") + " 회고", subject: np.subject || "", npcName: np.name || "",
+            ownerName: (L.state.name || "").trim(),
+            letter: (L.state.letter || "").trim(),
+            entries: entries,
+            totals: { missions: entries.length, xp: xp, chars: chars },
+          },
+        }).then(function (r) {
+          if (!r.ok || !r.d.slug) { L.sfx && L.sfx("error"); L.toast && L.toast("공유 링크를 만들지 못했어요"); return; }
+          var link = location.origin + "/s/" + r.d.slug;
+          try { navigator.clipboard && navigator.clipboard.writeText(link); } catch (e) {}
+          L.setState({ shared: true, shareUrl: link });
+          setTimeout(function () { L.setState({ shared: false }); }, 2600);
+        });
+      };
+
       return v;
     };
 
