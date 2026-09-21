@@ -521,19 +521,24 @@ Google로 계속하기
 <div onClick="{{ s.pick }}" style="{{ s.cardStyle }}" style-hover="transform:translateY(-2px);box-shadow:0 6px 0 #8d1d17">
 <div style="position:relative;width:100%;aspect-ratio:3/2;background-color:#fdeceb;background-image:{{ s.imgCss }};background-size:cover;background-position:center 20%;overflow:hidden;{{ s.imgFilter }}">
 <span style="{{ s.lvBadgeStyle }}">{{ s.lvBadge }}</span>
+<sc-if value="{{ s.on }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#b62a2273;display:flex;align-items:center;justify-content:center;pointer-events:none">
+<span style="width:38px;height:38px;border-radius:99px;background:#fffdfb;display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1;color:#b62a22">✓</span>
+</div>
+</sc-if>
 </div>
 <div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:3px">
 <span style="font-weight:700;font-size:15px;line-height:1.35;color:#2e1211">{{ s.name }}</span>
 <span style="font-weight:400;font-size:11.5px;line-height:1.45;color:#8a6b67">{{ s.learnerLine }}</span>
 </div>
 <sc-if value="{{ s.on }}" hint-placeholder-val="{{ false }}">
-<div style="position:absolute;inset:0;border:3px solid #fffdfb;border-radius:18px;background:#b62a2273;display:flex;align-items:center;justify-content:center;pointer-events:none">
-<span style="width:38px;height:38px;border-radius:99px;background:#fffdfb;display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1;color:#b62a22">✓</span>
-</div>
+<div style="position:absolute;inset:0;border:3px solid #fffdfb;border-radius:18px;pointer-events:none"></div>
 </sc-if>
 </div>
 </sc-for>
 </div>
+
+<div style="{{ pickDescStyle }}">{{ pickDesc }}</div>
 
 </div>
 </div>
@@ -6000,6 +6005,25 @@ class Component extends DCLogic {
         };
       }),
       hasSelection: !!sel,
+      // 과목 설명 — 고른 과목에 따라 바뀐다. 높이는 고정이라 문구 길이가 달라도 그리드가 밀리지 않는다.
+      pickDesc: ({
+        self: "나를 알아야 남도 사랑할 수 있어요. 다른 코스를 진행하기 전에 가장 먼저 해보세요.",
+        lover: "사랑은 마음보다 표현으로 전해져요. 연인에게 어떻게 표현할지 모르는 분들에게 추천해요.",
+        family: "가장 가까운 사이일수록 말하지 못한 것이 쌓여요. 표현이 서툴러 미뤄둔 말이 있는 분들에게 권해요.",
+        friend: "우정은 저절로 이어지지 않아요. 연락이 뜸해진 친구가 떠오르는 분들에게 좋아요.",
+        coworker: "매일 보는 사이에도 존중은 연습이 필요해요. 일로 만난 사람과 오래 함께하고 싶은 분들에게 맞아요.",
+        pet: "말이 통하지 않아도 마음은 오가요. 함께 보낼 시간이 아깝지 않게 쓰고 싶은 분들에게 권해요."
+      })[(sel || {}).key] || "",
+      pickDescStyle: {
+        flex: "none", boxSizing: "border-box", width: "100%", maxWidth: "611px",
+        height: this.state.narrow ? "84px" : "62px",           // 좁은 화면은 세 줄까지 들어가게 — 그래도 고정이다
+        padding: "0 18px", borderRadius: "14px",
+        background: sel ? "rgba(255,255,255,0.12)" : "transparent",
+        display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
+        fontWeight: 500, fontSize: "13px", lineHeight: 1.65, color: "#ffffff",
+        textAlign: "center", textWrap: "pretty", wordBreak: "keep-all",
+        transition: "background .2s"
+      },
       noSelection: !sel,
       pickedLine: sel ? "선택: " + sel.name : ""
     };
