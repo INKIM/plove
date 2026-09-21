@@ -260,7 +260,7 @@
        localStorage 는 그대로 둔다 — 서버가 죽어도 혼자서는 계속 돈다. */
     var KEEP = ["name","levels","completedMap","totalXp","totalGems","records",
                 "streak","lastDay","doneDays","frozenDays","freezes","extraToday",
-                "retryCredits","plus","couplePaid","subCancelled","subEnds","subSince","famMembers","petKinds","petNames","myOpen"];
+                "retryCredits","plus","couplePaid","subCancelled","subEnds","subSince","wipe","famMembers","petKinds","petNames","myOpen"];
     function snapshot() {
       var o = {};
       KEEP.forEach(function (k) { if (L.state[k] !== undefined) o[k] = L.state[k]; });
@@ -276,9 +276,13 @@
       return o;
     }
     var pushT = null;
+    // 서버 진행도를 한 번 받아 보기 전에는 올리지 않는다.
+    // 안 그러면 이 기기의 옛 진행이 '비움 표시'를 확인하기도 전에 서버를 덮는다.
+    var synced = false;
     function pushProgress() {
       var me = myEmail(L);
       if (!me) return;
+      if (!synced) return;
       clearTimeout(pushT);
       pushT = setTimeout(function () {
         post("/api/progress", { action: "save", email: me, name: (L.state.name || "").trim(), data: snapshot() })
@@ -341,6 +345,13 @@
       var me = myEmail(L);
       if (booted || !me) return;
       booted = true;
+      try { await bootInner(me); }
+      finally {
+        synced = true;
+        pushProgress();          // 막혀 있던 동안의 변경을 이제 올린다
+      }
+    }
+    async function bootInner(me) {
       try { var t = sessionStorage.getItem("plove.invite"); if (t) { sessionStorage.removeItem("plove.invite"); history.replaceState(null,"","?invite="+t); } } catch (e) {}
       var r = await post("/api/progress", { action: "mine", email: me });
 
@@ -365,7 +376,10 @@
             partner: null, partnerEmail: "", myOpen: [], reqIn: {}, reqOut: {},
             course: "", selected: "", q3: null, q5: "", step: 1,
             famMembers: [], petKinds: [], petNames: {},
-            freezes: 0, extraToday: 0, retryCredits: 0
+            freezes: 0, extraToday: 0, retryCredits: 0,
+            // 표시를 그대로 들고 간다 — 빈 진행을 올릴 때 이게 빠지면
+            // 아직 표시를 못 본 다른 기기가 옛 진행을 도로 올린다
+            wipe: wipeAt
           });
           await handleGift();
           await handleInvite();
