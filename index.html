@@ -54,6 +54,9 @@ window.claude = {
 <style>
 *{box-sizing:border-box}
 html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+/* iOS 는 16px 보다 작은 입력칸에 초점이 가면 화면을 확대하고, 확대를 풀지 않는다.
+   그러면 모든 화면이 꽉 차고 가장자리가 잘려 보인다 — 모바일 입력칸은 16px 로 맞춘다. */
+@media (max-width:759px){input,textarea,select{font-size:16px !important}}
 body{margin:0;word-break:keep-all;overflow-wrap:break-word;background:#fffdfb}
 a{color:#fffdfb;text-decoration:underline}
 a:hover{color:#ffd9d5}
@@ -77,10 +80,10 @@ input::placeholder,textarea::placeholder{color:#e2d9d7}
 <script src="auth.js"></script>
 <script src="server.js"></script>
 </helmet>
-<div style="position:relative;height:100dvh;overflow-y:auto;overflow-x:hidden;overscroll-behavior:none;-webkit-overflow-scrolling:touch;background:#fffdfb;font-family:'Noto Sans KR',sans-serif;display:flex;flex-direction:column">
+<div style="position:fixed;top:0;left:0;right:0;bottom:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:none;-webkit-overflow-scrolling:touch;background:#fffdfb;font-family:'Noto Sans KR',sans-serif;display:flex;flex-direction:column">
 
 <sc-if value="{{ onStart }}" hint-placeholder-val="{{ true }}">
-<div style="flex:1;min-height:100dvh;background:#b62a22;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(16px,2.2vh,26px);padding:clamp(40px,8vh,96px) clamp(20px,5vw,64px)">
+<div style="flex:1;min-height:100%;background:#b62a22;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(16px,2.2vh,26px);padding:clamp(40px,8vh,96px) clamp(20px,5vw,64px)">
 <div style="position:relative;width:min(860px,88vw,78vh);margin-bottom:calc(min(860px,88vw,78vh) * -0.09)">
 <img src="assets/plove-logo.png" alt="PLOVE" style="display:block;width:100%;height:auto">
 <div style="position:absolute;left:54%;bottom:78%;animation:plIn .5s ease-out .3s both">
@@ -101,7 +104,7 @@ input::placeholder,textarea::placeholder{color:#e2d9d7}
 </sc-if>
 
 <sc-if value="{{ onGreet }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;overflow:hidden;animation:plIn .45s ease-out both">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;overflow:hidden;animation:plIn .45s ease-out both">
 <div onClick="{{ back }}" style="position:absolute;top:14px;left:clamp(12px,2.4vw,22px);z-index:3;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;line-height:1;color:#9c8481" style-hover="color:#2e1211">←</div>
 
 <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:clamp(48px,7vh,72px) clamp(20px,5vw,64px) 24px">
@@ -179,7 +182,7 @@ input::placeholder,textarea::placeholder{color:#e2d9d7}
 </sc-if>
 
 <sc-if value="{{ onSignin }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#b62a22;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#b62a22;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div onClick="{{ go1 }}" style="flex:none;padding:16px clamp(20px,4vw,40px) 0;font-size:16px;line-height:1;color:#ffffffcc;cursor:pointer;width:32px">←</div>
 <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:clamp(32px,6vh,64px) clamp(20px,5vw,64px)">
 <div style="display:flex;flex-direction:column;align-items:center;gap:8px;max-width:420px">
@@ -201,7 +204,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onGift }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div style="flex:none;border-bottom:1px solid #ece4e2">
 <div style="width:100%;max-width:1120px;margin:0 auto;padding:16px clamp(20px,4vw,44px);display:flex;align-items:center;gap:12px">
 <div onClick="{{ giftBack }}" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#9c8481" style-hover="color:#2e1211">←</div>
@@ -281,7 +284,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onInvite }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div style="flex:none;border-bottom:1px solid #ece4e2">
 <div style="width:100%;max-width:640px;margin:0 auto;padding:16px clamp(20px,4vw,44px);display:flex;align-items:center;gap:12px">
 <div onClick="{{ inviteBack }}" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#9c8481" style-hover="color:#2e1211">←</div>
@@ -376,7 +379,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onTerms }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div style="flex:none;border-bottom:1px solid #ece4e2">
 <div style="width:100%;max-width:760px;margin:0 auto;padding:16px clamp(20px,4vw,44px);display:flex;align-items:center;gap:12px">
 <div onClick="{{ termsBack }}" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#9c8481" style-hover="color:#2e1211">←</div>
@@ -474,7 +477,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onPolicy }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div style="flex:none;border-bottom:1px solid #ece4e2">
 <div style="width:100%;max-width:760px;margin:0 auto;padding:16px clamp(20px,4vw,44px);display:flex;align-items:center;gap:12px">
 <div onClick="{{ policyBack }}" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#9c8481" style-hover="color:#2e1211">←</div>
@@ -559,7 +562,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onPick }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#b62a22;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#b62a22;display:flex;flex-direction:column;animation:{{ navAnim }}">
 
 <div onClick="{{ go1 }}" style="position:absolute;top:16px;left:clamp(14px,3vw,30px);z-index:3;width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:24px;line-height:1;color:#ffffffd9" style-hover="color:#fff">←</div>
 <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ false }}">
@@ -602,7 +605,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onCount }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#b62a22;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px">
+<div style="flex:1;min-height:100%;background:#b62a22;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px">
 <span style="font-weight:600;font-size:15px;letter-spacing:.14em;color:#ffffffb3">레벨 테스트 시작</span>
 <span style="{{ cdStyle }}">{{ cd }}</span>
 <span style="font-weight:500;font-size:15px;color:#ffffffd9">15문항 · 14문항은 10초, 마지막 1문항은 30초</span>
@@ -664,7 +667,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onTestGrading }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:clamp(36px,6vh,64px) clamp(20px,5vw,64px);animation:plIn .3s ease-out both">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:clamp(36px,6vh,64px) clamp(20px,5vw,64px);animation:plIn .3s ease-out both">
 <div style="position:relative;display:flex;align-items:center;justify-content:center">
 <div style="position:absolute;width:150px;height:150px;border-radius:999px;border:2px solid #f0d8d4;animation:plRing 2.2s ease-out infinite"></div>
 <div style="position:absolute;width:150px;height:150px;border-radius:999px;border:2px solid #f0d8d4;animation:plRing 2.2s ease-out 1.1s infinite"></div>
@@ -687,7 +690,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onResult }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(40px,7vh,72px) clamp(20px,5vw,64px)">
 <div style="width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;gap:22px">
 
@@ -768,7 +771,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onHome }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;align-items:stretch">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;align-items:stretch">
 
 <div style="{{ sideStyle }}">
 <sc-if value="{{ hasHomeBack }}" hint-placeholder-val="{{ false }}">
@@ -932,7 +935,8 @@ Google로 계속하기
 </div>
 </div>
 <sc-if value="{{ m.open }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ stopClick }}" style="position:absolute;top:100%;left:0;right:0;margin:12px 0 4px;padding:18px;border:2px solid #b62a22;border-radius:18px;background:#fdf2f0;box-shadow:0 18px 40px #2e121126;display:flex;flex-direction:column;gap:12px;animation:plIn .22s ease-out both">
+<div style="{{ previewWrapStyle }}">
+<div onClick="{{ stopClick }}" style="pointer-events:auto;margin:12px 0 4px;padding:18px;border:2px solid #b62a22;border-radius:18px;background:#fdf2f0;box-shadow:0 18px 40px #2e121126;display:flex;flex-direction:column;gap:12px;animation:plIn .22s ease-out both">
 <div style="display:flex;flex-direction:column;gap:4px">
 <span style="font-weight:600;font-size:11px;letter-spacing:.06em;color:#b62a22">{{ m.stage }} · 미션 {{ m.num }}</span>
 <span style="font-weight:800;font-size:18px;line-height:1.4;color:#2e1211;text-wrap:pretty">{{ m.title }}</span>
@@ -971,6 +975,7 @@ Google로 계속하기
 </sc-if>
 </sc-if>
 </div>
+</div>
 </sc-if>
 </div>
 </div>
@@ -982,7 +987,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onStore }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div style="flex:none;border-bottom:1px solid #ece4e2">
 <div style="width:100%;max-width:1120px;margin:0 auto;padding:16px clamp(20px,4vw,44px);display:flex;align-items:center;gap:12px">
 <div onClick="{{ backHome }}" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#9c8481" style-hover="color:#2e1211">←</div>
@@ -1156,7 +1161,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onPaywall }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:clamp(40px,7vh,72px) clamp(20px,5vw,64px)">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:clamp(40px,7vh,72px) clamp(20px,5vw,64px)">
 <div style="{{ npc132 }}"></div>
 <div style="display:flex;flex-direction:column;align-items:center;gap:8px;max-width:440px;text-align:center">
 <span style="font-weight:800;font-size:clamp(20px,2.6vw,26px);color:#2e1211;text-wrap:pretty">{{ paywallCourse }}은 플러스에서 열려요</span>
@@ -1170,7 +1175,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ hasAskGift }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ closeAskGift }}" style="position:fixed;inset:0;z-index:28;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:20px">
+<div onClick="{{ closeAskGift }}" style="position:fixed;inset:0;z-index:28;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:24px">
 <div onClick="{{ stopClick }}" style="position:relative;width:100%;max-width:380px;background:#fffdfb;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:10px;animation:plPop .26s cubic-bezier(.34,1.5,.64,1) both">
 <div onClick="{{ closeAskGift }}" style="position:absolute;top:14px;right:14px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#a89290" style-hover="color:#2e1211">✕</div>
 <img src="assets/ui-gift.png" alt="" style="width:34px;height:34px;display:block;margin:0 auto">
@@ -1187,7 +1192,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ hasAskBuy }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ closeAskBuy }}" style="position:fixed;inset:0;z-index:28;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:20px">
+<div onClick="{{ closeAskBuy }}" style="position:fixed;inset:0;z-index:28;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:24px">
 <div onClick="{{ stopClick }}" style="position:relative;width:100%;max-width:380px;background:#fffdfb;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:10px;animation:plPop .26s cubic-bezier(.34,1.5,.64,1) both">
 <div onClick="{{ closeAskBuy }}" style="position:absolute;top:14px;right:14px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#a89290" style-hover="color:#2e1211">✕</div>
 <span style="{{ askBuyIco }}"></span>
@@ -1205,7 +1210,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ teamOpen }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ teamBack }}" style="position:fixed;inset:0;z-index:28;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:20px">
+<div onClick="{{ teamBack }}" style="position:fixed;inset:0;z-index:28;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:24px">
 <div onClick="{{ stopClick }}" style="position:relative;width:100%;max-width:390px;background:#fffdfb;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px;animation:plPop .26s cubic-bezier(.34,1.5,.64,1) both">
 <div onClick="{{ teamBack }}" style="position:absolute;top:14px;right:14px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#a89290" style-hover="color:#2e1211">✕</div>
 
@@ -1258,7 +1263,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ hasReview }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ closeReview }}" style="position:fixed;inset:0;z-index:29;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:20px">
+<div onClick="{{ closeReview }}" style="position:fixed;inset:0;z-index:29;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:24px">
 <div onClick="{{ stopClick }}" style="width:100%;max-width:560px;max-height:86vh;background:#fffdfb;border-radius:22px;display:flex;flex-direction:column;overflow:hidden;animation:plPop .26s cubic-bezier(.34,1.5,.64,1) both">
 <div style="flex:none;display:flex;align-items:flex-start;gap:12px;padding:20px 22px;border-bottom:1px solid #f2e8e6">
 <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
@@ -1318,7 +1323,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ hasWrapAsk }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ closeWrapAsk }}" style="position:fixed;inset:0;z-index:29;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:20px">
+<div onClick="{{ closeWrapAsk }}" style="position:fixed;inset:0;z-index:29;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:24px">
 <div onClick="{{ stopClick }}" style="width:100%;max-width:370px;background:#fffdfb;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px;animation:plPop .26s cubic-bezier(.34,1.5,.64,1) both">
 <span style="font-weight:800;font-size:17px;line-height:1.45;color:#2e1211;text-align:center">{{ wrapAskTitle }}</span>
 <span style="font-weight:500;font-size:13px;line-height:1.65;color:#3a2624;text-align:center;text-wrap:pretty">{{ wrapAskDesc }}</span>
@@ -1331,7 +1336,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ hasFreezeAsk }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ closeFreezeAsk }}" style="position:fixed;inset:0;z-index:28;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:20px">
+<div onClick="{{ closeFreezeAsk }}" style="position:fixed;inset:0;z-index:28;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:24px">
 <div onClick="{{ stopClick }}" style="width:100%;max-width:370px;background:#fffdfb;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px;animation:plPop .26s cubic-bezier(.34,1.5,.64,1) both">
 <div style="width:46px;height:46px;margin:0 auto;background:url('assets/ui-freeze.png') center/contain no-repeat"></div>
 <span style="font-weight:800;font-size:17px;line-height:1.45;color:#2e1211;text-align:center">미션 얼리기가 없어요</span>
@@ -1345,7 +1350,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ hasUnlinkAsk }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ cancelUnlink }}" style="position:fixed;inset:0;z-index:28;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:20px">
+<div onClick="{{ cancelUnlink }}" style="position:fixed;inset:0;z-index:28;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:24px">
 <div onClick="{{ stopClick }}" style="width:100%;max-width:390px;background:#fffdfb;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px;animation:plPop .26s cubic-bezier(.34,1.5,.64,1) both">
 <span style="font-weight:800;font-size:17px;line-height:1.45;color:#2e1211;text-align:center;text-wrap:pretty">{{ unlinkWho }}님과 연결을 해제할까요?</span>
 <span style="font-weight:500;font-size:13px;line-height:1.7;color:#3a2624;text-align:center;text-wrap:pretty">서로의 기록을 더 이상 볼 수 없어요. <span style="font-weight:700;color:#b62a22">한 번 해제하면 이 사람과 다시 연결할 수 없어요.</span> 남은 기간은 두 사람 모두 Plus를 쓸 수 있고, 다음 결제일부터 개인 Plus로 바뀌어요.</span>
@@ -1358,7 +1363,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ hasReqPopup }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ reqLater }}" style="position:fixed;inset:0;z-index:27;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:20px">
+<div onClick="{{ reqLater }}" style="position:fixed;inset:0;z-index:27;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:24px">
 <div onClick="{{ stopClick }}" style="position:relative;width:100%;max-width:390px;background:#fffdfb;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:10px;animation:plPop .26s cubic-bezier(.34,1.5,.64,1) both">
 <div onClick="{{ reqLater }}" style="position:absolute;top:14px;right:14px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#a89290" style-hover="color:#2e1211">✕</div>
 <span style="font-weight:800;font-size:18px;color:#2e1211">{{ reqPopupName }} 권한 승인</span>
@@ -1372,7 +1377,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ hasOpenAsk }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ cancelOpen }}" style="position:fixed;inset:0;z-index:27;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:20px">
+<div onClick="{{ cancelOpen }}" style="position:fixed;inset:0;z-index:27;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:24px">
 <div onClick="{{ stopClick }}" style="position:relative;width:100%;max-width:380px;background:#fffdfb;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:10px;animation:plPop .26s cubic-bezier(.34,1.5,.64,1) both">
 <div onClick="{{ cancelOpen }}" style="position:absolute;top:14px;right:14px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#a89290" style-hover="color:#2e1211">✕</div>
 <span style="font-weight:800;font-size:18px;color:#2e1211">{{ openAskName }} 권한 요청</span>
@@ -1386,7 +1391,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ hasCloseAsk }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ cancelClose }}" style="position:fixed;inset:0;z-index:27;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:20px">
+<div onClick="{{ cancelClose }}" style="position:fixed;inset:0;z-index:27;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:24px">
 <div onClick="{{ stopClick }}" style="position:relative;width:100%;max-width:380px;background:#fffdfb;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:10px;animation:plPop .26s cubic-bezier(.34,1.5,.64,1) both">
 <div onClick="{{ cancelClose }}" style="position:absolute;top:14px;right:14px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#a89290" style-hover="color:#2e1211">✕</div>
 <span style="font-weight:800;font-size:18px;color:#2e1211">{{ closeAskName }} 권한 차단</span>
@@ -1400,7 +1405,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ hasWipe }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ closeWipe }}" style="position:fixed;inset:0;z-index:26;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:20px">
+<div onClick="{{ closeWipe }}" style="position:fixed;inset:0;z-index:26;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:24px">
 <div onClick="{{ stopClick }}" style="width:100%;max-width:380px;background:#fffdfb;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px;animation:plPop .26s cubic-bezier(.34,1.5,.64,1) both">
 <span style="font-weight:800;font-size:17px;line-height:1.4;color:#2e1211;text-align:center">{{ wipeTitle }}</span>
 <span style="font-weight:500;font-size:13px;line-height:1.65;color:#3a2624;text-align:center;text-wrap:pretty">{{ wipeDesc }}</span>
@@ -1413,7 +1418,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ hasConfirm }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ closeConfirm }}" style="position:fixed;inset:0;z-index:25;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:20px">
+<div onClick="{{ closeConfirm }}" style="position:fixed;inset:0;z-index:25;background:#2e121159;display:flex;align-items:center;justify-content:center;padding:24px">
 <div onClick="{{ stopClick }}" style="width:100%;max-width:380px;background:#fffdfb;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px;animation:plPop .26s cubic-bezier(.34,1.5,.64,1) both">
 <span style="font-weight:800;font-size:17px;line-height:1.4;color:#2e1211;text-align:center;text-wrap:pretty">{{ confirmTitle }}</span>
 <span style="font-weight:500;font-size:14px;color:#3a2624;text-align:center">{{ confirmSub }}</span>
@@ -1476,7 +1481,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onPetSetup }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div onClick="{{ famBackHome }}" style="position:absolute;top:14px;left:clamp(12px,2.4vw,22px);z-index:3;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;line-height:1;color:#9c8481" style-hover="color:#2e1211">←</div>
 
 <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:clamp(48px,7vh,80px) clamp(20px,5vw,64px) 24px">
@@ -1526,7 +1531,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onFamily }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div onClick="{{ famBackHome }}" style="position:absolute;top:14px;left:clamp(12px,2.4vw,22px);z-index:3;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;line-height:1;color:#9c8481" style-hover="color:#2e1211">←</div>
 
 <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:clamp(48px,7vh,80px) clamp(20px,5vw,64px) 24px">
@@ -1564,7 +1569,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onProfile }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div style="flex:none;border-bottom:1px solid #ece4e2">
 <div style="width:100%;max-width:1360px;margin:0 auto;padding:18px clamp(24px,4vw,56px);display:flex;align-items:center;gap:12px">
 <div onClick="{{ backHome }}" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#9c8481" style-hover="color:#2e1211">←</div>
@@ -1731,7 +1736,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onDeco }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div style="flex:none;border-bottom:1px solid #ece4e2">
 <div style="width:100%;max-width:640px;margin:0 auto;padding:16px clamp(20px,4vw,40px);display:flex;align-items:center;gap:12px">
 <div onClick="{{ backStore }}" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#9c8481" style-hover="color:#2e1211">←</div>
@@ -1803,7 +1808,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onPlaza }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div style="flex:none;border-bottom:1px solid #ece4e2">
 <div style="width:100%;max-width:860px;margin:0 auto;padding:16px clamp(20px,4vw,40px);display:flex;align-items:center;gap:12px">
 <div onClick="{{ backHome }}" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#9c8481" style-hover="color:#2e1211">←</div>
@@ -1850,7 +1855,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onStreak }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div style="flex:none;border-bottom:1px solid #ece4e2">
 <div style="width:100%;max-width:1360px;margin:0 auto;padding:18px clamp(24px,4vw,56px);display:flex;align-items:center;gap:12px">
 <div onClick="{{ backHome }}" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#9c8481" style-hover="color:#2e1211">←</div>
@@ -1920,7 +1925,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onRank }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div style="flex:none;border-bottom:1px solid #ece4e2">
 <div style="width:100%;max-width:1360px;margin:0 auto;padding:18px clamp(24px,4vw,56px);display:flex;align-items:center;gap:12px">
 <div onClick="{{ backHome }}" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#9c8481" style-hover="color:#2e1211">←</div>
@@ -1948,7 +1953,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onTestIntro }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:clamp(40px,7vh,72px) clamp(20px,5vw,64px)">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:clamp(40px,7vh,72px) clamp(20px,5vw,64px)">
 <div style="{{ npc160 }}"></div>
 <div style="display:flex;flex-direction:column;align-items:center;gap:8px;max-width:420px">
 <span style="font-weight:800;font-size:clamp(20px,2.6vw,26px);color:#2e1211;text-align:center">{{ courseName }} 코스는 처음이에요</span>
@@ -1977,7 +1982,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onRun }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div onClick="{{ backHome }}" style="position:absolute;top:14px;left:clamp(12px,2.4vw,22px);z-index:3;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;line-height:1;color:#9c8481" style-hover="color:#2e1211">←</div>
 <div style="flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;padding:clamp(40px,6vh,64px) clamp(20px,5vw,64px) 20px">
 <div style="width:100%;max-width:860px;flex:1;min-height:0;display:flex;flex-direction:column;gap:12px">
@@ -1995,7 +2000,7 @@ Google로 계속하기
 <div style="position:absolute;left:-8px;top:15px;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-right:10px solid #fffdfb"></div>
 </div>
 </div>
-<div style="flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 0 4px">
+<div style="flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 0 4px">
 <div style="{{ formColStyle }}">
 <sc-if value="{{ hasDraft }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid #e8d6d3;border-radius:14px;background:#fdf8f7">
@@ -2100,7 +2105,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onFinale }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div onClick="{{ backHome }}" style="position:absolute;top:14px;left:clamp(12px,2.4vw,22px);z-index:3;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;line-height:1;color:#9c8481" style-hover="color:#2e1211">←</div>
 
 <div style="flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:clamp(48px,7vh,80px) clamp(20px,5vw,64px) 40px">
@@ -2291,7 +2296,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onGrading }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:clamp(36px,6vh,64px) clamp(20px,5vw,64px);animation:plIn .3s ease-out both">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:clamp(36px,6vh,64px) clamp(20px,5vw,64px);animation:plIn .3s ease-out both">
 <div style="position:relative;display:flex;align-items:center;justify-content:center">
 <div style="position:absolute;width:132px;height:132px;border-radius:999px;border:2px solid #f0d8d4;animation:plRing 2.2s ease-out infinite"></div>
 <div style="position:absolute;width:132px;height:132px;border-radius:999px;border:2px solid #f0d8d4;animation:plRing 2.2s ease-out 1.1s infinite"></div>
@@ -2314,7 +2319,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onMResult }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
+<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;flex-direction:column;animation:{{ navAnim }}">
 <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(36px,6vh,64px) clamp(20px,5vw,64px)">
 <div style="width:100%;max-width:460px;display:flex;flex-direction:column;align-items:center;gap:20px">
 <div style="position:relative;display:flex;align-items:center;justify-content:center">
@@ -2352,7 +2357,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onStreakPop }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#8f201b;display:flex;flex-direction:column;animation:plIn .3s ease-out both">
+<div style="flex:1;min-height:100%;background:#8f201b;display:flex;flex-direction:column;animation:plIn .3s ease-out both">
 <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(18px,3vh,30px);padding:clamp(36px,6vh,72px) clamp(20px,5vw,64px)">
 
 <div style="position:relative;display:flex;align-items:center;justify-content:center">
@@ -2388,7 +2393,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onDone }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100dvh;background:#b62a22;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;animation:plIn .45s ease-out both">
+<div style="flex:1;min-height:100%;background:#b62a22;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;animation:plIn .45s ease-out both">
 <div onClick="{{ goName }}" style="position:absolute;top:16px;left:clamp(14px,3vw,30px);z-index:3;width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:24px;line-height:1;color:#ffffffd9" style-hover="color:#fff">←</div>
 <span style="font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.04em;color:#ffffffa6;padding:10px 16px;border:1px dashed #ffffff59;border-radius:12px">04 · 다음 화면 자리 (아직 없음)</span>
 </div>
@@ -2551,10 +2556,15 @@ class Component extends DCLogic {
     this.limit = this.limitFor(i);
     this.left = this.limit;
     this.paintTimer();
+    this.tickN = 0;
+    this.clockTick(false, false);
     this.tick = setInterval(() => {
       this.left -= 100;
       this.paintTimer();
-      if (this.left <= 0) { this.clearTick(); this.submit(); }
+      if (this.left <= 0) { this.clearTick(); this.submit(); return; }
+      // 매초 틱·톡을 번갈아 치고, 마지막 3초는 반 박마다 세게 쳐서 조인다
+      const gone = this.limit - this.left, step = this.left <= 3000 ? 500 : 1000;
+      if (gone % step === 0) this.clockTick((this.tickN = (this.tickN || 0) + 1) % 2 === 1, this.left <= 3000);
     }, 100);
   }
   submit() {
@@ -2610,6 +2620,7 @@ class Component extends DCLogic {
     // 임계도 함께 올렸다(기획서는 68/40). 14문항을 다 채우고 서술형까지 길게 쓴 사람만 3이다.
     const level = Math.min(this.TEST_MAX_LV, score >= 85 ? 3 : score >= 50 ? 2 : 1);
     this.testStart = Date.now();
+    this.startBuild();
     clearInterval(this.testT);
     this.testT = setInterval(() => {
       this.setState({ testStep: Math.min(2, (this.state.testStep || 0) + 1) });
@@ -2659,7 +2670,8 @@ class Component extends DCLogic {
     const spent = Date.now() - (this.testStart || 0);
     if (spent < 7000) await new Promise(r => setTimeout(r, 7000 - spent));
     clearInterval(this.testT);
-    this.sfx("done");
+    this.stopBuild(true);
+    this.sfx("reveal");
     this.setState({ reading: text, readingLoading: false, testGrading: false });
   }
   COURSES = [
@@ -2836,7 +2848,7 @@ class Component extends DCLogic {
       const s = ms[i].s;
       if (seen[s]) continue;
       seen[s] = true;
-      out.push({ stage: s, title: ms[i].t, quote: "\u201C" + lines[0].slice(0, 70) + "\u201D" });
+      out.push({ stage: s, title: this.famFill(ms[i].t, i), quote: "\u201C" + lines[0].slice(0, 70) + "\u201D" });
     }
     return out;
   }
@@ -2948,6 +2960,13 @@ class Component extends DCLogic {
     } else {
       const probe = new Image();
       probe.onerror = () => this.setState({ photoError: "파일을 불러오지 못했어요. 다시 골라주세요." });
+      // 틀을 사진 비율에 맞추려고 크기를 적어 둔다 — 고정 높이로 두면 사진이 잘린다
+      probe.onload = () => {
+        const cur = (this.state.slotFiles || []).slice();
+        if (!cur[i] || cur[i].url !== url) return;
+        cur[i] = Object.assign({}, cur[i], { w: probe.naturalWidth, h: probe.naturalHeight });
+        this.setState({ slotFiles: cur });
+      };
       probe.src = url;
     }
     const next = (this.state.slotFiles || []).slice();
@@ -3879,7 +3898,7 @@ class Component extends DCLogic {
         const h = Math.floor(s / 3600), m2 = Math.floor((s % 3600) / 60), sec = s % 60;
         return [h, m2, sec].map(v => String(v).padStart(2, "0")).join(":");
       })(),
-      confirmTitle: (ms[this.state.confirmM] || {}).t || "",
+      confirmTitle: this.famFill((ms[this.state.confirmM] || {}).t || "", this.state.confirmM),
       confirmSub: "보석을 사용해서 다시 하시겠어요?",
       confirmOk: ((this.state.confirmCost || 20) === 10 && (this.state.retryCredits || 0) > 0) ? "아이템 사용" : "보석 " + (this.state.confirmCost || 20) + "개",
       closeConfirm: () => { clearInterval(this.cdT); this.cdT = null; this.setState({ confirmM: null }); },
@@ -4010,7 +4029,14 @@ class Component extends DCLogic {
       },
       mainPadStyle: {
         flex: 1, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "center",
-        padding: this.state.narrow ? "18px 16px 96px" : "26px clamp(16px,3vw,40px) 80px"
+        padding: this.state.narrow ? "18px 24px 96px" : "26px clamp(16px,3vw,40px) 80px"
+      },
+      // 미리보기는 목록을 밀지 않고 위에 덮는다(absolute). 그래서 맨 아래 미션을 열면 패널이
+      // 목록 끝 너머로 나가는데, 바닥 여백은 흐름 안의 내용 뒤에만 붙어 패널이 탭바에 가린다.
+      // 패널 아래에 투명한 여백을 달아 스크롤이 그만큼 더 내려가게 한다(누름은 통과시킨다).
+      previewWrapStyle: {
+        position: "absolute", top: "100%", left: 0, right: 0, pointerEvents: "none",
+        paddingBottom: this.state.narrow ? "96px" : "40px"
       },
       showTabs: !!this.state.narrow && ["home", "store", "profile", "rank"].indexOf(sc) >= 0,
       tabItems: [
@@ -4192,7 +4218,9 @@ class Component extends DCLogic {
         else parts.push("기록");
         return parts.join("과 ") + "을 남기면 완료돼요.";
       })(),
-      formColStyle: { width: "100%", maxWidth: wideCol ? "560px" : "440px", display: "flex", flexDirection: "column", gap: "12px" },
+      // 가운데 정렬은 justify-content 가 아니라 위아래 auto 여백으로 한다 — 내용이 넘치면
+      // justify-content:center 는 위쪽을 스크롤로도 닿지 않는 곳으로 밀어낸다(첫 사진이 안 보였다).
+      formColStyle: { width: "100%", maxWidth: wideCol ? "560px" : "440px", display: "flex", flexDirection: "column", gap: "12px", marginTop: "auto", marginBottom: "auto" },
       hasSlots: slots.length > 0,
       linesOnly: slots.length === 0 && lh.length > 0,
       freeRecord: slots.length === 0 && lh.length === 0,
@@ -4239,16 +4267,24 @@ class Component extends DCLogic {
             gap: "20px", padding: "20px 4px",
             borderBottom: "1px solid #ece4e2"
           },
-          frameStyle: {
-            flex: "none", display: "flex", alignItems: "center", justifyContent: "center",
-            width: this.state.narrow ? "100%" : "110px",
-            height: this.state.narrow ? "150px" : "110px",
-            flexDirection: "column", gap: "3px", textAlign: "center",
-            borderRadius: "20px", cursor: "pointer", overflow: "hidden",
-            whiteSpace: "pre-line",
-            background: (f && !isAV) ? "#f6ecea url('" + f.url + "') center/cover no-repeat" : "#f6ecea",
-            border: "0"
-          },
+          frameStyle: (() => {
+            const img = f && !isAV;
+            // 좁은 화면에서 사진을 올리면 틀을 사진 비율로 바꿔 통째로 보여준다.
+            // 너무 긴 세로 사진은 화면의 60%까지만 키우고 나머지는 여백으로 둔다(잘리지 않게 contain).
+            const fit = this.state.narrow && img && f.w && f.h;
+            return {
+              flex: "none", display: "flex", alignItems: "center", justifyContent: "center",
+              width: this.state.narrow ? "100%" : "110px",
+              height: fit ? "auto" : this.state.narrow ? "150px" : "110px",
+              aspectRatio: fit ? f.w + " / " + f.h : "auto",
+              maxHeight: fit ? "60vh" : "none",
+              flexDirection: "column", gap: "3px", textAlign: "center",
+              borderRadius: "20px", cursor: "pointer", overflow: "hidden",
+              whiteSpace: "pre-line",
+              background: img ? "#f6ecea url('" + f.url + "') center/" + (this.state.narrow ? "contain" : "cover") + " no-repeat" : "#f6ecea",
+              border: "0"
+            };
+          })(),
           onPick: e => this.pickPhoto(e, i)
         };
       }),
@@ -5535,7 +5571,7 @@ class Component extends DCLogic {
       }));
       const lines = multi ? [] : lh.map((h, li) => ({ hint: h, value: vals[li] || "" })).filter(l => l.value);
       recs[i] = {
-        num: m.n, title: m.t, stage: m.s,
+        num: m.n, title: this.famFill(m.t, i), stage: m.s,
         photos: photos,
         lines: lines,
         free: (!lh.length && !multi) ? (vals[0] || "") : "",
@@ -5665,6 +5701,10 @@ class Component extends DCLogic {
     gem:     [{ f: 1180, d: 0.05, t: "triangle", v: 0.14 }, { f: 1560, d: 0.12, t: "triangle", v: 0.12, at: 0.05 }],
     streak:  [{ f: 700, d: 0.06, t: "square", v: 0.09 }, { f: 1050, d: 0.14, t: "sine", v: 0.16, at: 0.06 }],
     tick:    [{ f: 880, d: 0.04, t: "square", v: 0.07 }],
+    // 결과 공개 — 기대 음악이 끊기는 자리에 밝은 화음이 터진다
+    reveal:  [{ f: 523.25, d: 0.55, t: "triangle", v: 0.13 }, { f: 659.25, d: 0.55, t: "triangle", v: 0.11 },
+              { f: 783.99, d: 0.6, t: "triangle", v: 0.11 }, { f: 1046.5, d: 0.8, t: "sine", v: 0.13, at: 0.03 },
+              { f: 1567.98, d: 0.4, t: "sine", v: 0.05, at: 0.1 }, { f: 2093, d: 0.35, t: "sine", v: 0.04, at: 0.17 }],
     error:   [{ f: 300, d: 0.09, t: "sawtooth", v: 0.1 }, { f: 220, d: 0.13, t: "sawtooth", v: 0.1, at: 0.08 }]
   };
   sfx(name) {
@@ -5689,7 +5729,97 @@ class Component extends DCLogic {
       });
     } catch (e) {}
   }
+  audioCtx() {
+    if (!this.actx) this.actx = new (window.AudioContext || window.webkitAudioContext)();
+    if (this.actx.state === "suspended") this.actx.resume();
+    return this.actx;
+  }
+  noiseBuf() {
+    const ac = this.audioCtx();
+    if (this._noise && this._noise.sampleRate === ac.sampleRate) return this._noise;
+    const buf = ac.createBuffer(1, ac.sampleRate, ac.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    return (this._noise = buf);
+  }
+  // 시계 초침 — 짧은 잡음을 좁은 대역으로 걸러 '딱' 하는 기계음을 만든다.
+  // 틱은 높게, 톡은 낮게 번갈아 친다. 남은 시간이 적으면 세게.
+  clockTick(tock, strong) {
+    if (this.state.muted) return;
+    try {
+      const ac = this.audioCtx(), t0 = ac.currentTime + 0.005;
+      const src = ac.createBufferSource(); src.buffer = this.noiseBuf();
+      const bp = ac.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = tock ? 2100 : 3000; bp.Q.value = 6;
+      const g = ac.createGain();
+      g.gain.setValueAtTime(strong ? 1.6 : 1.0, t0);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.028);
+      src.connect(bp); bp.connect(g); g.connect(ac.destination);
+      src.start(t0, Math.random() * 0.8, 0.04);
+      const o = ac.createOscillator(), og = ac.createGain();
+      o.type = "sine"; o.frequency.setValueAtTime(tock ? 1250 : 1750, t0);
+      og.gain.setValueAtTime(strong ? 0.09 : 0.05, t0);
+      og.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.018);
+      o.connect(og); og.connect(ac.destination); o.start(t0); o.stop(t0 + 0.03);
+    } catch (e) {}
+  }
+  // 결과 채점 중 음악 — 심장박처럼 뛰는 박이 점점 빨라지고, 아르페지오가 올라가고,
+  // 잡음이 차오른다. 7초에 정점을 찍고, 결과가 늦으면 정점을 유지하다 공개 순간 끊는다.
+  startBuild() {
+    this.stopBuild(true);
+    if (this.state.muted) return;
+    try {
+      const ac = this.audioCtx(), PEAK = 7;
+      const start = ac.currentTime + 0.05;
+      const bus = ac.createGain(); bus.gain.value = 1; bus.connect(ac.destination);
+      const n = ac.createBufferSource(); n.buffer = this.noiseBuf(); n.loop = true;
+      const bp = ac.createBiquadFilter(); bp.type = "bandpass"; bp.Q.value = 1.4;
+      bp.frequency.setValueAtTime(350, start); bp.frequency.exponentialRampToValueAtTime(4800, start + PEAK);
+      const ng = ac.createGain();
+      ng.gain.setValueAtTime(0.0001, start); ng.gain.exponentialRampToValueAtTime(0.06, start + PEAK);
+      n.connect(bp); bp.connect(ng); ng.connect(bus); n.start(start);
+      const b = { ac, bus, start, next: start, i: 0, src: n };
+      this._build = b;
+      const ARP = [0, 4, 7, 12, 7, 4];
+      const sched = () => {
+        if (this._build !== b) return;
+        while (b.next < ac.currentTime + 0.3) {
+          const t = b.next, p = Math.min(1, (t - start) / PEAK);
+          const gap = 0.46 - 0.34 * p;                      // 0.46초 → 0.12초
+          // 박 — 낮은 음이 툭 떨어진다
+          const k = ac.createOscillator(), kg = ac.createGain();
+          k.type = "sine"; k.frequency.setValueAtTime(140, t); k.frequency.exponentialRampToValueAtTime(48, t + 0.12);
+          kg.gain.setValueAtTime(0.16 + 0.12 * p, t); kg.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+          k.connect(kg); kg.connect(bus); k.start(t); k.stop(t + 0.18);
+          // 아르페지오 — 정점에 가까울수록 음역이 올라간다(반음 단위로 최대 한 옥타브)
+          const semi = ARP[b.i % ARP.length] + Math.round(12 * p);
+          const f = 261.63 * Math.pow(2, semi / 12);
+          const o = ac.createOscillator(), og = ac.createGain();
+          o.type = "triangle"; o.frequency.setValueAtTime(f, t);
+          og.gain.setValueAtTime(0.0001, t); og.gain.linearRampToValueAtTime(0.035 + 0.05 * p, t + 0.01);
+          og.gain.exponentialRampToValueAtTime(0.0001, t + Math.max(0.1, gap * 0.9));
+          o.connect(og); og.connect(bus); o.start(t); o.stop(t + gap);
+          b.next += gap; b.i++;
+        }
+      };
+      sched();
+      b.timer = setInterval(sched, 60);
+    } catch (e) {}
+  }
+  stopBuild(quick) {
+    const b = this._build;
+    if (!b) return;
+    this._build = null;
+    clearInterval(b.timer);
+    try {
+      const t = b.ac.currentTime;
+      b.bus.gain.cancelScheduledValues(t);
+      b.bus.gain.setValueAtTime(b.bus.gain.value, t);
+      b.bus.gain.linearRampToValueAtTime(0, t + (quick ? 0.04 : 0.1));
+      setTimeout(() => { try { b.src.stop(); b.bus.disconnect(); } catch (e) {} }, 300);
+    } catch (e) {}
+  }
   trackNav() {
+    // 채점 화면을 벗어나거나 소리를 끄면 기대 음악도 멈춘다
+    if (this._build && (!this.state.testGrading || this.state.muted)) this.stopBuild(true);
     const sc = this.state.screen;
     if (sc !== this._lastScreen) {
       const a = this.FLOW.indexOf(this._lastScreen), b = this.FLOW.indexOf(sc);
@@ -5724,7 +5854,7 @@ class Component extends DCLogic {
     }, 1000);
     if (this.props.demoSeed) this.seedDemo();
   }
-  componentWillUnmount() { window.removeEventListener("keydown", this.onKeyNav); window.removeEventListener("click", this.onAnyClick, true); window.removeEventListener("resize", this.onResize); this.clearTick(); clearInterval(this.freeT); clearInterval(this.cdT); clearInterval(this.extT); clearInterval(this.gradeT); }
+  componentWillUnmount() { window.removeEventListener("keydown", this.onKeyNav); window.removeEventListener("click", this.onAnyClick, true); window.removeEventListener("resize", this.onResize); this.clearTick(); clearInterval(this.freeT); clearInterval(this.cdT); clearInterval(this.extT); clearInterval(this.gradeT); this.stopBuild(true); }
   onKeyNav = e => {
     const { screen, step } = this.state;
     if (e.key === "Enter" || e.key === "ArrowDown" || e.key === "ArrowUp") {
@@ -5831,7 +5961,7 @@ class Component extends DCLogic {
             { flex: 1, overflow: "hidden", background: "#fffdfb", display: "flex", flexDirection: "column" },
             this.state.vvKb
               ? { position: "fixed", left: 0, right: 0, top: (this.state.vvTop || 0) + "px", height: this.state.vvh + "px", zIndex: 5 }
-              : { height: "100dvh", maxHeight: "100dvh" })
+              : { height: "100%", maxHeight: "100%" })
         : { flex: 1, minHeight: "100vh", background: "#fffdfb", display: "flex", flexDirection: "column" },
       // 키패드가 있을 땐 가운데 정렬을 풀고 위로 붙인다 — 남은 높이가 짧아 가운데 두면 빈칸만 생긴다
       quizBodyStyle: { flex: 1, minHeight: 0, display: "flex", flexDirection: "column", alignItems: "center",
@@ -5844,7 +5974,7 @@ class Component extends DCLogic {
       quizTaStyle: { width: "100%", height: this.state.narrow ? "124px" : "200px", padding: "16px",
                      border: "2px solid #e3dbd9", outline: 0, borderRadius: "16px", background: "transparent",
                      resize: "none", fontFamily: "'Noto Sans KR',sans-serif", fontWeight: 500,
-                     fontSize: this.state.narrow ? "15px" : "17px", lineHeight: 1.6, color: "#2e1211" },
+                     fontSize: this.state.narrow ? "16px" : "17px", lineHeight: 1.6, color: "#2e1211" },
       onResult: sc === "result" && !this.state.testGrading,
       onTestGrading: sc === "result" && !!this.state.testGrading,
       testLine: (this.state.testStep || 0) === 0 ? "얼마나 적었는지 재고 있어요"
