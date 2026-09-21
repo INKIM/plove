@@ -150,6 +150,21 @@
       }, 500);
       return r;
     };
+    /* 키패드 높이를 따라간다 — 레벨 테스트 화면이 보이는 영역에 붙어 있게.
+       iOS 는 키패드가 떠도 innerHeight 를 줄이지 않고 visualViewport 만 줄인다. */
+    var vv = window.visualViewport;
+    if (vv) {
+      var syncVV = function () {
+        if (L.state.screen !== "quiz" && !L.state.vvKb) return;
+        var h = Math.round(vv.height), top = Math.round(vv.offsetTop);
+        var kb = L.state.screen === "quiz" && h < window.innerHeight - 120;
+        if (h !== L.state.vvh || top !== L.state.vvTop || kb !== !!L.state.vvKb)
+          L.setState({ vvh: h, vvTop: top, vvKb: kb });
+      };
+      vv.addEventListener("resize", syncVV);
+      vv.addEventListener("scroll", syncVV);
+    }
+
     window.__ploveSave = { key: KEY, logic: L, wipe: function () { localStorage.removeItem(KEY); } };
   }
 

@@ -605,7 +605,7 @@ Google로 계속하기
 <div style="flex:1;min-height:100dvh;background:#b62a22;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px">
 <span style="font-weight:600;font-size:15px;letter-spacing:.14em;color:#ffffffb3">레벨 테스트 시작</span>
 <span style="{{ cdStyle }}">{{ cd }}</span>
-<span style="font-weight:500;font-size:15px;color:#ffffffd9">15문항 · 14문항은 5초, 마지막 1문항은 30초</span>
+<span style="font-weight:500;font-size:15px;color:#ffffffd9">15문항 · 14문항은 10초, 마지막 1문항은 30초</span>
 </div>
 </sc-if>
 
@@ -2529,7 +2529,8 @@ class Component extends DCLogic {
       setTimeout(() => this.ansRef.current && this.ansRef.current.focus(), 80);
     });
   }
-  limitFor(i) { return i === 14 ? 30000 : 5000; }
+  // 1~14번은 짧게 즉답, 15번은 서술형. 한 문제 10초(원래 5초 — 모바일에서 치기엔 짧았다)
+  limitFor(i) { return i === 14 ? 30000 : 10000; }
   paintTimer() {
     const limit = this.limit || 5000;
     const left = Math.max(0, this.left || 0);
@@ -2644,7 +2645,7 @@ class Component extends DCLogic {
         system: "당신은 PLOVE의 캐릭터 '" + np.name + "'입니다. 사랑을 연습하게 돕는 따뜻한 안내자예요. 한국어로 씁니다.",
         messages: [{
           role: "user",
-          content: "아래는 사용자가 사랑에 대한 레벨 테스트 15문항에 답한 기록입니다. 1~14번은 5초 안에 즉답한 문항, 15번은 30초 동안 쓴 서술형입니다. 무응답도 의미 있는 정보입니다.\n\n" + pairs + "\n\n이 사람이 사랑을 얼마나 깊이 고민해왔는지, 답변의 내용과 공백에서 읽히는 것을 종합해 3~4문장으로 써주세요.\n\n규칙:\n- 숫자, 점수, 통계, 항목 나열을 쓰지 마세요. 채점하듯 말하지 마세요.\n- 이 사람의 답에서 실제로 나온 표현을 한두 개 인용하듯 언급해 개인적으로 느껴지게 하세요.\n- 부족함을 지적하지 말고, 지금 어디에 서 있는지 알아차리게 하세요.\n- 따뜻하지만 담백하게. 과한 감탄이나 이모지는 쓰지 마세요.\n- 마지막 문장은 앞으로의 연습으로 자연스럽게 이어지게 하세요.\n- 존댓말, 문단 하나로만 답하세요. 다른 말은 덧붙이지 마세요."
+          content: "아래는 사용자가 사랑에 대한 레벨 테스트 15문항에 답한 기록입니다. 1~14번은 10초 안에 즉답한 문항, 15번은 30초 동안 쓴 서술형입니다. 무응답도 의미 있는 정보입니다.\n\n" + pairs + "\n\n이 사람이 사랑을 얼마나 깊이 고민해왔는지, 답변의 내용과 공백에서 읽히는 것을 종합해 3~4문장으로 써주세요.\n\n규칙:\n- 숫자, 점수, 통계, 항목 나열을 쓰지 마세요. 채점하듯 말하지 마세요.\n- 이 사람의 답에서 실제로 나온 표현을 한두 개 인용하듯 언급해 개인적으로 느껴지게 하세요.\n- 부족함을 지적하지 말고, 지금 어디에 서 있는지 알아차리게 하세요.\n- 따뜻하지만 담백하게. 과한 감탄이나 이모지는 쓰지 마세요.\n- 마지막 문장은 앞으로의 연습으로 자연스럽게 이어지게 하세요.\n- 존댓말, 문단 하나로만 답하세요. 다른 말은 덧붙이지 마세요."
         }]
       });
       const out = (text || "").trim();
@@ -4635,7 +4636,7 @@ class Component extends DCLogic {
       qNum: i + 1,
       qStage: q.s,
       qText: q.q,
-      qLimit: i === 14 ? 30 : 5,
+      qLimit: Math.round(this.limitFor(i) / 1000),
       isShort: i < 14,
       isLong: i === 14,
       ans: this.state.ans || "",
@@ -5822,11 +5823,20 @@ class Component extends DCLogic {
       onQuiz: sc === "quiz",
       // 좁은 화면 — 화면보다 길면 입력할 때마다 브라우저가 스크롤해 흔들린다.
       // 한 화면에 가두고 스크롤을 없앤다(100vh 는 iOS 에서 보이는 영역보다 크다).
+      // 키패드가 올라오면 iOS 는 입력칸을 보이게 하려고 화면을 통째로 밀어 올린다 —
+      // 그러면 머리글(문항 번호·제한 시간)이 위로 잘려 나간다. 보이는 영역(visualViewport)
+      // 에 화면을 붙여 둔다: 머리글은 위에, 제출 줄은 키패드 바로 위에 남는다.
       quizScreenStyle: this.state.narrow
-        ? { flex: 1, height: "100dvh", maxHeight: "100dvh", overflow: "hidden", background: "#fffdfb", display: "flex", flexDirection: "column" }
+        ? Object.assign(
+            { flex: 1, overflow: "hidden", background: "#fffdfb", display: "flex", flexDirection: "column" },
+            this.state.vvKb
+              ? { position: "fixed", left: 0, right: 0, top: (this.state.vvTop || 0) + "px", height: this.state.vvh + "px", zIndex: 5 }
+              : { height: "100dvh", maxHeight: "100dvh" })
         : { flex: 1, minHeight: "100vh", background: "#fffdfb", display: "flex", flexDirection: "column" },
-      quizBodyStyle: { flex: 1, minHeight: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                       padding: this.state.narrow ? "14px 18px" : "clamp(24px,5vh,56px) clamp(20px,5vw,64px)" },
+      // 키패드가 있을 땐 가운데 정렬을 풀고 위로 붙인다 — 남은 높이가 짧아 가운데 두면 빈칸만 생긴다
+      quizBodyStyle: { flex: 1, minHeight: 0, display: "flex", flexDirection: "column", alignItems: "center",
+                       justifyContent: this.state.narrow && this.state.vvKb ? "flex-start" : "center",
+                       padding: this.state.narrow ? (this.state.vvKb ? "18px 18px 8px" : "14px 18px") : "clamp(24px,5vh,56px) clamp(20px,5vw,64px)" },
       quizInnerStyle: { width: "100%", maxWidth: "720px", display: "flex", flexDirection: "column",
                         gap: this.state.narrow ? "16px" : "clamp(20px,4vh,36px)" },
       quizQStyle: { fontWeight: 700, fontSize: this.state.narrow ? "19px" : "clamp(22px,3vw,32px)",
