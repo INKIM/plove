@@ -6073,11 +6073,12 @@ class Component extends DCLogic {
       })[(sel || {}).key] || "",
       pickDescStyle: {
         flex: "none", boxSizing: "border-box", width: "100%", maxWidth: "611px",
-        height: this.state.narrow ? "84px" : "62px",           // 좁은 화면은 세 줄까지 들어가게 — 그래도 고정이다
-        padding: "0 18px", borderRadius: "14px",
+        height: "62px",                                           // 어느 화면에서도 고정 — 그리드가 밀리지 않게
+        padding: this.state.narrow ? "0 14px" : "0 18px", borderRadius: "14px",
         background: sel ? "rgba(255,255,255,0.12)" : "transparent",
         display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
-        fontWeight: 500, fontSize: "13px", lineHeight: 1.65, color: "#ffffff",
+        // 좁은 화면은 세 줄이 되므로 글자를 줄여 62px 안에 넣는다(13px 면 3줄이 64px 라 넘친다)
+        fontWeight: 500, fontSize: this.state.narrow ? "12px" : "13px", lineHeight: 1.65, color: "#ffffff",
         textAlign: "center", textWrap: "pretty", wordBreak: "keep-all",
         transition: "background .2s"
       },
