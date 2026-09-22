@@ -773,7 +773,7 @@ Google로 계속하기
 </sc-if>
 
 <sc-if value="{{ onHome }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;min-height:100%;background:#fffdfb;display:flex;align-items:stretch">
+<div style="flex:1 0 auto;min-height:100%;background:#fffdfb;display:flex;align-items:stretch">
 
 <div style="{{ sideStyle }}">
 <sc-if value="{{ hasHomeBack }}" hint-placeholder-val="{{ false }}">
@@ -998,7 +998,7 @@ Google로 계속하기
 <span style="display:flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:#2e1211"><img src="assets/ui-gem.png" alt="" style="width:18px;height:18px;display:block">{{ storeGems }}</span>
 </div>
 </div>
-<div ref="{{ storeScrollRef }}" onScroll="{{ onStoreScroll }}" style="flex:1;overflow:auto;padding:26px clamp(20px,4vw,44px) 56px">
+<div ref="{{ storeScrollRef }}" onScroll="{{ onStoreScroll }}" style="{{ storeBodyStyle }}">
 <div style="width:100%;max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:30px">
 
 <sc-if value="{{ storeShort }}" hint-placeholder-val="{{ false }}">
@@ -1578,7 +1578,7 @@ Google로 계속하기
 <span style="font-weight:800;font-size:17px;color:#2e1211">프로필</span>
 </div>
 </div>
-<div style="flex:1;overflow:auto;padding:30px clamp(24px,4vw,56px) 64px">
+<div style="{{ tabBodyStyle }}">
 <div style="width:100%;max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:28px">
 
 <div style="display:flex;align-items:center;gap:16px">
@@ -1944,7 +1944,7 @@ Google로 계속하기
 <span style="font-weight:800;font-size:17px;color:#2e1211">랭킹</span>
 </div>
 </div>
-<div style="flex:1;overflow:auto;padding:30px clamp(24px,4vw,56px) 64px">
+<div style="{{ tabBodyStyle }}">
 <div style="width:100%;max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:14px">
 <span style="font-weight:500;font-size:13px;line-height:1.6;color:#7a6360">{{ rankTitle }} {{ rankNote }}</span>
 <div style="display:flex;flex-direction:column">
@@ -4046,6 +4046,10 @@ class Component extends DCLogic {
       // 미리보기는 목록을 밀지 않고 위에 덮는다(absolute). 그래서 맨 아래 미션을 열면 패널이
       // 목록 끝 너머로 나가는데, 바닥 여백은 흐름 안의 내용 뒤에만 붙어 패널이 탭바에 가린다.
       // 패널 아래에 투명한 여백을 달아 스크롤이 그만큼 더 내려가게 한다(누름은 통과시킨다).
+      // 탭바(67px)가 있는 화면은 스크롤 끝에 그만큼 더 비워 둔다 — 바닥 여백이 탭바보다 작으면
+      // 끝까지 내려도 마지막 줄이 탭바에 걸린다(프로필 '계정 삭제'가 그랬다)
+      tabBodyStyle: { flex: 1, overflow: "auto", padding: "30px clamp(24px,4vw,56px) " + (this.state.narrow ? "104px" : "64px") },
+      storeBodyStyle: { flex: 1, overflow: "auto", padding: "26px clamp(20px,4vw,44px) " + (this.state.narrow ? "104px" : "56px") },
       previewWrapStyle: {
         position: "absolute", top: "100%", left: 0, right: 0, pointerEvents: "none",
         paddingBottom: this.state.narrow ? "96px" : "40px"
