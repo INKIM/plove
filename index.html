@@ -610,7 +610,7 @@ Google로 계속하기
 <div style="flex:1;min-height:100%;background:#b62a22;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px">
 <span style="font-weight:600;font-size:15px;letter-spacing:.14em;color:#ffffffb3">레벨 테스트 시작</span>
 <span style="{{ cdStyle }}">{{ cd }}</span>
-<span style="font-weight:500;font-size:15px;color:#ffffffd9">15문항 · 14문항은 10초, 마지막 1문항은 30초</span>
+<span style="font-weight:500;font-size:15px;color:#ffffffd9">15문항 · 14문항은 15초, 마지막 1문항은 30초</span>
 </div>
 </sc-if>
 
@@ -2546,8 +2546,8 @@ class Component extends DCLogic {
       setTimeout(() => this.ansRef.current && this.ansRef.current.focus(), 80);
     });
   }
-  // 1~14번은 짧게 즉답, 15번은 서술형. 한 문제 10초(원래 5초 — 모바일에서 치기엔 짧았다)
-  limitFor(i) { return i === 14 ? 30000 : 10000; }
+  // 1~14번은 짧게 즉답, 15번은 서술형. 한 문제 15초(5초 → 10초 → 15초 — 모바일에서 치기엔 짧았다)
+  limitFor(i) { return i === 14 ? 30000 : 15000; }
   paintTimer() {
     const limit = this.limit || 5000;
     const left = Math.max(0, this.left || 0);
@@ -2668,7 +2668,7 @@ class Component extends DCLogic {
         system: "당신은 PLOVE의 캐릭터 '" + np.name + "'입니다. 사랑을 연습하게 돕는 따뜻한 안내자예요. 한국어로 씁니다.",
         messages: [{
           role: "user",
-          content: "아래는 사용자가 사랑에 대한 레벨 테스트 15문항에 답한 기록입니다. 1~14번은 10초 안에 즉답한 문항, 15번은 30초 동안 쓴 서술형입니다. 무응답도 의미 있는 정보입니다.\n\n" + pairs + "\n\n이 사람이 사랑을 얼마나 깊이 고민해왔는지, 답변의 내용과 공백에서 읽히는 것을 종합해 3~4문장으로 써주세요.\n\n규칙:\n- 숫자, 점수, 통계, 항목 나열을 쓰지 마세요. 채점하듯 말하지 마세요.\n- 이 사람의 답에서 실제로 나온 표현을 한두 개 인용하듯 언급해 개인적으로 느껴지게 하세요.\n- 부족함을 지적하지 말고, 지금 어디에 서 있는지 알아차리게 하세요.\n- 따뜻하지만 담백하게. 과한 감탄이나 이모지는 쓰지 마세요.\n- 마지막 문장은 앞으로의 연습으로 자연스럽게 이어지게 하세요.\n- 존댓말, 문단 하나로만 답하세요. 다른 말은 덧붙이지 마세요."
+          content: "아래는 사용자가 사랑에 대한 레벨 테스트 15문항에 답한 기록입니다. 1~14번은 15초 안에 즉답한 문항, 15번은 30초 동안 쓴 서술형입니다. 무응답도 의미 있는 정보입니다.\n\n" + pairs + "\n\n이 사람이 사랑을 얼마나 깊이 고민해왔는지, 답변의 내용과 공백에서 읽히는 것을 종합해 3~4문장으로 써주세요.\n\n규칙:\n- 숫자, 점수, 통계, 항목 나열을 쓰지 마세요. 채점하듯 말하지 마세요.\n- 이 사람의 답에서 실제로 나온 표현을 한두 개 인용하듯 언급해 개인적으로 느껴지게 하세요.\n- 부족함을 지적하지 말고, 지금 어디에 서 있는지 알아차리게 하세요.\n- 따뜻하지만 담백하게. 과한 감탄이나 이모지는 쓰지 마세요.\n- 마지막 문장은 앞으로의 연습으로 자연스럽게 이어지게 하세요.\n- 존댓말, 문단 하나로만 답하세요. 다른 말은 덧붙이지 마세요."
         }]
       });
       const out = (text || "").trim();
