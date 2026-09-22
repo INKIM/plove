@@ -95,8 +95,10 @@ input::placeholder,textarea::placeholder{color:#e2d9d7}
 </div>
 <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:14px">
 <div onClick="{{ googleStart }}" style="width:min(390px,86vw);min-height:73px;display:flex;align-items:center;justify-content:center;gap:12px;background:#fffdfb;border-radius:999px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-weight:700;font-size:22px;color:#b62a22" style-hover="background:#fff;transform:translateY(-1px)" style-active="transform:translateY(2px)">
+<sc-if value="{{ startNeedsGoogle }}" hint-placeholder-val="{{ false }}">
 <svg width="24" height="24" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.2-.4-4.7H24v8.9h11.8c-.5 2.7-2.1 5-4.4 6.5v5.4h7.1c4.2-3.8 6.6-9.5 6.6-16.1z"></path><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.4l-7.1-5.4c-2 1.3-4.5 2.1-7.4 2.1-5.7 0-10.5-3.8-12.2-9H4.6v5.6C8.2 41.1 15.5 46 24 46z"></path><path fill="#FBBC05" d="M11.8 28.3c-.4-1.3-.7-2.7-.7-4.3s.2-2.9.7-4.3v-5.6H4.6C3 17.3 2 20.5 2 24s1 6.7 2.6 9.9l7.2-5.6z"></path><path fill="#EA4335" d="M24 10.3c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.9 3.8 29.9 2 24 2 15.5 2 8.2 6.9 4.6 14.1l7.2 5.6c1.7-5.2 6.5-9 12.2-9z"></path></svg>
-시작하기
+</sc-if>
+{{ startLabel }}
 </div>
 <span style="max-width:min(390px,86vw);font-weight:500;font-size:11px;line-height:1.6;color:#ffffff9e;text-align:center;text-wrap:pretty">계속하면 14세 이상이며, <span onClick="{{ goPolicy }}" style="text-decoration:underline;cursor:pointer" style-hover="color:#fffdfb">이용약관 및 개인정보처리방침</span>에 동의하게 됩니다.</span>
 </div>
@@ -1685,8 +1687,16 @@ Google로 계속하기
 <div style="display:flex;flex-direction:column;border:1px solid #ece4e2;border-radius:16px;overflow:hidden">
 <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid #f2e8e6">
 <span style="font-weight:600;font-size:13px;color:#7a6360">연결된 계정</span>
+<sc-if value="{{ hasAccount }}" hint-placeholder-val="{{ true }}">
 <span style="font-weight:600;font-size:13px;color:#2e1211">{{ accountLabel }}</span>
+</sc-if>
+<sc-if value="{{ isGuest }}" hint-placeholder-val="{{ false }}">
+<span onClick="{{ googleLink }}" style="font-weight:700;font-size:13px;color:#b62a22;cursor:pointer;text-decoration:underline">구글 계정 연결</span>
+</sc-if>
 </div>
+<sc-if value="{{ isGuest }}" hint-placeholder-val="{{ false }}">
+<div style="padding:12px 16px;border-bottom:1px solid #f2e8e6;font-weight:500;font-size:12px;line-height:1.6;color:#7a6360;text-wrap:pretty">기록은 이 기기에만 저장돼요. 계정을 연결하면 다른 기기에서도 이어서 하고, 파트너를 초대하거나 기록을 공유할 수 있어요.</div>
+</sc-if>
 <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid #f2e8e6">
 <span style="flex:1;min-width:0;font-weight:600;font-size:13px;color:#2e1211">{{ muteLabel }}</span>
 <div onClick="{{ toggleMute }}" style="{{ muteToggleStyle }}"><div style="{{ muteKnobStyle }}"></div></div>
@@ -1716,10 +1726,12 @@ Google로 계속하기
 </div>
 </div>
 </sc-if>
+<sc-if value="{{ hasAccount }}" hint-placeholder-val="{{ true }}">
 <div onClick="{{ signOut }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid #f2e8e6;cursor:pointer" style-hover="background:#fdf8f7">
 <span style="font-weight:600;font-size:13px;color:#2e1211">로그아웃</span>
 <span style="font-weight:600;font-size:13px;color:#7a6360">→</span>
 </div>
+</sc-if>
 <div onClick="{{ wipeData }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer" style-hover="background:#fdf2f0">
 <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
 <span style="font-weight:600;font-size:13px;color:#b62a22">계정 삭제</span>
@@ -6062,11 +6074,22 @@ class Component extends DCLogic {
       go1: () => this.setState({ screen: "start" }),
       goPick: () => this.setState({ screen: this.state.signedIn ? "pick" : "signin" }),
       // Google OAuth 연결 지점 — 실제 인증 페이지로 보내고, 돌아오면 저장된 진행 상태를 복원한다.
+      // 로그인 없이 시작한다 — 계정이 꼭 필요한 기능(파트너 초대·공유·선물 받기)에서만 구글 연결을 부른다.
+      // (예전에는 가짜 계정 user@gmail.com 을 붙였다 — 그 계정으로 기록이 쌓였다)
       googleStart: () => {
         this.sfx("start");
-        if (this.state.signedIn) { this.setState({ screen: "pick" }); return; }
-        this.setState({ signedIn: true, agreed: true, gEmail: "user@gmail.com", screen: "pick" });
+        const lv = this.state.levels || {};
+        const started = Object.keys(lv).filter(k => lv[k]);
+        if (!started.length) { this.setState({ agreed: true, screen: "pick" }); return; }
+        const cur = this.state.selected || this.state.course;
+        const k = (cur && lv[cur]) ? cur : started[0];
+        this.setState({ agreed: true, screen: "home", course: k, selected: k, pendingCourse: null });
       },
+      startLabel: "시작하기",
+      startNeedsGoogle: false,
+      isGuest: !this.state.gEmail,
+      hasAccount: !!this.state.gEmail,
+      googleLink: () => this.toast("구글 연결은 배포된 주소에서만 할 수 있어요"),
       onSignin: sc === "signin",
       onPolicy: sc === "policy",
       goPolicy: () => this.setState({ screen: "policy", policyBack: sc === "policy" ? (this.state.policyBack || "start") : sc }),
@@ -6098,7 +6121,6 @@ class Component extends DCLogic {
         border: this.state.agreed ? "1px solid #e3dbd9" : "0",
         color: this.state.agreed ? "#2e1211" : "#a89290"
       },
-      isGuest: false,
       accountLabel: this.state.gEmail || "연결된 계정 없음",
       subName: this.state.plus
         ? ((this.state.couplePaid ? "파트너" : "플러스") + (this.state.subCancelled ? " · 만료 예정 (~" + (this.state.subEnds || "") + ")" : (this.state.couplePaid ? " · 월 14,900원" : " · 월 9,900원")))

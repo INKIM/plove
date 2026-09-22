@@ -95,15 +95,10 @@
           photo: (u.user_metadata || {}).avatar_url || L.state.photo
         });
         advance();
-      } else {
-        // 세션이 없으면 저장본이 로그인 상태였더라도 내린다 — 실제 인증이 정본이다.
-        // 게스트 모드가 없으므로 진행이 남아 있어도 시작 화면에서 막는다.
-        var inApp = L.state.screen && L.state.screen !== "start" &&
-                    L.state.screen !== "signin" && L.state.screen !== "policy" &&
-                    L.state.screen !== "terms";
-        if (L.state.signedIn || inApp) {
-          L.setState({ signedIn: false, gEmail: "", screen: "start" });
-        }
+      } else if (L.state.signedIn || L.state.gEmail) {
+        // 세션이 없으면 저장본이 로그인 상태였더라도 계정만 내린다 — 실제 인증이 정본이다.
+        // 로그인 없이도 쓸 수 있으므로 화면은 옮기지 않는다(이 기기의 진행으로 계속한다).
+        L.setState({ signedIn: false, gEmail: "" });
       }
     }
 
@@ -116,18 +111,28 @@
       });
     }
 
+    // 메일로 받은 선물·파트너 초대는 받는 사람 주소에 묶여 있다 — 그때만 로그인이 필요하다
+    function pendingLink() {
+      try { return !!(sessionStorage.getItem("plove.gift") || sessionStorage.getItem("plove.invite")); }
+      catch (e) { return false; }
+    }
+
     var orig = L.renderVals.bind(L);
     L.renderVals = function () {
       var v = orig();
+      var needG = !L.state.signedIn && pendingLink();
+      v.startNeedsGoogle = needG;
+      v.startLabel = needG ? "구글로 시작하기" : "시작하기";
       v.googleStart = function () {
         L.sfx && L.sfx("start");
-        if (L.state.signedIn) {
-          // 이미 로그인돼 있으면 곧장 안으로 — 진행이 있으면 학습, 없으면 과목 선택
-          L.setState(entry());
-          return;
-        }
-        signIn();
+        try { window.__ploveTrack && window.__ploveTrack("start"); } catch (e) {}
+        if (needG) { signIn(); return; }
+        // 로그인 없이 곧장 안으로 — 진행이 있으면 학습, 없으면 과목 선택
+        L.setState(Object.assign({ agreed: true }, entry()));
       };
+      // 프로필의 '구글 계정 연결' — 계정에 저장된 진행이 없으면 이 기기의 진행이 올라가고,
+      // 있으면 계정 쪽을 쓴다(server.js boot)
+      v.googleLink = function () { signIn(); };
       v.googleSignIn = function () {
         if (!L.state.agreed) { L.toast && L.toast("약관에 동의해야 시작할 수 있어요"); return; }
         signIn();

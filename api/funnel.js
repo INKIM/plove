@@ -21,7 +21,7 @@ export default async function handler(req, res) {
 
   try {
     let ev = [];
-    try { ev = await db("events?step=in.(visit,signin,mission_done)&select=anon_id,email,step&limit=100000"); }
+    try { ev = await db("events?step=in.(visit,start,signin,mission_done)&select=anon_id,email,step&limit=100000"); }
     catch (e) { return res.status(200).json({ ok: false, error: "events_table_missing", hint: "supabase/events.sql 을 SQL Editor 에서 한 번 실행하세요" }); }
 
     const prog = await db("progress?select=email,data&limit=100000");
@@ -29,6 +29,7 @@ export default async function handler(req, res) {
 
     const at = s => ev.filter(e => e.step === s);
     const visit = people(at("visit"));
+    const start = people(at("start"));
     const signin = people(at("signin"));
     const mission = people(at("mission_done"));
 
@@ -41,10 +42,13 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, at: new Date().toISOString(),
       유입퍼널: {
         방문: visit,
-        로그인: signin,          "로그인률": pct(signin, visit),
-        미션1개완수: mission,     "완수률": pct(mission, signin),
+        // 2026-09-22 부터 로그인 없이 시작한다 — 두 번째 칸이 '로그인'에서 '시작하기'로 바뀌었다
+        시작하기: start,          "시작률": pct(start, visit),
+        미션1개완수: mission,     "완수률": pct(mission, start),
         구독자: plus,            "구독률": pct(plus, mission),
       },
+      // 계정 연결은 이제 선택이다 — 퍼널이 아니라 따로 센다
+      구글연결: signin,
       구독비율: {
         전체이용자: users,
         무료이용자: users - plus, "무료비율": pct(users - plus, users),

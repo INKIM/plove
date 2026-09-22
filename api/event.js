@@ -2,7 +2,8 @@
 // 표가 아직 없거나 DB 가 안 붙어 있어도 앱은 멈추지 않는다(조용히 넘어간다).
 import { db, hasDb, readBody } from "./_lib.js";
 
-const STEPS = ["visit", "signin", "mission_done"];
+// start = 첫 화면에서 '시작하기'를 누름(로그인 없이 들어온다). signin = 구글 연결.
+const STEPS = ["visit", "start", "signin", "mission_done"];
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "method" });

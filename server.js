@@ -60,6 +60,13 @@
             function (e) { if (show) busyOff(); throw e; });
   }
   function myEmail(L) { return (L.state.gEmail || "").trim(); }
+  /* 로그인 없이 시작하므로, 계정이 꼭 필요한 기능에 닿았을 때 그 자리에서 연결로 보낸다.
+     알림을 읽을 틈을 두고 넘긴다 — 누르자마자 구글 화면이 뜨면 무슨 일인지 모른다. */
+  function needAccount(msg) {
+    var L = (window.__ploveSave || {}).logic;
+    L && L.toast && L.toast(msg);
+    setTimeout(function () { try { window.__ploveAuth && window.__ploveAuth.signIn(); } catch (e) {} }, 1300);
+  }
 
   (async function () {
     var L = await waitLogic();
@@ -68,6 +75,10 @@
     var orig = L.renderVals.bind(L);
     L.renderVals = function () {
       var v = orig();
+
+      /* 퍼널 — 로그인 대신 '시작하기'를 누른 순간을 센다 */
+      var gs = v.googleStart;
+      v.googleStart = function () { track("start"); return gs && gs.apply(this, arguments); };
 
       /* 팀 구독 문의 — 쌓아뒀다 하루 1번 메일로 나간다 */
       var team = v.sendTeam;
@@ -90,7 +101,7 @@
         var to = (L.state.inviteEmail || "").trim();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) { mk && mk.apply(this, arguments); return; }
         var me = myEmail(L);
-        if (!me) { L.toast && L.toast("로그인 후에 초대할 수 있어요"); return; }
+        if (!me) { needAccount("초대하려면 구글 계정 연결이 필요해요"); return; }
         L.setState({ inviteErr: "", inviteSending: true });
         post("/api/partner", {
           action: "invite", myEmail: me, myName: (L.state.name || "").trim(),
@@ -115,7 +126,7 @@
         var scope = L.state.shareScope || "link";
         if (scope === "private") { ds && ds.apply(this, arguments); return; }
         var me = myEmail(L);
-        if (!me) { L.toast && L.toast("로그인 후에 공유할 수 있어요"); return; }
+        if (!me) { needAccount("공유하려면 구글 계정 연결이 필요해요"); return; }
         var k = L.courseKey();
         var ms = L.courseMissions();
         var recs = (L.state.records || {})[k] || {};
@@ -419,6 +430,7 @@
         .catch(function () {});
     }
     track("visit");
+    window.__ploveTrack = track;          // auth.js 가 renderVals 를 나중에 감싸므로 거기서도 부른다
 
     var origSet = L.setState.bind(L);
     L.setState = function (patch, cb) {
