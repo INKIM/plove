@@ -50,6 +50,10 @@
     var L = await waitLogic();
     if (!L) { console.warn("[auth] 컴포넌트를 못 찾았다"); return; }
 
+    // 로그인 강제 스위치(api/config.js · env PLOVE_LOGIN_REQUIRED). 켜면 예전처럼
+    // 첫 화면에서 구글 로그인을 거쳐야 들어가고, 세션이 없으면 첫 화면으로 되돌린다.
+    var MUST = !!cfg.loginRequired;
+
     var advanced = false;
     /* 안으로 들어갈 때 어느 화면·어느 코스인지 한 곳에서 정한다.
        시작하지 않은 코스를 가리킨 채 학습으로 보내면
@@ -95,6 +99,12 @@
           photo: (u.user_metadata || {}).avatar_url || L.state.photo
         });
         advance();
+      } else if (MUST) {
+        // 로그인 강제 — 세션이 없으면 진행이 남아 있어도 시작 화면에서 막는다
+        var inApp = L.state.screen && L.state.screen !== "start" &&
+                    L.state.screen !== "signin" && L.state.screen !== "policy" &&
+                    L.state.screen !== "terms";
+        if (L.state.signedIn || inApp) L.setState({ signedIn: false, gEmail: "", screen: "start" });
       } else if (L.state.signedIn || L.state.gEmail) {
         // 세션이 없으면 저장본이 로그인 상태였더라도 계정만 내린다 — 실제 인증이 정본이다.
         // 로그인 없이도 쓸 수 있으므로 화면은 옮기지 않는다(이 기기의 진행으로 계속한다).
@@ -120,9 +130,10 @@
     var orig = L.renderVals.bind(L);
     L.renderVals = function () {
       var v = orig();
-      var needG = !L.state.signedIn && pendingLink();
-      v.startNeedsGoogle = needG;
-      v.startLabel = needG ? "구글로 시작하기" : "시작하기";
+      var needG = !L.state.signedIn && (MUST || pendingLink());
+      // 로그인 강제일 때는 예전 모습 그대로 — 구글 아이콘 + '시작하기'
+      v.startNeedsGoogle = MUST || needG;
+      v.startLabel = (needG && !MUST) ? "구글로 시작하기" : "시작하기";
       v.googleStart = function () {
         L.sfx && L.sfx("start");
         try { window.__ploveTrack && window.__ploveTrack("start"); } catch (e) {}
