@@ -21,7 +21,7 @@ export default async function handler(req, res) {
 
   try {
     let ev = [];
-    try { ev = await db("events?step=in.(visit,start,signin,mission_done)&select=anon_id,email,step&limit=100000"); }
+    try { ev = await db("events?step=in.(visit,start,signin,mission_done)&select=anon_id,email,step,props&limit=100000"); }
     catch (e) { return res.status(200).json({ ok: false, error: "events_table_missing", hint: "supabase/events.sql 을 SQL Editor 에서 한 번 실행하세요" }); }
 
     const prog = await db("progress?select=email,data&limit=100000");
@@ -32,6 +32,22 @@ export default async function handler(req, res) {
     const start = people(at("start"));
     const signin = people(at("signin"));
     const mission = people(at("mission_done"));
+
+    /* 유입 경로 — 사람마다 첫 방문에 적힌 것 하나만 본다(같은 사람이 여러 번 와도 한 번).
+       들어온 사람(시작하기·로그인)까지 함께 세어 경로별 전환을 본다.
+       ⚠️ 2026-09-23 부터 쌓는다 — 그 전 방문은 전부 '기록없음' 이다. */
+    const entered = new Set(ev.filter(e => e.step === "start" || e.step === "signin").map(e => e.anon_id));
+    const seen = new Set(), refs = {}, mob = { mob: 0, pc: 0, unknown: 0 };
+    for (const e of at("visit")) {
+      if (seen.has(e.anon_id)) continue;
+      seen.add(e.anon_id);
+      const p = e.props || {};
+      const key = p.source ? p.source + " (utm)" : (p.via ? p.via + " 링크" : (p.ref || "기록없음"));
+      const r = refs[key] || (refs[key] = { 방문: 0, 진입: 0 });
+      r.방문++; if (entered.has(e.anon_id)) r.진입++;
+      if (p.mob === true) mob.mob++; else if (p.mob === false) mob.pc++; else mob.unknown++;
+    }
+    for (const k of Object.keys(refs)) refs[k]["진입률"] = pct(refs[k].진입, refs[k].방문);
 
     // 구독 상태는 이벤트가 아니라 지금 상태(progress)가 정본이다
     const users = prog.length;
@@ -49,6 +65,8 @@ export default async function handler(req, res) {
       },
       // 계정 연결은 이제 선택이다 — 퍼널이 아니라 따로 센다
       구글연결: signin,
+      유입경로: refs,
+      기기: { 모바일: mob.mob, PC: mob.pc, 모름: mob.unknown },
       구독비율: {
         전체이용자: users,
         무료이용자: users - plus, "무료비율": pct(users - plus, users),

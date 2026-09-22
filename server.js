@@ -429,7 +429,29 @@
       post("/api/event", { step: step, anonId: anonId(), email: emailNow || myEmail(L), props: props || null })
         .catch(function () {});
     }
-    track("visit");
+    /* 유입 경로 — 어디서 눌러 들어왔는지. 주소(referrer)는 도메인까지만 남기고,
+       링크에 붙인 꼬리표(utm_*)와 폰/PC 여부를 함께 적는다. 사람을 알아보는 값은 담지 않는다.
+       ⚠️ 카카오톡·인스타 같은 앱 안 브라우저는 referrer 를 안 주는 경우가 많다 → direct 로 잡힌다. */
+    function entryProps() {
+      var out = {};
+      try {
+        var r = document.referrer || "";
+        if (!r) out.ref = "direct";
+        else {
+          var u = new URL(r);
+          out.ref = (u.hostname === location.hostname) ? "self" : u.hostname.replace(/^www\./, "");
+        }
+        var q = new URLSearchParams(location.search);
+        ["utm_source", "utm_medium", "utm_campaign"].forEach(function (k) {
+          var v = q.get(k); if (v) out[k.slice(4)] = String(v).slice(0, 40);
+        });
+        if (q.get("gift")) out.via = "gift";
+        else if (q.get("invite")) out.via = "invite";
+        out.mob = window.innerWidth < 760;
+      } catch (e) {}
+      return out;
+    }
+    track("visit", entryProps());
     window.__ploveTrack = track;          // auth.js 가 renderVals 를 나중에 감싸므로 거기서도 부른다
 
     var origSet = L.setState.bind(L);
